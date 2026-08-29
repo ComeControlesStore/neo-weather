@@ -1,0 +1,2721 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NEO//WEATHER</title>
+
+<meta name="theme-color" content="#00f7ff">
+<link rel="manifest" href="manifest.json">
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    color:white;
+    background:
+        radial-gradient(circle at 15% 15%,#173b72 0%,transparent 32%),
+        radial-gradient(circle at 85% 80%,#4b126d 0%,transparent 32%),
+        #030712;
+    overflow-x:hidden;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background:
+        linear-gradient(rgba(0,255,255,.035) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(0,255,255,.035) 1px,transparent 1px);
+    background-size:40px 40px;
+    mask-image:linear-gradient(to bottom,black,transparent);
+}
+
+.container{
+    width:min(1200px,92%);
+    margin:auto;
+    padding:30px 0 60px;
+}
+
+/* HEADER */
+
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    margin-bottom:28px;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:900;
+    letter-spacing:4px;
+    color:#00f7ff;
+    text-shadow:0 0 15px #00f7ff;
+}
+
+#clock{
+    color:#b7c7d9;
+    font-size:16px;
+}
+
+/* SEARCH */
+
+.search{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.search input{
+    flex:1;
+    padding:16px;
+    border:1px solid #00f7ff;
+    border-radius:12px;
+    outline:none;
+    color:white;
+    background:rgba(0,0,0,.35);
+    box-shadow:0 0 15px rgba(0,247,255,.15);
+    font-size:16px;
+}
+
+.search button{
+    padding:0 22px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    color:#001014;
+    background:#00f7ff;
+    font-weight:bold;
+    box-shadow:0 0 20px rgba(0,247,255,.45);
+    transition:.25s;
+}
+
+.search button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 0 30px rgba(0,247,255,.8);
+}
+
+/* HERO */
+
+.hero{
+    position:relative;
+    padding:35px;
+    border:1px solid rgba(0,247,255,.4);
+    border-radius:25px;
+    background:rgba(7,15,30,.72);
+    backdrop-filter:blur(15px);
+    box-shadow:
+        0 0 40px rgba(0,247,255,.08),
+        inset 0 0 30px rgba(0,247,255,.03);
+    overflow:hidden;
+    transition:.3s;
+}
+
+.hero::after{
+    content:"";
+    position:absolute;
+    width:250px;
+    height:250px;
+    right:-100px;
+    top:-100px;
+    border-radius:50%;
+    background:#00f7ff;
+    filter:blur(100px);
+    opacity:.1;
+}
+
+.location{
+    position:relative;
+    z-index:1;
+    color:#00f7ff;
+    font-size:18px;
+    letter-spacing:2px;
+}
+
+.weather-main{
+    position:relative;
+    z-index:1;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    margin-top:20px;
+}
+
+.temperature{
+    font-size:clamp(75px,12vw,130px);
+    font-weight:900;
+    line-height:1;
+    text-shadow:0 0 30px rgba(0,247,255,.5);
+}
+
+.condition{
+    margin-top:10px;
+    font-size:24px;
+    color:#dcecff;
+}
+
+.weather-icon{
+    font-size:100px;
+    filter:drop-shadow(0 0 20px rgba(255,255,255,.25));
+}
+
+/* ALERTA */
+
+.alert-box{
+    display:none;
+    margin-top:25px;
+    padding:20px;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.15);
+    background:rgba(255,255,255,.05);
+    position:relative;
+    z-index:2;
+}
+
+.alert-box.show{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.alert-icon{
+    font-size:40px;
+}
+
+.alert-title{
+    font-size:20px;
+    font-weight:bold;
+}
+
+.alert-description{
+    margin-top:5px;
+    color:#c0cbd8;
+    font-size:14px;
+}
+
+/* ESTADÍSTICAS */
+
+.stats{
+    position:relative;
+    z-index:1;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-top:30px;
+}
+
+.stat{
+    padding:20px;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:16px;
+    background:rgba(255,255,255,.035);
+    transition:.3s;
+}
+
+.stat:hover{
+    transform:translateY(-5px);
+    border-color:rgba(0,247,255,.5);
+    box-shadow:0 0 20px rgba(0,247,255,.1);
+}
+
+.stat-label{
+    color:#8495aa;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.stat-value{
+    margin-top:8px;
+    font-size:22px;
+    font-weight:bold;
+}
+
+/* SECCIONES */
+
+.section-title{
+    margin:35px 0 15px;
+    font-size:21px;
+    color:#00f7ff;
+    letter-spacing:2px;
+}
+
+.panel{
+    padding:20px;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:20px;
+    background:rgba(255,255,255,.035);
+    overflow:hidden;
+}
+
+/* DATOS */
+
+.nerd-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+}
+
+.nerd-card{
+    padding:17px;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:14px;
+    background:rgba(255,255,255,.035);
+}
+
+.nerd-name{
+    color:#8495aa;
+    font-size:12px;
+    text-transform:uppercase;
+}
+
+.nerd-value{
+    margin-top:7px;
+    font-size:19px;
+    font-weight:bold;
+}
+
+/* SOL */
+
+.sun-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.sun{
+    padding:20px;
+    text-align:center;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:16px;
+    background:rgba(255,255,255,.035);
+}
+
+.sun-icon{
+    font-size:35px;
+}
+
+.sun-time{
+    margin-top:10px;
+    font-size:25px;
+    font-weight:bold;
+}
+
+/* HORARIO */
+
+.hourly{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    padding-bottom:8px;
+    scrollbar-color:#00f7ff transparent;
+}
+
+.hour{
+    min-width:105px;
+    padding:15px 10px;
+    text-align:center;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:15px;
+    background:rgba(0,0,0,.18);
+    transition:.25s;
+}
+
+.hour:hover{
+    transform:translateY(-4px);
+    border-color:#00f7ff;
+    background:rgba(0,247,255,.07);
+}
+
+.hour.current{
+    border-color:#00f7ff;
+    box-shadow:0 0 18px rgba(0,247,255,.18);
+}
+
+.hour-time{
+    color:#9eb0c5;
+    font-size:13px;
+}
+
+.hour-icon{
+    margin:12px 0;
+    font-size:30px;
+}
+
+.hour-temp{
+    font-size:20px;
+    font-weight:bold;
+}
+
+.hour-rain{
+    margin-top:7px;
+    color:#00f7ff;
+    font-size:12px;
+}
+
+/* 7 DÍAS */
+
+.forecast{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:10px;
+}
+
+.day{
+    padding:18px 10px;
+    text-align:center;
+    border:1px solid rgba(255,255,255,.09);
+    border-radius:15px;
+    background:rgba(255,255,255,.035);
+    transition:.3s;
+}
+
+.day:hover{
+    transform:translateY(-5px);
+    background:rgba(0,247,255,.07);
+    border-color:rgba(0,247,255,.4);
+}
+
+.day-name{
+    color:#9eb0c5;
+    font-size:13px;
+}
+
+.day-icon{
+    margin:15px 0;
+    font-size:35px;
+}
+
+.day-temp{
+    font-size:20px;
+    font-weight:bold;
+}
+
+.min{
+    margin-top:5px;
+    color:#7c8da0;
+    font-size:13px;
+}
+
+.day-rain{
+    margin-top:8px;
+    color:#00f7ff;
+    font-size:12px;
+}
+
+/* BOTÓN NERDS */
+
+.nerd-button{
+    width:100%;
+    padding:16px;
+    border:1px solid #00f7ff;
+    border-radius:14px;
+    background:rgba(0,247,255,.06);
+    color:#00f7ff;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.nerd-button:hover{
+    background:rgba(0,247,255,.13);
+    box-shadow:0 0 20px rgba(0,247,255,.15);
+}
+
+.nerd-panel{
+    display:none;
+    margin-top:15px;
+}
+
+.nerd-panel.open{
+    display:block;
+}
+
+/* GRÁFICA */
+
+.chart{
+    overflow-x:auto;
+}
+
+.chart svg{
+    width:100%;
+    min-width:700px;
+    height:260px;
+}
+
+.chart-line{
+    fill:none;
+    stroke:#00f7ff;
+    stroke-width:4;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    filter:drop-shadow(0 0 6px rgba(0,247,255,.6));
+}
+
+.chart-grid{
+    stroke:rgba(255,255,255,.08);
+    stroke-width:1;
+}
+
+.chart-text{
+    fill:#8191a4;
+    font-size:12px;
+}
+
+.chart-point{
+    fill:#00f7ff;
+    filter:drop-shadow(0 0 5px #00f7ff);
+}
+
+/* ESTADO */
+
+.status{
+    margin-top:20px;
+    color:#8191a4;
+    font-size:13px;
+}
+
+/* FOOTER */
+
+footer{
+    margin-top:35px;
+    text-align:center;
+    color:#596a7e;
+    font-size:12px;
+}
+
+/* LOADING */
+
+.loading{
+    opacity:.6;
+    pointer-events:none;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px){
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .forecast{
+        grid-template-columns:repeat(4,1fr);
+    }
+
+    .nerd-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:600px){
+
+    .container{
+        width:94%;
+    }
+
+    header{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .search{
+        flex-direction:column;
+    }
+
+    .search button{
+        height:48px;
+    }
+
+    .hero{
+        padding:22px;
+    }
+
+    .weather-main{
+        align-items:flex-start;
+    }
+
+    .weather-icon{
+        position:absolute;
+        right:10px;
+        top:80px;
+        font-size:70px;
+    }
+
+    .stats{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .forecast{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .sun-grid{
+        grid-template-columns:1fr;
+    }
+
+    .nerd-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+
+    <div class="logo">
+        NEO//WEATHER
+    </div>
+
+    <div id="clock">
+        --:--:--
+    </div>
+
+</header>
+
+
+<div class="search">
+
+    <input
+        id="cityInput"
+        type="text"
+        value="Navojoa"
+        placeholder="Escribe una ciudad..."
+    >
+
+    <button onclick="searchCity()">
+        BUSCAR
+    </button>
+
+    <button onclick="useMyLocation()">
+        📍 MI UBICACIÓN
+    </button>
+
+</div>
+
+
+<main class="hero" id="hero">
+
+    <div class="location" id="location">
+        Cargando ubicación...
+    </div>
+
+    <div class="weather-main">
+
+        <div>
+
+            <div
+                class="temperature"
+                id="temperature"
+            >
+                --°
+            </div>
+
+            <div
+                class="condition"
+                id="condition"
+            >
+                Cargando...
+            </div>
+
+        </div>
+
+        <div
+            class="weather-icon"
+            id="weatherIcon"
+        >
+            🌌
+        </div>
+
+    </div>
+
+
+    <div
+        class="alert-box"
+        id="alertBox"
+    >
+
+        <div
+            class="alert-icon"
+            id="alertIcon"
+        >
+            ⚠️
+        </div>
+
+        <div>
+
+            <div
+                class="alert-title"
+                id="alertTitle"
+            >
+                ALERTA
+            </div>
+
+            <div
+                class="alert-description"
+                id="alertDescription"
+            >
+                --
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="stats">
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Sensación
+            </div>
+
+            <div
+                class="stat-value"
+                id="feels"
+            >
+                --°
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Humedad
+            </div>
+
+            <div
+                class="stat-value"
+                id="humidity"
+            >
+                --%
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Viento
+            </div>
+
+            <div
+                class="stat-value"
+                id="wind"
+            >
+                -- km/h
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Lluvia próxima hora
+            </div>
+
+            <div
+                class="stat-value"
+                id="rain"
+            >
+                --%
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="status"
+        id="status"
+    >
+        Conectando con el servidor meteorológico...
+    </div>
+
+</main>
+
+
+<h2 class="section-title">
+    CONDICIONES // AHORA
+</h2>
+
+<div class="nerd-grid">
+
+    <div class="nerd-card">
+
+        <div class="nerd-name">
+            Ráfagas
+        </div>
+
+        <div
+            class="nerd-value"
+            id="gust"
+        >
+            --
+        </div>
+
+    </div>
+
+
+    <div class="nerd-card">
+
+        <div class="nerd-name">
+            Nubosidad
+        </div>
+
+        <div
+            class="nerd-value"
+            id="cloud"
+        >
+            --
+        </div>
+
+    </div>
+
+
+    <div class="nerd-card">
+
+        <div class="nerd-name">
+            Índice UV
+        </div>
+
+        <div
+            class="nerd-value"
+            id="uv"
+        >
+            --
+        </div>
+
+    </div>
+
+
+    <div class="nerd-card">
+
+        <div class="nerd-name">
+            Dirección viento
+        </div>
+
+        <div
+            class="nerd-value"
+            id="windDirection"
+        >
+            --
+        </div>
+
+    </div>
+
+</div>
+
+
+<h2 class="section-title">
+    SOL // CICLO DIARIO
+</h2>
+
+<div class="sun-grid">
+
+    <div class="sun">
+
+        <div class="sun-icon">
+            🌅
+        </div>
+
+        <div>
+            AMANECER
+        </div>
+
+        <div
+            class="sun-time"
+            id="sunrise"
+        >
+            --
+        </div>
+
+    </div>
+
+
+    <div class="sun">
+
+        <div class="sun-icon">
+            🌇
+        </div>
+
+        <div>
+            ATARDECER
+        </div>
+
+        <div
+            class="sun-time"
+            id="sunset"
+        >
+            --
+        </div>
+
+    </div>
+
+</div>
+
+
+<h2 class="section-title">
+    PRONÓSTICO // 48 HORAS
+</h2>
+
+<div class="panel">
+
+    <div
+        class="hourly"
+        id="hourly"
+    ></div>
+
+</div>
+
+
+<h2 class="section-title">
+    PRONÓSTICO // 7 DÍAS
+</h2>
+
+<div
+    class="forecast"
+    id="forecast"
+></div>
+
+
+<h2 class="section-title">
+    TEMPERATURA // TENDENCIA
+</h2>
+
+<div class="panel chart">
+
+    <svg
+        id="temperatureChart"
+        viewBox="0 0 1000 260"
+        preserveAspectRatio="none"
+    ></svg>
+
+</div>
+
+
+<h2 class="section-title">
+    DATOS AVANZADOS
+</h2>
+
+<button
+    class="nerd-button"
+    onclick="toggleNerds()"
+>
+    📊 ESTADÍSTICAS PARA NERDS
+</button>
+
+
+<div
+    class="nerd-panel"
+    id="nerdPanel"
+>
+
+    <div class="panel">
+
+        <div class="nerd-grid">
+
+            <div class="nerd-card">
+
+                <div class="nerd-name">
+                    Precipitación actual
+                </div>
+
+                <div
+                    class="nerd-value"
+                    id="precip"
+                >
+                    --
+                </div>
+
+            </div>
+
+
+            <div class="nerd-card">
+
+                <div class="nerd-name">
+                    Lluvia próxima hora
+                </div>
+
+                <div
+                    class="nerd-value"
+                    id="rainMM"
+                >
+                    --
+                </div>
+
+            </div>
+
+
+            <div class="nerd-card">
+
+                <div class="nerd-name">
+                    Punto de rocío
+                </div>
+
+                <div
+                    class="nerd-value"
+                    id="dew"
+                >
+                    --
+                </div>
+
+            </div>
+
+
+            <div class="nerd-card">
+
+                <div class="nerd-name">
+                    Presión
+                </div>
+
+                <div
+                    class="nerd-value"
+                    id="pressure"
+                >
+                    --
+                </div>
+
+            </div>
+
+
+            <div class="nerd-card">
+
+                <div class="nerd-name">
+                    Visibilidad
+                </div>
+
+                <div
+                    class="nerd-value"
+                    id="visibility"
+                >
+                    --
+                </div>
+
+            </div>
+
+
+            <div class="nerd-card">
+
+                <div class="nerd-name">
+                    Probabilidad lluvia
+                </div>
+
+                <div
+                    class="nerd-value"
+                    id="rainExact"
+                >
+                    --
+                </div>
+
+            </div>
+
+
+            <div class="nerd-card">
+
+                <div class="nerd-name">
+                    Máxima hoy
+                </div>
+
+                <div
+                    class="nerd-value"
+                    id="maxToday"
+                >
+                    --
+                </div>
+
+            </div>
+
+
+            <div class="nerd-card">
+
+                <div class="nerd-name">
+                    Mínima hoy
+                </div>
+
+                <div
+                    class="nerd-value"
+                    id="minToday"
+                >
+                    --
+                </div>
+
+            </div>
+
+
+            <div class="nerd-card">
+
+                <div class="nerd-name">
+                    Observación
+                </div>
+
+                <div
+                    class="nerd-value"
+                    id="observationTime"
+                >
+                    --
+                </div>
+
+            </div>
+
+
+            <div class="nerd-card">
+
+                <div class="nerd-name">
+                    Actualización
+                </div>
+
+                <div
+                    class="nerd-value"
+                    id="updateTime"
+                >
+                    --
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    NEO//WEATHER
+    • Datos meteorológicos proporcionados por Open-Meteo
+    • Actualización automática cada minuto
+
+</footer>
+
+</div>
+
+
+<script>
+
+/* ==========================================
+   PWA
+========================================== */
+
+if("serviceWorker" in navigator){
+
+    window.addEventListener(
+        "load",
+        () => {
+
+            navigator.serviceWorker
+                .register("./sw.js")
+                .then(
+                    () => console.log(
+                        "NEO//WEATHER PWA activa"
+                    )
+                )
+                .catch(
+                    error => console.error(
+                        "Error Service Worker:",
+                        error
+                    )
+                );
+
+        }
+    );
+
+}
+
+
+/* ==========================================
+   DESCRIPCIONES
+========================================== */
+
+const weatherDescriptions = {
+
+    0:["Despejado","☀️"],
+    1:["Mayormente despejado","🌤️"],
+    2:["Parcialmente nublado","⛅"],
+    3:["Nublado","☁️"],
+
+    45:["Niebla","🌫️"],
+    48:["Niebla","🌫️"],
+
+    51:["Llovizna ligera","🌦️"],
+    53:["Llovizna","🌦️"],
+    55:["Llovizna intensa","🌧️"],
+
+    56:["Llovizna helada","🌧️"],
+    57:["Llovizna helada intensa","🌧️"],
+
+    61:["Lluvia ligera","🌦️"],
+    63:["Lluvia","🌧️"],
+    65:["Lluvia intensa","🌧️"],
+
+    66:["Lluvia helada","🌧️"],
+    67:["Lluvia helada intensa","🌧️"],
+
+    71:["Nieve ligera","🌨️"],
+    73:["Nieve","❄️"],
+    75:["Nieve intensa","❄️"],
+
+    77:["Granizo de nieve","❄️"],
+
+    80:["Chubascos","🌦️"],
+    81:["Chubascos","🌧️"],
+    82:["Chubascos intensos","⛈️"],
+
+    85:["Chubascos de nieve","🌨️"],
+    86:["Chubascos de nieve intensos","❄️"],
+
+    95:["Tormenta","⛈️"],
+    96:["Tormenta con granizo","⛈️"],
+    99:["Tormenta fuerte con granizo","⛈️"]
+
+};
+
+
+function getWeatherInfo(code){
+
+    return weatherDescriptions[code]
+        || ["Condición desconocida","🌡️"];
+
+}
+
+
+/* ==========================================
+   RELOJ
+========================================== */
+
+function updateClock(){
+
+    const now = new Date();
+
+    document.getElementById("clock").textContent =
+        now.toLocaleTimeString(
+            "es-MX",
+            {
+                hour:"2-digit",
+                minute:"2-digit",
+                second:"2-digit"
+            }
+        );
+
+}
+
+setInterval(updateClock,1000);
+
+updateClock();
+
+
+/* ==========================================
+   VARIABLES
+========================================== */
+
+let currentLocation = null;
+
+
+/* ==========================================
+   DIRECCIÓN VIENTO
+========================================== */
+
+function windDirection(degrees){
+
+    const directions = [
+        "N",
+        "NE",
+        "E",
+        "SE",
+        "S",
+        "SO",
+        "O",
+        "NO"
+    ];
+
+    return directions[
+        Math.round(degrees / 45) % 8
+    ];
+
+}
+
+
+/* ==========================================
+   FORMATO HORA
+========================================== */
+
+function formatHour(time){
+
+    return new Date(time)
+        .toLocaleTimeString(
+            "es-MX",
+            {
+                hour:"2-digit",
+                minute:"2-digit"
+            }
+        );
+
+}
+
+
+/* ==========================================
+   BUSCAR CIUDAD
+========================================== */
+
+async function searchCity(){
+
+    const input =
+        document.getElementById(
+            "cityInput"
+        );
+
+    const city =
+        input.value.trim();
+
+
+    if(!city){
+
+        alert(
+            "Escribe una ciudad."
+        );
+
+        return;
+
+    }
+
+
+    document
+        .getElementById("hero")
+        .classList
+        .add("loading");
+
+
+    document.getElementById("status").textContent =
+        "Buscando ubicación...";
+
+
+    try{
+
+        const geoURL =
+            `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=es&format=json`;
+
+
+        const response =
+            await fetch(geoURL);
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "Error de geocodificación"
+            );
+
+        }
+
+
+        const geoData =
+            await response.json();
+
+
+        if(
+            !geoData.results ||
+            geoData.results.length === 0
+        ){
+
+            throw new Error(
+                "Ciudad no encontrada"
+            );
+
+        }
+
+
+        const place =
+            geoData.results[0];
+
+
+        currentLocation = {
+
+            lat:place.latitude,
+            lon:place.longitude,
+            city:place.name,
+            country:place.country
+
+        };
+
+
+        await getWeather(
+            place.latitude,
+            place.longitude,
+            place.name,
+            place.country
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        document.getElementById("status").textContent =
+            "No se pudo encontrar esa ciudad.";
+
+        alert(
+            "No se encontró la ciudad. Prueba con otro nombre."
+        );
+
+    }finally{
+
+        document
+            .getElementById("hero")
+            .classList
+            .remove("loading");
+
+    }
+
+}
+
+
+/* ==========================================
+   MI UBICACIÓN
+========================================== */
+
+function useMyLocation(){
+
+    if(!navigator.geolocation){
+
+        alert(
+            "Tu navegador no permite geolocalización."
+        );
+
+        return;
+
+    }
+
+
+    document.getElementById("status").textContent =
+        "Obteniendo ubicación...";
+
+
+    navigator.geolocation.getCurrentPosition(
+
+        async position => {
+
+            const lat =
+                position.coords.latitude;
+
+            const lon =
+                position.coords.longitude;
+
+
+            currentLocation = {
+
+                lat:lat,
+                lon:lon,
+                city:"MI UBICACIÓN",
+                country:""
+
+            };
+
+
+            await getWeather(
+                lat,
+                lon,
+                "MI UBICACIÓN",
+                ""
+            );
+
+        },
+
+        error => {
+
+            console.error(error);
+
+            alert(
+                "No se pudo obtener tu ubicación."
+            );
+
+        }
+
+    );
+
+}
+
+
+/* ==========================================
+   OBTENER CLIMA
+========================================== */
+
+async function getWeather(
+    lat,
+    lon,
+    city,
+    country
+){
+
+    document.getElementById("status").textContent =
+        "Actualizando datos meteorológicos...";
+
+
+    const currentVariables = [
+
+        "temperature_2m",
+        "relative_humidity_2m",
+        "apparent_temperature",
+        "weather_code",
+        "wind_speed_10m",
+        "wind_direction_10m",
+        "wind_gusts_10m",
+        "cloud_cover",
+        "precipitation",
+        "surface_pressure",
+        "dew_point_2m"
+
+    ].join(",");
+
+
+    const hourlyVariables = [
+
+        "temperature_2m",
+        "relative_humidity_2m",
+        "apparent_temperature",
+        "precipitation_probability",
+        "precipitation",
+        "weather_code",
+        "cloud_cover",
+        "visibility",
+        "uv_index",
+        "wind_speed_10m",
+        "wind_gusts_10m"
+
+    ].join(",");
+
+
+    const dailyVariables = [
+
+        "weather_code",
+        "temperature_2m_max",
+        "temperature_2m_min",
+        "precipitation_probability_max",
+        "precipitation_sum",
+        "uv_index_max",
+        "sunrise",
+        "sunset"
+
+    ].join(",");
+
+
+    const url =
+        "https://api.open-meteo.com/v1/forecast" +
+
+        `?latitude=${lat}` +
+
+        `&longitude=${lon}` +
+
+        `&current=${currentVariables}` +
+
+        `&hourly=${hourlyVariables}` +
+
+        `&daily=${dailyVariables}` +
+
+        `&timezone=auto` +
+
+        `&forecast_days=7`;
+
+
+    const response =
+        await fetch(url);
+
+
+    if(!response.ok){
+
+        throw new Error(
+            "Error obteniendo datos meteorológicos"
+        );
+
+    }
+
+
+    const data =
+        await response.json();
+
+
+    const current =
+        data.current;
+
+    const hourly =
+        data.hourly;
+
+    const daily =
+        data.daily;
+
+
+    const [
+        description,
+        icon
+    ] =
+        getWeatherInfo(
+            current.weather_code
+        );
+
+
+    /* UBICACIÓN */
+
+    document.getElementById("location").textContent =
+        `${city.toUpperCase()}${country ? " // " + country : ""}`;
+
+
+    /* PRINCIPAL */
+
+    document.getElementById("temperature").textContent =
+        `${Math.round(
+            current.temperature_2m
+        )}°`;
+
+
+    document.getElementById("condition").textContent =
+        description;
+
+
+    document.getElementById("weatherIcon").textContent =
+        icon;
+
+
+    /* ESTADÍSTICAS */
+
+    document.getElementById("feels").textContent =
+        `${Math.round(
+            current.apparent_temperature
+        )}°`;
+
+
+    document.getElementById("humidity").textContent =
+        `${current.relative_humidity_2m}%`;
+
+
+    document.getElementById("wind").textContent =
+        `${Math.round(
+            current.wind_speed_10m
+        )} km/h`;
+
+
+    /*
+        Encontrar la hora del pronóstico
+        más cercana a la observación actual.
+    */
+
+    const currentTime =
+        new Date(
+            current.time
+        ).getTime();
+
+
+    let currentHourIndex = 0;
+
+    let smallestDifference =
+        Infinity;
+
+
+    hourly.time.forEach(
+        (time,index) => {
+
+            const difference =
+                Math.abs(
+                    new Date(time).getTime()
+                    -
+                    currentTime
+                );
+
+
+            if(
+                difference <
+                smallestDifference
+            ){
+
+                smallestDifference =
+                    difference;
+
+                currentHourIndex =
+                    index;
+
+            }
+
+        }
+    );
+
+
+    /* LLUVIA */
+
+    const rainProbability =
+        hourly.precipitation_probability[
+            currentHourIndex
+        ];
+
+
+    document.getElementById("rain").textContent =
+        `${rainProbability ?? 0}%`;
+
+
+    document.getElementById("rainExact").textContent =
+        `${rainProbability ?? 0}%`;
+
+
+    document.getElementById("rainMM").textContent =
+        `${Number(
+            hourly.precipitation[
+                currentHourIndex
+            ] || 0
+        ).toFixed(1)} mm`;
+
+
+    /* CONDICIONES */
+
+    document.getElementById("gust").textContent =
+        `${Math.round(
+            current.wind_gusts_10m || 0
+        )} km/h`;
+
+
+    document.getElementById("cloud").textContent =
+        `${current.cloud_cover ?? 0}%`;
+
+
+    document.getElementById("uv").textContent =
+        Number(
+            hourly.uv_index[
+                currentHourIndex
+            ] || 0
+        ).toFixed(1);
+
+
+    document.getElementById("windDirection").textContent =
+        `${windDirection(
+            current.wind_direction_10m
+        )} ${Math.round(
+            current.wind_direction_10m
+        )}°`;
+
+
+    /* DATOS AVANZADOS */
+
+    document.getElementById("precip").textContent =
+        `${Number(
+            current.precipitation || 0
+        ).toFixed(1)} mm`;
+
+
+    document.getElementById("dew").textContent =
+        `${Math.round(
+            current.dew_point_2m
+        )}°`;
+
+
+    document.getElementById("pressure").textContent =
+        `${Math.round(
+            current.surface_pressure
+        )} hPa`;
+
+
+    document.getElementById("visibility").textContent =
+        `${(
+            (hourly.visibility[
+                currentHourIndex
+            ] || 0) / 1000
+        ).toFixed(1)} km`;
+
+
+    document.getElementById("maxToday").textContent =
+        `${Math.round(
+            daily.temperature_2m_max[0]
+        )}°`;
+
+
+    document.getElementById("minToday").textContent =
+        `${Math.round(
+            daily.temperature_2m_min[0]
+        )}°`;
+
+
+    document.getElementById("observationTime").textContent =
+        formatHour(
+            current.time
+        );
+
+
+    document.getElementById("updateTime").textContent =
+        new Date().toLocaleTimeString(
+            "es-MX"
+        );
+
+
+    /* SOL */
+
+    document.getElementById("sunrise").textContent =
+        formatHour(
+            daily.sunrise[0]
+        );
+
+
+    document.getElementById("sunset").textContent =
+        formatHour(
+            daily.sunset[0]
+        );
+
+
+    /* RENDER */
+
+    renderHourly(
+        hourly,
+        currentHourIndex
+    );
+
+
+    renderForecast(
+        daily
+    );
+
+
+    renderChart(
+        hourly
+    );
+
+
+    detectAlerts(
+        current,
+        hourly,
+        currentHourIndex
+    );
+
+
+    document.getElementById("status").textContent =
+        `Actualizado: ${
+            new Date().toLocaleTimeString(
+                "es-MX"
+            )
+        } • Datos consultados automáticamente`;
+
+}
+
+
+/* ==========================================
+   PRONÓSTICO HORARIO
+========================================== */
+
+function renderHourly(
+    hourly,
+    currentIndex
+){
+
+    const container =
+        document.getElementById(
+            "hourly"
+        );
+
+
+    container.innerHTML = "";
+
+
+    const start =
+        currentIndex;
+
+
+    const end =
+        Math.min(
+            start + 48,
+            hourly.time.length
+        );
+
+
+    for(
+        let i=start;
+        i<end;
+        i++
+    ){
+
+        const [
+            description,
+            icon
+        ] =
+            getWeatherInfo(
+                hourly.weather_code[i]
+            );
+
+
+        const card =
+            document.createElement(
+                "div"
+            );
+
+
+        card.className =
+            "hour";
+
+
+        if(
+            i === currentIndex
+        ){
+
+            card.classList.add(
+                "current"
+            );
+
+        }
+
+
+        card.innerHTML = `
+
+            <div class="hour-time">
+
+                ${
+                    i === currentIndex
+                    ? "AHORA"
+                    : formatHour(
+                        hourly.time[i]
+                    )
+                }
+
+            </div>
+
+            <div class="hour-icon">
+                ${icon}
+            </div>
+
+            <div class="hour-temp">
+                ${Math.round(
+                    hourly.temperature_2m[i]
+                )}°
+            </div>
+
+            <div class="hour-rain">
+                💧 ${
+                    hourly.precipitation_probability[i]
+                    ?? 0
+                }%
+            </div>
+
+        `;
+
+
+        card.title =
+            `${description} • ${
+                hourly.precipitation[i] || 0
+            } mm`;
+
+
+        container.appendChild(
+            card
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   7 DÍAS
+========================================== */
+
+function renderForecast(daily){
+
+    const container =
+        document.getElementById(
+            "forecast"
+        );
+
+
+    container.innerHTML = "";
+
+
+    for(
+        let i=0;
+        i<daily.time.length;
+        i++
+    ){
+
+        const date =
+            new Date(
+                daily.time[i] +
+                "T12:00:00"
+            );
+
+
+        const dayName =
+            i === 0
+            ? "HOY"
+            : date
+                .toLocaleDateString(
+                    "es-MX",
+                    {
+                        weekday:"short"
+                    }
+                )
+                .toUpperCase();
+
+
+        const [
+            description,
+            icon
+        ] =
+            getWeatherInfo(
+                daily.weather_code[i]
+            );
+
+
+        const card =
+            document.createElement(
+                "div"
+            );
+
+
+        card.className =
+            "day";
+
+
+        card.innerHTML = `
+
+            <div class="day-name">
+                ${dayName}
+            </div>
+
+            <div class="day-icon">
+                ${icon}
+            </div>
+
+            <div class="day-temp">
+                ${Math.round(
+                    daily.temperature_2m_max[i]
+                )}°
+            </div>
+
+            <div class="min">
+                ${Math.round(
+                    daily.temperature_2m_min[i]
+                )}°
+            </div>
+
+            <div class="day-rain">
+                💧 ${
+                    daily.precipitation_probability_max[i]
+                    ?? 0
+                }%
+            </div>
+
+        `;
+
+
+        card.title =
+            `${description} • ${
+                daily.precipitation_sum[i] || 0
+            } mm`;
+
+
+        container.appendChild(
+            card
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   ALERTAS
+========================================== */
+
+function detectAlerts(
+    current,
+    hourly,
+    currentIndex
+){
+
+    const box =
+        document.getElementById(
+            "alertBox"
+        );
+
+
+    const temp =
+        current.temperature_2m;
+
+
+    const feels =
+        current.apparent_temperature;
+
+
+    const wind =
+        current.wind_gusts_10m ||
+        current.wind_speed_10m;
+
+
+    const rain =
+        hourly.precipitation_probability[
+            currentIndex
+        ] || 0;
+
+
+    const code =
+        current.weather_code;
+
+
+    /*
+        Tormenta
+    */
+
+    if(
+        code === 95 ||
+        code === 96 ||
+        code === 99
+    ){
+
+        showAlert(
+            "⛈️",
+            "ALERTA DE TORMENTA",
+            "Se detectan condiciones de tormenta."
+        );
+
+        return;
+
+    }
+
+
+    /*
+        Calor extremo
+    */
+
+    if(
+        feels >= 45 ||
+        temp >= 42
+    ){
+
+        showAlert(
+            "🔥",
+            "ALERTA DE CALOR EXTREMO",
+            `Temperatura de ${Math.round(
+                temp
+            )}°C y sensación térmica de ${Math.round(
+                feels
+            )}°C.`
+        );
+
+        return;
+
+    }
+
+
+    /*
+        Calor fuerte
+    */
+
+    if(
+        feels >= 40 ||
+        temp >= 38
+    ){
+
+        showAlert(
+            "🥵",
+            "ALERTA DE CALOR",
+            `Sensación térmica de ${Math.round(
+                feels
+            )}°C. Toma precauciones ante el calor.`
+        );
+
+        return;
+
+    }
+
+
+    /*
+        Frío extremo
+    */
+
+    if(
+        temp <= -10
+    ){
+
+        showAlert(
+            "🥶",
+            "ALERTA DE FRÍO EXTREMO",
+            `Temperatura actual de ${Math.round(
+                temp
+            )}°C.`
+        );
+
+        return;
+
+    }
+
+
+    /*
+        Frío
+    */
+
+    if(
+        temp <= 0
+    ){
+
+        showAlert(
+            "❄️",
+            "ALERTA DE FRÍO",
+            `Temperatura actual de ${Math.round(
+                temp
+            )}°C.`
+        );
+
+        return;
+
+    }
+
+
+    /*
+        Viento fuerte
+    */
+
+    if(
+        wind >= 60
+    ){
+
+        showAlert(
+            "💨",
+            "ALERTA DE VIENTO FUERTE",
+            `Ráfagas de hasta ${Math.round(
+                wind
+            )} km/h.`
+        );
+
+        return;
+
+    }
+
+
+    /*
+        Lluvia
+    */
+
+    if(
+        rain >= 80
+    ){
+
+        showAlert(
+            "🌧️",
+            "ALTA PROBABILIDAD DE LLUVIA",
+            `Probabilidad de lluvia del ${Math.round(
+                rain
+            )}%.`
+        );
+
+        return;
+
+    }
+
+
+    box.classList.remove(
+        "show"
+    );
+
+}
+
+
+function showAlert(
+    icon,
+    title,
+    description
+){
+
+    const box =
+        document.getElementById(
+            "alertBox"
+        );
+
+
+    document.getElementById(
+        "alertIcon"
+    ).textContent =
+        icon;
+
+
+    document.getElementById(
+        "alertTitle"
+    ).textContent =
+        title;
+
+
+    document.getElementById(
+        "alertDescription"
+    ).textContent =
+        description;
+
+
+    box.classList.add(
+        "show"
+    );
+
+}
+
+
+/* ==========================================
+   GRÁFICA SVG
+========================================== */
+
+function renderChart(hourly){
+
+    const svg =
+        document.getElementById(
+            "temperatureChart"
+        );
+
+
+    svg.innerHTML = "";
+
+
+    const values =
+        hourly.temperature_2m
+            .slice(0,48);
+
+
+    const labels =
+        hourly.time
+            .slice(0,48);
+
+
+    const width=1000;
+    const height=260;
+    const padding=35;
+
+
+    const min =
+        Math.min(
+            ...values
+        );
+
+
+    const max =
+        Math.max(
+            ...values
+        );
+
+
+    const range =
+        max-min || 1;
+
+
+    let points="";
+
+
+    values.forEach(
+        (value,index)=>{
+
+            const x =
+                padding +
+                index *
+                (
+                    (width-padding*2)
+                    /
+                    (values.length-1)
+                );
+
+
+            const y =
+                height-padding -
+                (
+                    (value-min)
+                    /
+                    range
+                ) *
+                (
+                    height-padding*2
+                );
+
+
+            points +=
+                `${x},${y} `;
+
+        }
+    );
+
+
+    /* GRID */
+
+    for(
+        let i=0;
+        i<5;
+        i++
+    ){
+
+        const y =
+            padding +
+            i *
+            (
+                (height-padding*2)
+                /
+                4
+            );
+
+
+        const line =
+            document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "line"
+            );
+
+
+        line.setAttribute(
+            "x1",
+            padding
+        );
+
+        line.setAttribute(
+            "x2",
+            width-padding
+        );
+
+        line.setAttribute(
+            "y1",
+            y
+        );
+
+        line.setAttribute(
+            "y2",
+            y
+        );
+
+        line.setAttribute(
+            "class",
+            "chart-grid"
+        );
+
+
+        svg.appendChild(
+            line
+        );
+
+    }
+
+
+    /* LÍNEA */
+
+    const polyline =
+        document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "polyline"
+        );
+
+
+    polyline.setAttribute(
+        "points",
+        points
+    );
+
+
+    polyline.setAttribute(
+        "class",
+        "chart-line"
+    );
+
+
+    svg.appendChild(
+        polyline
+    );
+
+
+    /* PUNTOS */
+
+    values.forEach(
+        (value,index)=>{
+
+            const x =
+                padding +
+                index *
+                (
+                    (width-padding*2)
+                    /
+                    (values.length-1)
+                );
+
+
+            const y =
+                height-padding -
+                (
+                    (value-min)
+                    /
+                    range
+                ) *
+                (
+                    height-padding*2
+                );
+
+
+            const circle =
+                document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "circle"
+                );
+
+
+            circle.setAttribute(
+                "cx",
+                x
+            );
+
+
+            circle.setAttribute(
+                "cy",
+                y
+            );
+
+
+            circle.setAttribute(
+                "r",
+                3
+            );
+
+
+            circle.setAttribute(
+                "class",
+                "chart-point"
+            );
+
+
+            svg.appendChild(
+                circle
+            );
+
+
+            if(
+                index % 6 === 0
+            ){
+
+                const text =
+                    document.createElementNS(
+                        "http://www.w3.org/2000/svg",
+                        "text"
+                    );
+
+
+                text.setAttribute(
+                    "x",
+                    x
+                );
+
+
+                text.setAttribute(
+                    "y",
+                    height-8
+                );
+
+
+                text.setAttribute(
+                    "text-anchor",
+                    "middle"
+                );
+
+
+                text.setAttribute(
+                    "class",
+                    "chart-text"
+                );
+
+
+                text.textContent =
+                    formatHour(
+                        labels[index]
+                    );
+
+
+                svg.appendChild(
+                    text
+                );
+
+            }
+
+        }
+    );
+
+
+    const maxText =
+        document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "text"
+        );
+
+
+    maxText.setAttribute(
+        "x",
+        5
+    );
+
+
+    maxText.setAttribute(
+        "y",
+        25
+    );
+
+
+    maxText.setAttribute(
+        "class",
+        "chart-text"
+    );
+
+
+    maxText.textContent =
+        `${Math.round(max)}°`;
+
+
+    svg.appendChild(
+        maxText
+    );
+
+
+    const minText =
+        document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "text"
+        );
+
+
+    minText.setAttribute(
+        "x",
+        5
+    );
+
+
+    minText.setAttribute(
+        "y",
+        height-10
+    );
+
+
+    minText.setAttribute(
+        "class",
+        "chart-text"
+    );
+
+
+    minText.textContent =
+        `${Math.round(min)}°`;
+
+
+    svg.appendChild(
+        minText
+    );
+
+}
+
+
+/* ==========================================
+   ESTADÍSTICAS PARA NERDS
+========================================== */
+
+function toggleNerds(){
+
+    document
+        .getElementById(
+            "nerdPanel"
+        )
+        .classList
+        .toggle("open");
+
+}
+
+
+/* ==========================================
+   ENTER
+========================================== */
+
+document
+    .getElementById(
+        "cityInput"
+    )
+    .addEventListener(
+        "keydown",
+        event => {
+
+            if(
+                event.key === "Enter"
+            ){
+
+                searchCity();
+
+            }
+
+        }
+    );
+
+
+/* ==========================================
+   CARGA INICIAL
+========================================== */
+
+searchCity();
+
+
+/* ==========================================
+   ACTUALIZACIÓN AUTOMÁTICA
+   CADA 60 SEGUNDOS
+========================================== */
+
+setInterval(
+    async () => {
+
+        if(
+            !currentLocation
+        ){
+
+            return;
+
+        }
+
+
+        try{
+
+            await getWeather(
+
+                currentLocation.lat,
+
+                currentLocation.lon,
+
+                currentLocation.city,
+
+                currentLocation.country
+
+            );
+
+        }catch(error){
+
+            console.error(
+                "Error actualizando clima:",
+                error
+            );
+
+        }
+
+    },
+
+    60 * 1000
+
+);
+
+</script>
+
+</body>
+</html>
+```
