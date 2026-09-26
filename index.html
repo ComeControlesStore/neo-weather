@@ -1,12 +1,19 @@
-
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<meta
+    name="viewport"
+    content="width=device-width,initial-scale=1.0"
+>
+
 <title>NEXUS | Internet Calling</title>
 
 <style>
+
 *{
     box-sizing:border-box;
     margin:0;
@@ -15,20 +22,35 @@
 
 body{
     min-height:100vh;
+
     background:
-        radial-gradient(circle at top,#17233b 0%,#080b12 45%,#030407 100%);
+        radial-gradient(
+            circle at top,
+            #17233b 0%,
+            #080b12 45%,
+            #030407 100%
+        );
+
     color:#fff;
-    font-family:Arial,Helvetica,sans-serif;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
     display:flex;
     justify-content:center;
     align-items:center;
+
     overflow-x:hidden;
 }
 
 .app{
     width:min(430px,100%);
     min-height:100vh;
+
     padding:20px 16px;
+
     display:flex;
     flex-direction:column;
 }
@@ -42,66 +64,104 @@ header{
     font-size:38px;
     font-weight:900;
     letter-spacing:8px;
+
     color:#fff;
-    text-shadow:0 0 18px #238cff;
+
+    text-shadow:
+        0 0 18px #238cff;
 }
 
 .subtitle{
     margin-top:5px;
+
     color:#7fa8d8;
+
     font-size:12px;
     letter-spacing:2px;
 }
 
 .status{
     margin:14px auto 0;
+
     width:max-content;
     max-width:100%;
+
     padding:6px 12px;
-    border:1px solid #273c57;
+
+    border:
+        1px solid #273c57;
+
     border-radius:20px;
+
     background:#0b1420;
+
     color:#5de1ff;
+
     font-size:11px;
 }
 
 .number-card{
-    background:rgba(10,17,29,.85);
-    border:1px solid #20334d;
+    background:
+        rgba(10,17,29,.85);
+
+    border:
+        1px solid #20334d;
+
     border-radius:18px;
+
     padding:16px;
+
     margin-bottom:15px;
-    box-shadow:0 15px 40px rgba(0,0,0,.25);
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.25);
 }
 
 .my-label{
     color:#6d8eaf;
+
     font-size:10px;
     letter-spacing:2px;
+
     text-align:center;
 }
 
 .my-number{
     text-align:center;
+
     font-size:30px;
     font-weight:800;
+
     letter-spacing:7px;
+
     margin-top:7px;
+
     color:#5de1ff;
 }
 
 .display{
     height:76px;
+
     border-radius:18px;
-    border:1px solid #263d5c;
+
+    border:
+        1px solid #263d5c;
+
     background:#050a11;
+
     display:flex;
+
     align-items:center;
     justify-content:center;
+
     font-size:34px;
+
     letter-spacing:8px;
+
     margin-bottom:15px;
+
     color:#fff;
+
     overflow:hidden;
 }
 
@@ -111,20 +171,38 @@ header{
 
 .keypad{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+
+    grid-template-columns:
+        repeat(3,1fr);
+
     gap:10px;
 }
 
 .key{
     height:64px;
-    border:1px solid #263c58;
+
+    border:
+        1px solid #263c58;
+
     border-radius:16px;
-    background:linear-gradient(145deg,#101b2b,#080e18);
+
+    background:
+        linear-gradient(
+            145deg,
+            #101b2b,
+            #080e18
+        );
+
     color:#fff;
+
     font-size:24px;
+
     cursor:pointer;
+
     transition:.12s;
-    box-shadow:0 5px 15px rgba(0,0,0,.2);
+
+    box-shadow:
+        0 5px 15px rgba(0,0,0,.2);
 }
 
 .key:hover{
@@ -138,64 +216,112 @@ header{
 
 .actions{
     display:grid;
-    grid-template-columns:1fr 1fr;
+
+    grid-template-columns:
+        1fr 1fr;
+
     gap:10px;
+
     margin-top:10px;
 }
 
 .action{
     height:52px;
+
     border-radius:15px;
-    border:1px solid #263c58;
+
+    border:
+        1px solid #263c58;
+
     background:#0b1420;
+
     color:#b9cbe0;
+
     cursor:pointer;
+
     font-weight:bold;
 }
 
 .call{
-    background:linear-gradient(135deg,#087d55,#0aa66f);
+    background:
+        linear-gradient(
+            135deg,
+            #087d55,
+            #0aa66f
+        );
+
     border-color:#1ad28f;
+
     color:white;
 }
 
 .debug{
     margin-top:15px;
-    border:1px solid #17273b;
+
+    border:
+        1px solid #17273b;
+
     border-radius:15px;
+
     background:#03070c;
+
     overflow:hidden;
 }
 
 .debug-title{
     padding:10px 12px;
+
     font-size:10px;
     letter-spacing:2px;
+
     color:#6f91b4;
-    border-bottom:1px solid #17273b;
+
+    border-bottom:
+        1px solid #17273b;
 }
 
 #debug{
     height:170px;
+
     overflow-y:auto;
+
     padding:10px;
-    font-family:Consolas,monospace;
+
+    font-family:
+        Consolas,
+        monospace;
+
     font-size:10px;
+
     line-height:1.5;
+
     color:#82ffbd;
+
     white-space:pre-wrap;
+
     word-break:break-word;
 }
 
 .screen{
     position:fixed;
+
     inset:0;
+
     background:
-        radial-gradient(circle at center,#132641 0%,#05080d 55%,#020306 100%);
+        radial-gradient(
+            circle at center,
+            #132641 0%,
+            #05080d 55%,
+            #020306 100%
+        );
+
     z-index:100;
+
     display:none;
+
     align-items:center;
     justify-content:center;
+
     padding:20px;
 }
 
@@ -205,95 +331,150 @@ header{
 
 .call-box{
     width:min(390px,100%);
+
     text-align:center;
-    background:rgba(7,13,22,.94);
-    border:1px solid #263f5d;
+
+    background:
+        rgba(7,13,22,.94);
+
+    border:
+        1px solid #263f5d;
+
     border-radius:25px;
+
     padding:30px 20px;
-    box-shadow:0 30px 80px rgba(0,0,0,.55);
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.55);
 }
 
 .call-icon{
     width:85px;
     height:85px;
+
     border-radius:50%;
-    margin:0 auto 20px;
+
+    margin:
+        0 auto 20px;
+
     display:flex;
+
     align-items:center;
     justify-content:center;
+
     background:#0e2339;
-    border:1px solid #2d668f;
+
+    border:
+        1px solid #2d668f;
+
     font-size:34px;
 }
 
 .call-title{
     color:#7191b2;
+
     font-size:11px;
+
     letter-spacing:3px;
+
     margin-bottom:10px;
 }
 
 .call-number{
     font-size:34px;
+
     font-weight:900;
+
     letter-spacing:7px;
+
     color:#fff;
 }
 
 .call-state{
     color:#66d9ff;
+
     margin-top:12px;
+
     min-height:22px;
 }
 
 .call-buttons{
     display:flex;
+
     gap:10px;
+
     margin-top:25px;
 }
 
 .call-buttons button{
     flex:1;
+
     height:55px;
+
     border-radius:16px;
-    border:1px solid #29415e;
+
+    border:
+        1px solid #29415e;
+
     background:#0c1724;
+
     color:#fff;
+
     font-weight:bold;
+
     cursor:pointer;
 }
 
 .accept{
     background:#07845b!important;
-    border-color:#17d294!important;
+
+    border-color:
+        #17d294!important;
 }
 
 .reject,
 .hangup{
     background:#9c2534!important;
-    border-color:#df5364!important;
+
+    border-color:
+        #df5364!important;
 }
 
 .audio-button{
     display:none;
+
     width:100%;
+
     margin-top:12px;
+
     height:48px;
+
     border-radius:14px;
-    border:1px solid #2e78a8;
+
+    border:
+        1px solid #2e78a8;
+
     background:#0b2940;
+
     color:#8fddff;
+
     cursor:pointer;
 }
 
 footer{
     margin-top:auto;
+
     padding-top:15px;
+
     text-align:center;
+
     color:#344a63;
+
     font-size:9px;
 }
+
 </style>
+
 </head>
 
 <body>
@@ -301,169 +482,333 @@ footer{
 <div class="app">
 
 <header>
-    <div class="logo">NEXUS</div>
-    <div class="subtitle">INTERNET CALLING SYSTEM</div>
-    <div id="status" class="status">CONECTANDO...</div>
+
+<div class="logo">
+NEXUS
+</div>
+
+<div class="subtitle">
+INTERNET CALLING SYSTEM
+</div>
+
+<div
+    id="status"
+    class="status"
+>
+CONECTANDO...
+</div>
+
 </header>
 
+
 <section class="number-card">
-    <div class="my-label">TU NÚMERO NEXUS</div>
-    <div id="myNumber" class="my-number">-----</div>
+
+<div class="my-label">
+TU NÚMERO NEXUS
+</div>
+
+<div
+    id="myNumber"
+    class="my-number"
+>
+-----
+</div>
+
 </section>
 
-<div id="display" class="display empty">-----</div>
+
+<div
+    id="display"
+    class="display empty"
+>
+-----
+</div>
+
 
 <div class="keypad">
 
-    <button class="key" onclick="pressKey('1')">1</button>
-    <button class="key" onclick="pressKey('2')">2</button>
-    <button class="key" onclick="pressKey('3')">3</button>
+<button
+    class="key"
+    onclick="pressKey('1')"
+>
+1
+</button>
 
-    <button class="key" onclick="pressKey('4')">4</button>
-    <button class="key" onclick="pressKey('5')">5</button>
-    <button class="key" onclick="pressKey('6')">6</button>
+<button
+    class="key"
+    onclick="pressKey('2')"
+>
+2
+</button>
 
-    <button class="key" onclick="pressKey('7')">7</button>
-    <button class="key" onclick="pressKey('8')">8</button>
-    <button class="key" onclick="pressKey('9')">9</button>
+<button
+    class="key"
+    onclick="pressKey('3')"
+>
+3
+</button>
 
-    <button class="key" onclick="pressKey('*')">*</button>
-    <button class="key" onclick="pressKey('0')">0</button>
-    <button class="key" onclick="pressKey('#')">#</button>
+
+<button
+    class="key"
+    onclick="pressKey('4')"
+>
+4
+</button>
+
+<button
+    class="key"
+    onclick="pressKey('5')"
+>
+5
+</button>
+
+<button
+    class="key"
+    onclick="pressKey('6')"
+>
+6
+</button>
+
+
+<button
+    class="key"
+    onclick="pressKey('7')"
+>
+7
+</button>
+
+<button
+    class="key"
+    onclick="pressKey('8')"
+>
+8
+</button>
+
+<button
+    class="key"
+    onclick="pressKey('9')"
+>
+9
+</button>
+
+
+<button
+    class="key"
+    onclick="pressKey('*')"
+>
+*
+</button>
+
+<button
+    class="key"
+    onclick="pressKey('0')"
+>
+0
+</button>
+
+<button
+    class="key"
+    onclick="pressKey('#')"
+>
+#
+</button>
 
 </div>
+
 
 <div class="actions">
-    <button class="action" onclick="clearNumber()">BORRAR</button>
-    <button class="action call" onclick="startCall()">LLAMAR</button>
+
+<button
+    class="action"
+    onclick="clearNumber()"
+>
+BORRAR
+</button>
+
+<button
+    class="action call"
+    onclick="startCall()"
+>
+LLAMAR
+</button>
+
 </div>
 
+
 <section class="debug">
-    <div class="debug-title">NEXUS DEBUG CONSOLE</div>
-    <div id="debug"></div>
+
+<div class="debug-title">
+NEXUS DEBUG CONSOLE
+</div>
+
+<div id="debug"></div>
+
 </section>
 
+
 <footer>
-    NEXUS • INTERNET AUDIO COMMUNICATION
+NEXUS • INTERNET AUDIO COMMUNICATION
 </footer>
 
 </div>
 
 
-<!-- LLAMADA SALIENTE -->
+<!-- =====================================================
+     LLAMADA SALIENTE
+===================================================== -->
 
-<div id="outgoingScreen" class="screen">
+<div
+    id="outgoingScreen"
+    class="screen"
+>
 
-    <div class="call-box">
+<div class="call-box">
 
-        <div class="call-icon">📡</div>
+<div class="call-icon">
+📡
+</div>
 
-        <div class="call-title">
-            LLAMANDO A
-        </div>
+<div class="call-title">
+LLAMANDO A
+</div>
 
-        <div id="outgoingNumber" class="call-number">
-            -----
-        </div>
+<div
+    id="outgoingNumber"
+    class="call-number"
+>
+-----
+</div>
 
-        <div id="outgoingState" class="call-state">
-            Conectando...
-        </div>
+<div
+    id="outgoingState"
+    class="call-state"
+>
+Preparando llamada...
+</div>
 
-        <div class="call-buttons">
+<div class="call-buttons">
 
-            <button
-                class="hangup"
-                onclick="hangupCall()">
-                COLGAR
-            </button>
+<button
+    class="hangup"
+    onclick="hangupCall()"
+>
+COLGAR
+</button>
 
-        </div>
+</div>
 
-    </div>
+</div>
 
 </div>
 
 
-<!-- LLAMADA ENTRANTE -->
+<!-- =====================================================
+     LLAMADA ENTRANTE
+===================================================== -->
 
-<div id="incomingScreen" class="screen">
+<div
+    id="incomingScreen"
+    class="screen"
+>
 
-    <div class="call-box">
+<div class="call-box">
 
-        <div class="call-icon">📞</div>
+<div class="call-icon">
+📞
+</div>
 
-        <div class="call-title">
-            LLAMADA ENTRANTE
-        </div>
+<div class="call-title">
+LLAMADA ENTRANTE
+</div>
 
-        <div id="incomingNumber" class="call-number">
-            -----
-        </div>
+<div
+    id="incomingNumber"
+    class="call-number"
+>
+-----
+</div>
 
-        <div class="call-state">
-            NEXUS está llamando...
-        </div>
+<div class="call-state">
+NEXUS está llamando...
+</div>
 
-        <div class="call-buttons">
+<div class="call-buttons">
 
-            <button
-                class="reject"
-                onclick="rejectCall()">
-                RECHAZAR
-            </button>
+<button
+    class="reject"
+    onclick="rejectCall()"
+>
+RECHAZAR
+</button>
 
-            <button
-                class="accept"
-                onclick="acceptCall()">
-                ACEPTAR
-            </button>
+<button
+    class="accept"
+    onclick="acceptCall()"
+>
+ACEPTAR
+</button>
 
-        </div>
+</div>
 
-    </div>
+</div>
 
 </div>
 
 
-<!-- LLAMADA ACTIVA -->
+<!-- =====================================================
+     LLAMADA ACTIVA
+===================================================== -->
 
-<div id="activeScreen" class="screen">
+<div
+    id="activeScreen"
+    class="screen"
+>
 
-    <div class="call-box">
+<div class="call-box">
 
-        <div class="call-icon">🎙️</div>
+<div class="call-icon">
+🎙️
+</div>
 
-        <div class="call-title">
-            LLAMADA ACTIVA
-        </div>
+<div class="call-title">
+LLAMADA ACTIVA
+</div>
 
-        <div id="activeNumber" class="call-number">
-            -----
-        </div>
+<div
+    id="activeNumber"
+    class="call-number"
+>
+-----
+</div>
 
-        <div id="activeState" class="call-state">
-            Conectando audio...
-        </div>
+<div
+    id="activeState"
+    class="call-state"
+>
+Conectando audio...
+</div>
 
-        <button
-            id="audioButton"
-            class="audio-button"
-            onclick="activateAudio()">
-            🔊 ACTIVAR AUDIO
-        </button>
+<button
+    id="audioButton"
+    class="audio-button"
+    onclick="activateAudio()"
+>
+🔊 ACTIVAR AUDIO
+</button>
 
-        <div class="call-buttons">
+<div class="call-buttons">
 
-            <button
-                class="hangup"
-                onclick="hangupCall()">
-                COLGAR
-            </button>
+<button
+    class="hangup"
+    onclick="hangupCall()"
+>
+COLGAR
+</button>
 
-        </div>
+</div>
 
-    </div>
+</div>
 
 </div>
 
@@ -471,17 +816,18 @@ footer{
 <audio
     id="remoteAudio"
     autoplay
-    playsinline>
-</audio>
+    playsinline
+></audio>
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
 <script>
 
-/* =========================================================
-   CONFIGURACIÓN SUPABASE
-========================================================= */
+/* =====================================================
+   CONFIGURACIÓN
+===================================================== */
 
 const SUPABASE_URL =
     "https://nrffcctjnesotfveaeky.supabase.co";
@@ -497,29 +843,36 @@ const supabaseClient =
     );
 
 
-/* =========================================================
+/* =====================================================
    VARIABLES
-========================================================= */
+===================================================== */
 
 let myNumber = null;
+
 let myUserId = null;
 
-let channel = null;
+let signalingChannel = null;
 
 let currentCall = null;
+
 let currentPeer = null;
+
 let localStream = null;
 
 let remoteDescriptionSet = false;
+
 let pendingIceCandidates = [];
 
 let currentIncomingOffer = null;
+
 let currentIncomingFrom = null;
 
+let dialNumber = "";
 
-/* =========================================================
+
+/* =====================================================
    DEBUG
-========================================================= */
+===================================================== */
 
 function debugLog(...args){
 
@@ -532,14 +885,22 @@ function debugLog(...args){
     const text =
         args.map(value => {
 
-            if(typeof value === "object"){
+            if(
+                typeof value === "object"
+            ){
 
                 try{
-                    return JSON.stringify(value);
-                }catch{
-                    return String(value);
-                }
 
+                    return JSON.stringify(
+                        value
+                    );
+
+                }catch{
+
+                    return String(
+                        value
+                    );
+                }
             }
 
             return String(value);
@@ -553,14 +914,13 @@ function debugLog(...args){
     box.scrollTop =
         box.scrollHeight;
 
-
     console.log(...args);
 }
 
 
-/* =========================================================
+/* =====================================================
    STATUS
-========================================================= */
+===================================================== */
 
 function setStatus(
     text,
@@ -568,7 +928,9 @@ function setStatus(
 ){
 
     const status =
-        document.getElementById("status");
+        document.getElementById(
+            "status"
+        );
 
     status.textContent =
         text;
@@ -581,12 +943,9 @@ function setStatus(
 }
 
 
-/* =========================================================
+/* =====================================================
    MARCADOR
-========================================================= */
-
-let dialNumber = "";
-
+===================================================== */
 
 function pressKey(key){
 
@@ -616,7 +975,10 @@ function pressKey(key){
 function clearNumber(){
 
     dialNumber =
-        dialNumber.slice(0,-1);
+        dialNumber.slice(
+            0,
+            -1
+        );
 
     updateDisplay();
 }
@@ -625,7 +987,9 @@ function clearNumber(){
 function updateDisplay(){
 
     const display =
-        document.getElementById("display");
+        document.getElementById(
+            "display"
+        );
 
 
     display.textContent =
@@ -639,9 +1003,9 @@ function updateDisplay(){
 }
 
 
-/* =========================================================
-   PRUEBA DE CONEXIÓN SUPABASE
-========================================================= */
+/* =====================================================
+   CONEXIÓN SUPABASE
+===================================================== */
 
 async function testSupabaseConnection(){
 
@@ -652,20 +1016,20 @@ async function testSupabaseConnection(){
 
     try{
 
-        const url =
-            SUPABASE_URL +
-            "/auth/v1/health";
-
-
         const response =
             await fetch(
-                url,
+                SUPABASE_URL +
+                "/auth/v1/health",
                 {
-                    method:"GET",
 
-                    cache:"no-store",
+                    method:
+                        "GET",
+
+                    cache:
+                        "no-store",
 
                     headers:{
+
                         "apikey":
                             SUPABASE_KEY,
 
@@ -690,11 +1054,16 @@ async function testSupabaseConnection(){
 
         debugLog(
             "🌐 SUPABASE RESPUESTA:",
-            text.slice(0,300)
+            text.slice(
+                0,
+                300
+            )
         );
 
 
-        if(!response.ok){
+        if(
+            !response.ok
+        ){
 
             throw new Error(
                 `HTTP ${response.status} ${response.statusText}`
@@ -714,18 +1083,12 @@ async function testSupabaseConnection(){
 
         debugLog(
             "❌ FETCH REAL:",
-            error?.name || "Error",
-            error?.message || String(error)
+            error?.name ||
+                "Error",
+
+            error?.message ||
+                String(error)
         );
-
-
-        if(error?.cause){
-
-            debugLog(
-                "❌ CAUSE:",
-                error.cause
-            );
-        }
 
 
         throw error;
@@ -733,9 +1096,9 @@ async function testSupabaseConnection(){
 }
 
 
-/* =========================================================
-   CREAR USUARIO NEXUS
-========================================================= */
+/* =====================================================
+   CREAR USUARIO
+===================================================== */
 
 async function createNexusUser(){
 
@@ -748,7 +1111,8 @@ async function createNexusUser(){
         data,
         error
     } =
-        await supabaseClient.auth
+        await supabaseClient
+            .auth
             .signInAnonymously();
 
 
@@ -758,7 +1122,9 @@ async function createNexusUser(){
     }
 
 
-    if(!data?.user){
+    if(
+        !data?.user
+    ){
 
         throw new Error(
             "Supabase no devolvió usuario anónimo."
@@ -782,8 +1148,13 @@ async function createNexusUser(){
     } =
         await supabaseClient
             .from("nexus_users")
-            .select("nexus_number")
-            .eq("id",myUserId)
+            .select(
+                "nexus_number"
+            )
+            .eq(
+                "id",
+                myUserId
+            )
             .maybeSingle();
 
 
@@ -793,10 +1164,14 @@ async function createNexusUser(){
     }
 
 
-    if(existing?.nexus_number){
+    if(
+        existing?.nexus_number
+    ){
 
         myNumber =
-            String(existing.nexus_number);
+            String(
+                existing.nexus_number
+            );
 
 
         debugLog(
@@ -821,7 +1196,8 @@ async function createNexusUser(){
                 String(
                     Math.floor(
                         10000 +
-                        Math.random() * 90000
+                        Math.random() *
+                        90000
                     )
                 );
 
@@ -830,7 +1206,9 @@ async function createNexusUser(){
                 error:insertError
             } =
                 await supabaseClient
-                    .from("nexus_users")
+                    .from(
+                        "nexus_users"
+                    )
                     .insert({
 
                         id:
@@ -843,11 +1221,14 @@ async function createNexusUser(){
                             true,
 
                         last_seen:
-                            new Date().toISOString()
+                            new Date()
+                                .toISOString()
                     });
 
 
-            if(!insertError){
+            if(
+                !insertError
+            ){
 
                 myNumber =
                     candidate;
@@ -867,7 +1248,8 @@ async function createNexusUser(){
 
 
             if(
-                insertError.code === "23505"
+                insertError.code ===
+                "23505"
             ){
 
                 continue;
@@ -894,21 +1276,28 @@ async function createNexusUser(){
 }
 
 
-/* =========================================================
-   CANAL PERSONAL
-========================================================= */
+/* =====================================================
+   CANAL ÚNICO DE SEÑALIZACIÓN
+===================================================== */
 
-async function setupMyChannel(){
+async function setupSignaling(){
 
     debugLog(
-        "📡 CREANDO CANAL:",
-        `nexus:${myNumber}`
+        "📡 CREANDO CANAL DE SEÑALIZACIÓN..."
     );
 
 
-    channel =
+    /*
+       TODOS los usuarios están en este mismo canal.
+
+       Ya no creamos un canal nuevo para cada ICE.
+       Eso elimina los timeouts que estaban matando
+       la conexión.
+    */
+
+    signalingChannel =
         supabaseClient.channel(
-            `nexus:${myNumber}`,
+            "nexus-signaling",
             {
                 config:{
                     broadcast:{
@@ -919,96 +1308,110 @@ async function setupMyChannel(){
         );
 
 
-    channel.on(
+    signalingChannel.on(
         "broadcast",
         {
-            event:"signal"
+            event:
+                "signal"
         },
         ({payload}) => {
 
+            /*
+               Solo procesamos mensajes destinados
+               a nuestro número.
+            */
+
+            if(
+                !payload ||
+                payload.to !== myNumber
+            ){
+
+                return;
+            }
+
+
             debugLog(
                 "📡 SEÑAL RECIBIDA:",
-                payload?.type
+                payload.type,
+                "←",
+                payload.from
             );
 
 
-            handleSignal(payload);
+            handleSignal(
+                payload
+            );
         }
     );
 
 
-    const status =
-        await new Promise(
-            (resolve,reject) => {
+    await new Promise(
+        (resolve,reject) => {
 
-                const timeout =
-                    setTimeout(
-                        () => {
+            const timeout =
+                setTimeout(
+                    () => {
 
-                            reject(
-                                new Error(
-                                    "Timeout conectando Realtime."
-                                )
-                            );
+                        reject(
+                            new Error(
+                                "Timeout conectando señalización."
+                            )
+                        );
 
-                        },
-                        15000
+                    },
+                    15000
+                );
+
+
+            signalingChannel.subscribe(
+                status => {
+
+                    debugLog(
+                        "NEXUS SIGNAL:",
+                        status
                     );
 
 
-                channel.subscribe(
-                    status => {
+                    if(
+                        status ===
+                        "SUBSCRIBED"
+                    ){
 
-                        debugLog(
-                            "NEXUS CHANNEL:",
-                            status
+                        clearTimeout(
+                            timeout
                         );
 
-
-                        if(
-                            status ===
-                            "SUBSCRIBED"
-                        ){
-
-                            clearTimeout(
-                                timeout
-                            );
-
-
-                            resolve(
-                                status
-                            );
-                        }
-
-
-                        if(
-                            status ===
-                            "CHANNEL_ERROR" ||
-                            status ===
-                            "TIMED_OUT"
-                        ){
-
-                            clearTimeout(
-                                timeout
-                            );
-
-
-                            reject(
-                                new Error(
-                                    "Realtime: " +
-                                    status
-                                )
-                            );
-                        }
+                        resolve();
                     }
-                );
-            }
-        );
+
+
+                    if(
+                        status ===
+                            "CHANNEL_ERROR" ||
+
+                        status ===
+                            "TIMED_OUT"
+                    ){
+
+                        clearTimeout(
+                            timeout
+                        );
+
+                        reject(
+                            new Error(
+                                "Realtime: " +
+                                status
+                            )
+                        );
+                    }
+                }
+            );
+        }
+    );
 
 
     debugLog(
-        "✅ CANAL LISTO:",
-        status
+        "✅ SEÑALIZACIÓN LISTA"
     );
 
 
@@ -1020,7 +1423,8 @@ async function setupMyChannel(){
                 true,
 
             last_seen:
-                new Date().toISOString()
+                new Date()
+                    .toISOString()
 
         })
         .eq(
@@ -1029,44 +1433,45 @@ async function setupMyChannel(){
         );
 
 
-    window.addEventListener(
-        "beforeunload",
-        () => {
-
-            supabaseClient
-                .from("nexus_users")
-                .update({
-
-                    online:
-                        false,
-
-                    last_seen:
-                        new Date().toISOString()
-
-                })
-                .eq(
-                    "id",
-                    myUserId
-                );
-        }
-    );
-
-
     setStatus(
-        "ONLINE • " + myNumber,
+        "ONLINE • " +
+        myNumber,
+
         "#5de1ff"
     );
 }
 
 
-/* =========================================================
+/* =====================================================
    ENVIAR SEÑAL
-========================================================= */
+===================================================== */
 
 async function sendSignal(
     destination,
     payload
 ){
+
+    if(
+        !signalingChannel
+    ){
+
+        throw new Error(
+            "Canal de señalización no disponible."
+        );
+    }
+
+
+    const message = {
+
+        ...payload,
+
+        from:
+            myNumber,
+
+        to:
+            destination
+    };
+
 
     debugLog(
         "📤 ENVIANDO:",
@@ -1076,107 +1481,19 @@ async function sendSignal(
     );
 
 
-    const tempChannel =
-        supabaseClient.channel(
-            `nexus:${destination}`
-        );
-
-
     try{
 
-        await new Promise(
-            (resolve,reject) => {
+        await signalingChannel.send({
 
-                const timeout =
-                    setTimeout(
-                        () => {
+            type:
+                "broadcast",
 
-                            reject(
-                                new Error(
-                                    "Timeout conectando canal destino."
-                                )
-                            );
+            event:
+                "signal",
 
-                        },
-                        10000
-                    );
-
-
-                tempChannel.subscribe(
-                    async status => {
-
-                        debugLog(
-                            "📡 CANAL DESTINO:",
-                            status
-                        );
-
-
-                        if(
-                            status ===
-                            "SUBSCRIBED"
-                        ){
-
-                            clearTimeout(
-                                timeout
-                            );
-
-
-                            try{
-
-                                await tempChannel.send({
-
-                                    type:
-                                        "broadcast",
-
-                                    event:
-                                        "signal",
-
-                                    payload:
-                                        payload
-                                });
-
-
-                                /*
-                                   Supabase devuelve "ok"
-                                   cuando send() funciona.
-                                   NO es un error.
-                                */
-
-                                resolve();
-
-
-                            }catch(error){
-
-                                reject(
-                                    error
-                                );
-                            }
-                        }
-
-
-                        if(
-                            status ===
-                            "CHANNEL_ERROR" ||
-                            status ===
-                            "TIMED_OUT"
-                        ){
-
-                            clearTimeout(
-                                timeout
-                            );
-
-
-                            reject(
-                                new Error(
-                                    "Canal destino: " +
-                                    status
-                                )
-                            );
-                        }
-                    }
-                );
-            }
-        );
+            payload:
+                message
+        });
 
 
         debugLog(
@@ -1185,19 +1502,25 @@ async function sendSignal(
         );
 
 
-    }finally{
+    }catch(error){
 
-        await supabaseClient
-            .removeChannel(
-                tempChannel
-            );
+        debugLog(
+            "❌ ERROR ENVIANDO:",
+            payload.type,
+
+            error?.message ||
+                error
+        );
+
+
+        throw error;
     }
 }
 
 
-/* =========================================================
-   MANEJAR SEÑALES
-========================================================= */
+/* =====================================================
+   MANEJAR SEÑAL
+===================================================== */
 
 async function handleSignal(
     payload
@@ -1239,7 +1562,6 @@ async function handleSignal(
             payload
         );
 
-
         return;
     }
 
@@ -1252,7 +1574,6 @@ async function handleSignal(
         await handleRemoteIce(
             payload
         );
-
 
         return;
     }
@@ -1300,9 +1621,9 @@ async function handleSignal(
 }
 
 
-/* =========================================================
+/* =====================================================
    INICIAR LLAMADA
-========================================================= */
+===================================================== */
 
 async function startCall(){
 
@@ -1319,7 +1640,8 @@ async function startCall(){
 
 
     if(
-        dialNumber === myNumber
+        dialNumber ===
+        myNumber
     ){
 
         debugLog(
@@ -1352,7 +1674,9 @@ async function startCall(){
             error
         } =
             await supabaseClient
-                .from("nexus_users")
+                .from(
+                    "nexus_users"
+                )
                 .select(
                     "id,nexus_number,online"
                 )
@@ -1434,12 +1758,6 @@ async function startCall(){
                 type:
                     "incoming_call",
 
-                from:
-                    myNumber,
-
-                to:
-                    destination,
-
                 callId:
                     currentCall.id,
 
@@ -1458,7 +1776,8 @@ async function startCall(){
 
         debugLog(
             "❌ ERROR STARTCALL:",
-            error?.message || error
+            error?.message ||
+                error
         );
 
 
@@ -1467,9 +1786,9 @@ async function startCall(){
 }
 
 
-/* =========================================================
-   CREAR WEBRTC
-========================================================= */
+/* =====================================================
+   WEBRTC
+===================================================== */
 
 async function createPeerConnection(
     destination
@@ -1482,6 +1801,7 @@ async function createPeerConnection(
 
     remoteDescriptionSet =
         false;
+
 
     pendingIceCandidates =
         [];
@@ -1501,6 +1821,7 @@ async function createPeerConnection(
                     urls:
                         "stun:stun1.l.google.com:19302"
                 }
+
             ]
         });
 
@@ -1530,12 +1851,6 @@ async function createPeerConnection(
                         type:
                             "ice",
 
-                        from:
-                            myNumber,
-
-                        to:
-                            destination,
-
                         callId:
                             currentCall?.id,
 
@@ -1549,7 +1864,8 @@ async function createPeerConnection(
 
                 debugLog(
                     "❌ ERROR ICE:",
-                    error?.message || error
+                    error?.message ||
+                        error
                 );
             }
         };
@@ -1570,7 +1886,8 @@ async function createPeerConnection(
 
 
             if(
-                event.streams?.[0]
+                event.streams &&
+                event.streams[0]
             ){
 
                 audio.srcObject =
@@ -1613,7 +1930,8 @@ async function createPeerConnection(
 
                         debugLog(
                             "⚠️ AUTOPLAY BLOQUEADO:",
-                            error?.message || error
+                            error?.message ||
+                                error
                         );
 
 
@@ -1628,6 +1946,12 @@ async function createPeerConnection(
 
     currentPeer.onconnectionstatechange =
         () => {
+
+            if(!currentPeer){
+
+                return;
+            }
+
 
             debugLog(
                 "🔗 CONNECTION:",
@@ -1644,7 +1968,18 @@ async function createPeerConnection(
 
 
                 setActiveState(
-                    "Conectado"
+                    "Conectado • Audio activo"
+                );
+            }
+
+
+            if(
+                currentPeer.connectionState ===
+                "connecting"
+            ){
+
+                setActiveState(
+                    "Conectando audio..."
                 );
             }
 
@@ -1656,6 +1991,11 @@ async function createPeerConnection(
 
                 setActiveState(
                     "Conexión fallida"
+                );
+
+
+                debugLog(
+                    "❌ WEBRTC FALLÓ"
                 );
             }
 
@@ -1675,6 +2015,12 @@ async function createPeerConnection(
     currentPeer.oniceconnectionstatechange =
         () => {
 
+            if(!currentPeer){
+
+                return;
+            }
+
+
             debugLog(
                 "🧊 ICE:",
                 currentPeer.iceConnectionState
@@ -1683,13 +2029,15 @@ async function createPeerConnection(
 }
 
 
-/* =========================================================
-   AUDIO
-========================================================= */
+/* =====================================================
+   AUDIO LOCAL
+===================================================== */
 
 async function createLocalAudio(){
 
-    if(localStream){
+    if(
+        localStream
+    ){
 
         return;
     }
@@ -1705,6 +2053,7 @@ async function createLocalAudio(){
             .getUserMedia({
 
                 audio:{
+
                     echoCancellation:
                         true,
 
@@ -1739,9 +2088,9 @@ async function createLocalAudio(){
 }
 
 
-/* =========================================================
-   LLAMADA ENTRANTE
-========================================================= */
+/* =====================================================
+   ENTRANTE
+===================================================== */
 
 async function receiveIncomingCall(
     payload
@@ -1753,7 +2102,9 @@ async function receiveIncomingCall(
     );
 
 
-    if(currentCall){
+    if(
+        currentCall
+    ){
 
         debugLog(
             "⚠️ YA HAY UNA LLAMADA ACTIVA"
@@ -1769,12 +2120,6 @@ async function receiveIncomingCall(
                     type:
                         "reject",
 
-                    from:
-                        myNumber,
-
-                    to:
-                        payload.from,
-
                     callId:
                         payload.callId
                 }
@@ -1784,7 +2129,8 @@ async function receiveIncomingCall(
 
             debugLog(
                 "❌ ERROR RECHAZO:",
-                error?.message || error
+                error?.message ||
+                    error
             );
         }
 
@@ -1828,9 +2174,9 @@ async function receiveIncomingCall(
 }
 
 
-/* =========================================================
+/* =====================================================
    ACEPTAR
-========================================================= */
+===================================================== */
 
 async function acceptCall(){
 
@@ -1885,6 +2231,11 @@ async function acceptCall(){
             true;
 
 
+        debugLog(
+            "✅ OFFER REMOTO CONFIGURADO"
+        );
+
+
         await flushPendingIce();
 
 
@@ -1905,12 +2256,6 @@ async function acceptCall(){
 
                 type:
                     "answer",
-
-                from:
-                    myNumber,
-
-                to:
-                    from,
 
                 callId:
                     currentCall.id,
@@ -1935,7 +2280,8 @@ async function acceptCall(){
 
         debugLog(
             "❌ ERROR ACEPTANDO:",
-            error?.message || error
+            error?.message ||
+                error
         );
 
 
@@ -1944,9 +2290,9 @@ async function acceptCall(){
 }
 
 
-/* =========================================================
+/* =====================================================
    ANSWER
-========================================================= */
+===================================================== */
 
 async function handleAnswer(
     payload
@@ -1978,12 +2324,12 @@ async function handleAnswer(
             true;
 
 
-        await flushPendingIce();
-
-
         debugLog(
             "✅ REMOTE DESCRIPTION CONFIGURADA"
         );
+
+
+        await flushPendingIce();
 
 
         showActiveScreen();
@@ -1998,26 +2344,23 @@ async function handleAnswer(
 
         debugLog(
             "❌ ERROR ANSWER:",
-            error?.message || error
+            error?.message ||
+                error
         );
     }
 }
 
 
-/* =========================================================
+/* =====================================================
    ICE REMOTO
-========================================================= */
+===================================================== */
 
 async function handleRemoteIce(
     payload
 ){
 
-    const candidate =
-        payload.candidate;
-
-
     if(
-        !candidate
+        !payload.candidate
     ){
 
         return;
@@ -2035,7 +2378,7 @@ async function handleRemoteIce(
 
 
         pendingIceCandidates.push(
-            candidate
+            payload.candidate
         );
 
 
@@ -2048,7 +2391,7 @@ async function handleRemoteIce(
         await currentPeer
             .addIceCandidate(
                 new RTCIceCandidate(
-                    candidate
+                    payload.candidate
                 )
             );
 
@@ -2062,15 +2405,16 @@ async function handleRemoteIce(
 
         debugLog(
             "❌ ERROR ICE REMOTO:",
-            error?.message || error
+            error?.message ||
+                error
         );
     }
 }
 
 
-/* =========================================================
+/* =====================================================
    FLUSH ICE
-========================================================= */
+===================================================== */
 
 async function flushPendingIce(){
 
@@ -2098,7 +2442,9 @@ async function flushPendingIce(){
 
 
     const candidates =
-        [...pendingIceCandidates];
+        [
+            ...pendingIceCandidates
+        ];
 
 
     pendingIceCandidates =
@@ -2118,20 +2464,22 @@ async function flushPendingIce(){
                     )
                 );
 
+
         }catch(error){
 
             debugLog(
                 "❌ ERROR ICE EN COLA:",
-                error?.message || error
+                error?.message ||
+                    error
             );
         }
     }
 }
 
 
-/* =========================================================
+/* =====================================================
    RECHAZAR
-========================================================= */
+===================================================== */
 
 async function rejectCall(){
 
@@ -2150,12 +2498,6 @@ async function rejectCall(){
                     type:
                         "reject",
 
-                    from:
-                        myNumber,
-
-                    to:
-                        from,
-
                     callId:
                         currentCall?.id
                 }
@@ -2167,7 +2509,8 @@ async function rejectCall(){
 
         debugLog(
             "❌ ERROR RECHAZANDO:",
-            error?.message || error
+            error?.message ||
+                error
         );
 
 
@@ -2178,9 +2521,9 @@ async function rejectCall(){
 }
 
 
-/* =========================================================
+/* =====================================================
    COLGAR
-========================================================= */
+===================================================== */
 
 async function hangupCall(){
 
@@ -2201,12 +2544,6 @@ async function hangupCall(){
                     type:
                         "hangup",
 
-                    from:
-                        myNumber,
-
-                    to:
-                        destination,
-
                     callId:
                         currentCall?.id
                 }
@@ -2218,7 +2555,8 @@ async function hangupCall(){
 
         debugLog(
             "❌ ERROR HANGUP:",
-            error?.message || error
+            error?.message ||
+                error
         );
 
 
@@ -2229,9 +2567,9 @@ async function hangupCall(){
 }
 
 
-/* =========================================================
+/* =====================================================
    LIMPIAR
-========================================================= */
+===================================================== */
 
 function cleanupCall(){
 
@@ -2240,7 +2578,9 @@ function cleanupCall(){
     );
 
 
-    if(currentPeer){
+    if(
+        currentPeer
+    ){
 
         try{
 
@@ -2254,7 +2594,9 @@ function cleanupCall(){
         null;
 
 
-    if(localStream){
+    if(
+        localStream
+    ){
 
         localStream
             .getTracks()
@@ -2319,19 +2661,23 @@ function cleanupCall(){
         "none";
 
 
-    if(myNumber){
+    if(
+        myNumber
+    ){
 
         setStatus(
-            "ONLINE • " + myNumber,
+            "ONLINE • " +
+            myNumber,
+
             "#5de1ff"
         );
     }
 }
 
 
-/* =========================================================
+/* =====================================================
    PANTALLAS
-========================================================= */
+===================================================== */
 
 function showOutgoingScreen(
     number
@@ -2411,9 +2757,9 @@ function setActiveState(
 }
 
 
-/* =========================================================
+/* =====================================================
    AUDIO MANUAL
-========================================================= */
+===================================================== */
 
 async function activateAudio(){
 
@@ -2443,15 +2789,16 @@ async function activateAudio(){
 
         debugLog(
             "❌ NO SE PUDO ACTIVAR AUDIO:",
-            error?.message || error
+            error?.message ||
+                error
         );
     }
 }
 
 
-/* =========================================================
-   INIT
-========================================================= */
+/* =====================================================
+   INICIO
+===================================================== */
 
 async function init(){
 
@@ -2468,7 +2815,7 @@ async function init(){
         await createNexusUser();
 
 
-        await setupMyChannel();
+        await setupSignaling();
 
 
         debugLog(
@@ -2487,10 +2834,12 @@ async function init(){
 
         debugLog(
             "❌ INIT:",
-            error?.message || error,
+            error?.message ||
+                error,
 
             "STATUS:",
-            error?.status ?? "N/A"
+            error?.status ??
+                "N/A"
         );
 
 
@@ -2502,9 +2851,9 @@ async function init(){
 }
 
 
-/* =========================================================
-   ARRANCAR
-========================================================= */
+/* =====================================================
+   ARRANQUE
+===================================================== */
 
 window.addEventListener(
     "load",
@@ -2515,4 +2864,4 @@ window.addEventListener(
 
 </body>
 </html>
-
+```
