@@ -4,31 +4,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 <title>NEXUS</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
 
 body{
     min-height:100vh;
-    background:radial-gradient(circle at top,#172033,#080b12 50%,#030408);
+    background:
+        radial-gradient(circle at top,#182235,#080b12 55%,#030408);
     color:#fff;
     font-family:Arial,Helvetica,sans-serif;
 }
 
 button{
     border:0;
+    color:#fff;
     cursor:pointer;
-    color:white;
 }
 
 .app{
     min-height:100vh;
     display:flex;
-    justify-content:center;
     align-items:center;
+    justify-content:center;
     padding:20px;
 }
 
@@ -36,20 +42,20 @@ button{
     width:390px;
     max-width:100%;
     min-height:760px;
-    background:rgba(10,14,23,.97);
+    position:relative;
+    overflow:hidden;
+    background:#090d15;
     border:1px solid rgba(255,255,255,.08);
     border-radius:30px;
     box-shadow:0 25px 80px rgba(0,0,0,.55);
-    overflow:hidden;
-    position:relative;
 }
 
 .topbar{
     height:75px;
+    padding:0 22px;
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:0 22px;
     border-bottom:1px solid rgba(255,255,255,.07);
 }
 
@@ -71,15 +77,14 @@ button{
     width:8px;
     height:8px;
     border-radius:50%;
-    background:#35dc7c;
-    box-shadow:0 0 12px #35dc7c;
+    background:#e5a82e;
 }
 
 .my-number{
     text-align:center;
-    padding:18px 10px 0;
-    color:#8793a7;
-    font-size:11px;
+    padding:17px 10px 0;
+    color:#7f8ba0;
+    font-size:10px;
     letter-spacing:2px;
 }
 
@@ -87,12 +92,12 @@ button{
     display:block;
     margin-top:5px;
     color:#fff;
-    font-size:19px;
-    letter-spacing:4px;
+    font-size:21px;
+    letter-spacing:5px;
 }
 
 .dial{
-    padding:18px 25px 10px;
+    padding:18px 25px 8px;
     text-align:center;
 }
 
@@ -101,9 +106,9 @@ button{
     display:flex;
     align-items:center;
     justify-content:center;
-    letter-spacing:8px;
     font-size:34px;
     font-weight:700;
+    letter-spacing:8px;
 }
 
 .number.empty{
@@ -149,25 +154,26 @@ button{
 }
 
 .debug{
-    margin:0 20px 20px;
     height:120px;
+    margin:0 20px 20px;
+    padding:12px;
+    overflow:auto;
     background:#05070b;
     border:1px solid rgba(255,255,255,.06);
     border-radius:15px;
-    padding:12px;
-    overflow:auto;
+    color:#7ff0aa;
     font-family:Consolas,monospace;
     font-size:10px;
-    color:#7ff0aa;
 }
 
 .screen{
     position:absolute;
     inset:0;
     z-index:20;
-    background:radial-gradient(circle at center,#151d2c,#05070c 70%);
     display:none;
     flex-direction:column;
+    background:
+        radial-gradient(circle at center,#151d2c,#05070c 70%);
 }
 
 .screen.show{
@@ -176,10 +182,10 @@ button{
 
 .screen-header{
     height:75px;
+    padding:0 22px;
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:0 22px;
     border-bottom:1px solid rgba(255,255,255,.07);
 }
 
@@ -198,30 +204,30 @@ button{
 
 .center{
     flex:1;
+    padding:30px;
     display:flex;
     flex-direction:column;
-    justify-content:center;
     align-items:center;
-    padding:30px;
+    justify-content:center;
     text-align:center;
 }
 
 .avatar{
     width:105px;
     height:105px;
-    border-radius:50%;
-    background:linear-gradient(145deg,#25334c,#111827);
+    margin-bottom:20px;
     display:flex;
     align-items:center;
     justify-content:center;
+    border-radius:50%;
+    background:linear-gradient(145deg,#25334c,#111827);
     font-size:42px;
-    margin-bottom:20px;
 }
 
 .call-number{
     font-size:29px;
-    letter-spacing:5px;
     font-weight:800;
+    letter-spacing:5px;
 }
 
 .call-state{
@@ -243,19 +249,24 @@ button{
     font-size:24px;
 }
 
-.accept{background:#20b866}
-.reject,.hangup{background:#e83e4d}
+.accept{
+    background:#20b866;
+}
+
+.reject{
+    background:#e83e4d;
+}
 
 .modal{
     position:absolute;
     inset:0;
     z-index:50;
-    background:rgba(0,0,0,.72);
-    backdrop-filter:blur(10px);
     display:none;
     align-items:center;
     justify-content:center;
     padding:25px;
+    background:rgba(0,0,0,.72);
+    backdrop-filter:blur(10px);
 }
 
 .modal.show{
@@ -265,9 +276,9 @@ button{
 .modal-box{
     width:100%;
     max-width:320px;
-    background:#111827;
-    border-radius:24px;
     padding:25px;
+    border-radius:24px;
+    background:#111827;
     text-align:center;
 }
 
@@ -316,16 +327,16 @@ button{
 
 .local-video{
     position:absolute;
+    top:90px;
+    right:15px;
+    z-index:3;
     width:110px;
     height:155px;
-    object-fit:cover;
-    right:15px;
-    top:90px;
-    border-radius:16px;
-    border:2px solid rgba(255,255,255,.35);
-    background:#111;
-    z-index:3;
     display:none;
+    object-fit:cover;
+    border:2px solid rgba(255,255,255,.35);
+    border-radius:16px;
+    background:#111;
 }
 
 .video-call .local-video{
@@ -337,13 +348,14 @@ button{
     inset:0;
     z-index:4;
     pointer-events:none;
-    background:linear-gradient(
-        to bottom,
-        rgba(0,0,0,.45),
-        transparent 25%,
-        transparent 70%,
-        rgba(0,0,0,.7)
-    );
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,.5),
+            transparent 25%,
+            transparent 70%,
+            rgba(0,0,0,.7)
+        );
 }
 
 .active-info{
@@ -361,8 +373,8 @@ button{
 
 .active-status{
     margin-top:5px;
-    font-size:12px;
     color:#aab4c4;
+    font-size:12px;
 }
 
 .bottom-call-menu{
@@ -371,13 +383,13 @@ button{
     right:15px;
     bottom:18px;
     z-index:10;
-    background:rgba(13,18,28,.94);
-    backdrop-filter:blur(20px);
-    border:1px solid rgba(255,255,255,.1);
-    border-radius:22px;
-    padding:12px;
     display:flex;
     justify-content:space-around;
+    padding:12px;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:22px;
+    background:rgba(13,18,28,.94);
+    backdrop-filter:blur(20px);
 }
 
 .menu-btn{
@@ -388,8 +400,13 @@ button{
     font-size:19px;
 }
 
-.menu-btn.active{background:#3378ff}
-.menu-btn.danger{background:#df3d4b}
+.menu-btn.active{
+    background:#3378ff;
+}
+
+.menu-btn.danger{
+    background:#df3d4b;
+}
 
 .connection{
     position:absolute;
@@ -397,10 +414,10 @@ button{
     right:20px;
     bottom:95px;
     z-index:12;
-    background:rgba(10,14,22,.97);
-    border-radius:18px;
-    padding:18px;
     display:none;
+    padding:18px;
+    border-radius:18px;
+    background:rgba(10,14,22,.97);
     font-size:12px;
     line-height:1.8;
 }
@@ -410,7 +427,11 @@ button{
 }
 
 @media(max-width:430px){
-    .app{padding:0}
+
+    .app{
+        padding:0;
+    }
+
     .phone{
         width:100%;
         min-height:100vh;
@@ -426,68 +447,133 @@ button{
 <div class="phone">
 
 <div class="topbar">
+
     <div class="logo">NEXUS</div>
 
     <div class="status">
-        <span class="status-dot" id="statusDot"></span>
-        <span id="statusText">CONECTANDO</span>
+
+        <span
+            class="status-dot"
+            id="statusDot"
+        ></span>
+
+        <span id="statusText">
+            CONECTANDO
+        </span>
+
     </div>
+
 </div>
+
 
 <div class="my-number">
+
     TU NÚMERO NEXUS
-    <strong id="myNumber">-----</strong>
+
+    <strong id="myNumber">
+        -----
+    </strong>
+
 </div>
+
 
 <div class="dial">
-    <div class="number empty" id="dialNumber">-----</div>
+
+    <div
+        class="number empty"
+        id="dialNumber"
+    >
+        -----
+    </div>
+
 </div>
+
 
 <div class="keypad">
-    <button class="key" onclick="pressKey('1')">1</button>
-    <button class="key" onclick="pressKey('2')">2</button>
-    <button class="key" onclick="pressKey('3')">3</button>
-    <button class="key" onclick="pressKey('4')">4</button>
-    <button class="key" onclick="pressKey('5')">5</button>
-    <button class="key" onclick="pressKey('6')">6</button>
-    <button class="key" onclick="pressKey('7')">7</button>
-    <button class="key" onclick="pressKey('8')">8</button>
-    <button class="key" onclick="pressKey('9')">9</button>
-    <button class="key" onclick="pressKey('*')">*</button>
-    <button class="key" onclick="pressKey('0')">0</button>
-    <button class="key" onclick="pressKey('#')">#</button>
+
+    <button class="key" onclick="window.NEXUS_pressKey('1')">1</button>
+    <button class="key" onclick="window.NEXUS_pressKey('2')">2</button>
+    <button class="key" onclick="window.NEXUS_pressKey('3')">3</button>
+
+    <button class="key" onclick="window.NEXUS_pressKey('4')">4</button>
+    <button class="key" onclick="window.NEXUS_pressKey('5')">5</button>
+    <button class="key" onclick="window.NEXUS_pressKey('6')">6</button>
+
+    <button class="key" onclick="window.NEXUS_pressKey('7')">7</button>
+    <button class="key" onclick="window.NEXUS_pressKey('8')">8</button>
+    <button class="key" onclick="window.NEXUS_pressKey('9')">9</button>
+
+    <button class="key" onclick="window.NEXUS_pressKey('*')">*</button>
+    <button class="key" onclick="window.NEXUS_pressKey('0')">0</button>
+    <button class="key" onclick="window.NEXUS_pressKey('#')">#</button>
+
 </div>
+
 
 <div class="actions">
-    <button class="action" onclick="backspace()">⌫ Borrar</button>
-    <button class="action call" onclick="openCallChoice()">☎ Llamar</button>
-    <button class="action" onclick="clearNumber()">C Limpiar</button>
+
+    <button
+        class="action"
+        onclick="window.NEXUS_backspace()"
+    >
+        ⌫ Borrar
+    </button>
+
+    <button
+        class="action call"
+        onclick="window.NEXUS_openCallChoice()"
+    >
+        ☎ Llamar
+    </button>
+
+    <button
+        class="action"
+        onclick="window.NEXUS_clearNumber()"
+    >
+        C Limpiar
+    </button>
+
 </div>
 
-<div class="debug" id="debug"></div>
+
+<div
+    class="debug"
+    id="debug"
+></div>
 
 
 <!-- LLAMADA ENTRANTE -->
 
-<div class="screen" id="incomingScreen">
+<div
+    class="screen"
+    id="incomingScreen"
+>
 
     <div class="screen-header">
+
         <div class="screen-title">
             LLAMADA ENTRANTE
         </div>
+
     </div>
 
     <div class="center">
 
-        <div class="avatar">📞</div>
+        <div class="avatar">
+            📞
+        </div>
 
-        <div class="call-number" id="incomingNumber">
+        <div
+            class="call-number"
+            id="incomingNumber"
+        >
             -----
         </div>
 
-        <!-- CORREGIDO:
-             ya no se llama incomingMode -->
-        <div class="call-state" id="incomingModeLabel">
+        <div
+            class="call-state"
+            id="incomingModeText"
+        >
             Llamada de voz
         </div>
 
@@ -495,26 +581,31 @@ button{
 
             <button
                 class="round reject"
-                onclick="rejectIncoming()"
+                onclick="window.NEXUS_rejectIncoming()"
             >
                 ✕
             </button>
 
             <button
                 class="round accept"
-                onclick="acceptIncoming()"
+                onclick="window.NEXUS_acceptIncoming()"
             >
                 ✓
             </button>
 
         </div>
+
     </div>
+
 </div>
 
 
 <!-- LLAMADA SALIENTE -->
 
-<div class="screen" id="outgoingScreen">
+<div
+    class="screen"
+    id="outgoingScreen"
+>
 
     <div class="screen-header">
 
@@ -524,7 +615,7 @@ button{
 
         <button
             class="close-screen"
-            onclick="cancelOutgoing()"
+            onclick="window.NEXUS_cancelOutgoing()"
         >
             ×
         </button>
@@ -533,23 +624,35 @@ button{
 
     <div class="center">
 
-        <div class="avatar">📡</div>
+        <div class="avatar">
+            📡
+        </div>
 
-        <div class="call-number" id="outgoingNumber">
+        <div
+            class="call-number"
+            id="outgoingNumber"
+        >
             -----
         </div>
 
-        <div class="call-state" id="outgoingState">
-            Preparando llamada...
+        <div
+            class="call-state"
+            id="outgoingState"
+        >
+            Esperando respuesta...
         </div>
 
     </div>
+
 </div>
 
 
 <!-- LLAMADA ACTIVA -->
 
-<div class="screen active-call" id="activeScreen">
+<div
+    class="screen active-call"
+    id="activeScreen"
+>
 
     <video
         class="remote-video"
@@ -595,15 +698,24 @@ button{
         class="connection"
         id="connectionInfo"
     >
+
         <b>CONEXIÓN</b><br>
+
         Estado:
-        <span id="connectionState">---</span><br>
+        <span id="connectionState">---</span>
+        <br>
+
         ICE:
-        <span id="iceState">---</span><br>
+        <span id="iceState">---</span>
+        <br>
+
         Señal:
-        <span id="signalingState">---</span><br>
+        <span id="signalingState">---</span>
+        <br>
+
         Tipo:
         <span id="connectionMode">---</span>
+
     </div>
 
     <div class="bottom-call-menu">
@@ -611,7 +723,7 @@ button{
         <button
             class="menu-btn"
             id="muteBtn"
-            onclick="toggleMute()"
+            onclick="window.NEXUS_toggleMute()"
         >
             🎙
         </button>
@@ -619,7 +731,7 @@ button{
         <button
             class="menu-btn"
             id="speakerBtn"
-            onclick="toggleSpeaker()"
+            onclick="window.NEXUS_toggleSpeaker()"
         >
             🔊
         </button>
@@ -627,30 +739,31 @@ button{
         <button
             class="menu-btn"
             id="cameraBtn"
-            onclick="toggleCamera()"
+            onclick="window.NEXUS_toggleCamera()"
         >
             📹
         </button>
 
         <button
             class="menu-btn"
-            onclick="toggleConnectionInfo()"
+            onclick="window.NEXUS_toggleConnectionInfo()"
         >
             ⓘ
         </button>
 
         <button
             class="menu-btn danger"
-            onclick="hangup()"
+            onclick="window.NEXUS_hangup()"
         >
             ☎
         </button>
 
     </div>
+
 </div>
 
 
-<!-- ELECCIÓN DE LLAMADA -->
+<!-- ELEGIR TIPO -->
 
 <div
     class="modal"
@@ -671,21 +784,21 @@ button{
 
             <button
                 class="info"
-                onclick="startCall('voice')"
+                onclick="window.NEXUS_startCall('voice')"
             >
                 ☎ Llamada de voz
             </button>
 
             <button
                 class="video-choice"
-                onclick="startCall('video')"
+                onclick="window.NEXUS_startCall('video')"
             >
                 📹 Videollamada
             </button>
 
             <button
                 class="info"
-                onclick="closeCallChoice()"
+                onclick="window.NEXUS_closeCallChoice()"
             >
                 Cancelar
             </button>
@@ -693,6 +806,7 @@ button{
         </div>
 
     </div>
+
 </div>
 
 </div>
@@ -700,21 +814,23 @@ button{
 
 
 <script>
+"use strict";
+
 
 /* =========================================================
    SUPABASE
 ========================================================= */
 
-const SUPABASE_URL =
+const NEXUS_SUPABASE_URL =
     "https://nrffcctjnesotfveaeky.supabase.co";
 
-const SUPABASE_KEY =
+const NEXUS_SUPABASE_KEY =
     "sb_publishable_zI1_i95-Pe1VQT3ru0MurQ_Ysi6eY3S";
 
-const supabaseClient =
+const NEXUS_client =
     supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY,
+        NEXUS_SUPABASE_URL,
+        NEXUS_SUPABASE_KEY,
         {
             auth:{
                 persistSession:true,
@@ -727,141 +843,145 @@ const supabaseClient =
 
 
 /* =========================================================
-   VARIABLES
+   ESTADO
 ========================================================= */
 
-const NEXUS_NUMBER_KEY =
+const NEXUS_STORAGE_KEY =
     "nexus_persistent_number_v1";
 
-let myNumber = null;
-let myUserId = null;
+let NEXUS_myNumber = null;
+let NEXUS_userId = null;
 
-let dialValue = "";
+let NEXUS_dialValue = "";
 
-let destination = null;
+let NEXUS_destination = null;
 
-let callMode = "voice";
+let NEXUS_callMode = "voice";
 
-let currentCallId = null;
+let NEXUS_callId = null;
 
-let incomingCallId = null;
-let incomingFrom = null;
+let NEXUS_incomingCallId = null;
+let NEXUS_incomingFrom = null;
+let NEXUS_incomingCallType = "voice";
 
-/* IMPORTANTE:
-   esta variable NO se llama incomingMode
-   porque incomingModeLabel es el elemento HTML.
-*/
-let incomingCallMode = "voice";
+let NEXUS_peer = null;
 
-let peerConnection = null;
+let NEXUS_localStream = null;
+let NEXUS_remoteStream = null;
 
-let localStream = null;
-let remoteStream = null;
+let NEXUS_videoTransceiver = null;
 
-let videoTransceiver = null;
+let NEXUS_micEnabled = true;
+let NEXUS_speakerEnabled = true;
+let NEXUS_cameraEnabled = false;
 
-let microphoneEnabled = true;
-let speakerEnabled = true;
-let cameraEnabled = false;
+let NEXUS_remoteDescriptionReady = false;
+let NEXUS_pendingIce = [];
 
-let remoteDescriptionSet = false;
-let pendingIceCandidates = [];
+let NEXUS_signalingChannel = null;
 
-let callActive = false;
-
-let signalingChannel = null;
+let NEXUS_callActive = false;
 
 
 /* =========================================================
    ELEMENTOS
 ========================================================= */
 
-const dialNumber =
-    document.getElementById("dialNumber");
+const NEXUS_el = {
 
-const debug =
-    document.getElementById("debug");
+    dial:
+        document.getElementById("dialNumber"),
 
-const statusText =
-    document.getElementById("statusText");
+    debug:
+        document.getElementById("debug"),
 
-const statusDot =
-    document.getElementById("statusDot");
+    myNumber:
+        document.getElementById("myNumber"),
 
-const myNumberElement =
-    document.getElementById("myNumber");
+    statusText:
+        document.getElementById("statusText"),
 
-const incomingScreen =
-    document.getElementById("incomingScreen");
+    statusDot:
+        document.getElementById("statusDot"),
 
-const outgoingScreen =
-    document.getElementById("outgoingScreen");
+    incomingScreen:
+        document.getElementById("incomingScreen"),
 
-const activeScreen =
-    document.getElementById("activeScreen");
+    incomingNumber:
+        document.getElementById("incomingNumber"),
 
-const callChoiceModal =
-    document.getElementById("callChoiceModal");
+    incomingModeText:
+        document.getElementById("incomingModeText"),
 
-const incomingNumber =
-    document.getElementById("incomingNumber");
+    outgoingScreen:
+        document.getElementById("outgoingScreen"),
 
-const incomingModeLabel =
-    document.getElementById("incomingModeLabel");
+    outgoingNumber:
+        document.getElementById("outgoingNumber"),
 
-const outgoingNumber =
-    document.getElementById("outgoingNumber");
+    outgoingState:
+        document.getElementById("outgoingState"),
 
-const outgoingState =
-    document.getElementById("outgoingState");
+    activeScreen:
+        document.getElementById("activeScreen"),
 
-const activeNumber =
-    document.getElementById("activeNumber");
+    activeNumber:
+        document.getElementById("activeNumber"),
 
-const activeStatus =
-    document.getElementById("activeStatus");
+    activeStatus:
+        document.getElementById("activeStatus"),
 
-const localVideo =
-    document.getElementById("localVideo");
+    localVideo:
+        document.getElementById("localVideo"),
 
-const remoteVideo =
-    document.getElementById("remoteVideo");
+    remoteVideo:
+        document.getElementById("remoteVideo"),
 
-const remoteAudio =
-    document.getElementById("remoteAudio");
+    remoteAudio:
+        document.getElementById("remoteAudio"),
 
-const connectionInfo =
-    document.getElementById("connectionInfo");
+    choiceModal:
+        document.getElementById("callChoiceModal"),
 
-const connectionState =
-    document.getElementById("connectionState");
+    choiceNumber:
+        document.getElementById("choiceNumber"),
 
-const iceState =
-    document.getElementById("iceState");
+    connectionInfo:
+        document.getElementById("connectionInfo"),
 
-const signalingState =
-    document.getElementById("signalingState");
+    connectionState:
+        document.getElementById("connectionState"),
 
-const connectionMode =
-    document.getElementById("connectionMode");
+    iceState:
+        document.getElementById("iceState"),
 
-const muteBtn =
-    document.getElementById("muteBtn");
+    signalingState:
+        document.getElementById("signalingState"),
 
-const speakerBtn =
-    document.getElementById("speakerBtn");
+    connectionMode:
+        document.getElementById("connectionMode"),
 
-const cameraBtn =
-    document.getElementById("cameraBtn");
+    muteBtn:
+        document.getElementById("muteBtn"),
+
+    speakerBtn:
+        document.getElementById("speakerBtn"),
+
+    cameraBtn:
+        document.getElementById("cameraBtn")
+};
 
 
 /* =========================================================
    DEBUG
 ========================================================= */
 
-function log(message){
+function NEXUS_log(message){
 
-    console.log("[NEXUS]",message);
+    console.log(
+        "[NEXUS]",
+        message
+    );
 
     const line =
         document.createElement("div");
@@ -871,10 +991,81 @@ function log(message){
         " | " +
         message;
 
-    debug.appendChild(line);
+    NEXUS_el.debug.appendChild(line);
 
-    debug.scrollTop =
-        debug.scrollHeight;
+    NEXUS_el.debug.scrollTop =
+        NEXUS_el.debug.scrollHeight;
+}
+
+
+/* =========================================================
+   TECLADO
+========================================================= */
+
+window.NEXUS_pressKey =
+function(key){
+
+    if(
+        key === "*" ||
+        key === "#"
+    ){
+        return;
+    }
+
+    if(
+        NEXUS_dialValue.length >= 5
+    ){
+        return;
+    }
+
+    NEXUS_dialValue += key;
+
+    NEXUS_updateDial();
+};
+
+
+window.NEXUS_backspace =
+function(){
+
+    NEXUS_dialValue =
+        NEXUS_dialValue.slice(
+            0,
+            -1
+        );
+
+    NEXUS_updateDial();
+};
+
+
+window.NEXUS_clearNumber =
+function(){
+
+    NEXUS_dialValue = "";
+
+    NEXUS_updateDial();
+};
+
+
+function NEXUS_updateDial(){
+
+    if(!NEXUS_dialValue){
+
+        NEXUS_el.dial.textContent =
+            "-----";
+
+        NEXUS_el.dial.classList.add(
+            "empty"
+        );
+
+    }else{
+
+        NEXUS_el.dial.textContent =
+            NEXUS_dialValue;
+
+        NEXUS_el.dial.classList.remove(
+            "empty"
+        );
+    }
 }
 
 
@@ -882,25 +1073,24 @@ function log(message){
    NÚMERO
 ========================================================= */
 
-function generateCallId(){
+function NEXUS_generateNumber(){
 
-    return (
-        Date.now().toString(36) +
-        "-" +
-        Math.random()
-            .toString(36)
-            .slice(2,10)
+    return String(
+        Math.floor(
+            10000 +
+            Math.random() * 90000
+        )
     );
 }
 
 
-function getSavedNexusNumber(){
+function NEXUS_getSavedNumber(){
 
     try{
 
         const saved =
             localStorage.getItem(
-                NEXUS_NUMBER_KEY
+                NEXUS_STORAGE_KEY
             );
 
         if(
@@ -916,12 +1106,12 @@ function getSavedNexusNumber(){
 }
 
 
-function saveNexusNumber(number){
+function NEXUS_saveNumber(number){
 
     try{
 
         localStorage.setItem(
-            NEXUS_NUMBER_KEY,
+            NEXUS_STORAGE_KEY,
             number
         );
 
@@ -929,13 +1119,14 @@ function saveNexusNumber(number){
 }
 
 
-function generateNexusNumber(){
+function NEXUS_generateCallId(){
 
-    return String(
-        Math.floor(
-            10000 +
-            Math.random()*90000
-        )
+    return (
+        Date.now().toString(36) +
+        "-" +
+        Math.random()
+            .toString(36)
+            .slice(2,10)
     );
 }
 
@@ -944,15 +1135,17 @@ function generateNexusNumber(){
    PANTALLAS
 ========================================================= */
 
-function showScreen(screen){
+function NEXUS_showScreen(screen){
 
     [
-        incomingScreen,
-        outgoingScreen,
-        activeScreen
-    ].forEach(s=>{
-        s.classList.remove("show");
-    });
+        NEXUS_el.incomingScreen,
+        NEXUS_el.outgoingScreen,
+        NEXUS_el.activeScreen
+    ].forEach(
+        item=>{
+            item.classList.remove("show");
+        }
+    );
 
     if(screen){
         screen.classList.add("show");
@@ -960,205 +1153,77 @@ function showScreen(screen){
 }
 
 
-function hideAllScreens(){
+function NEXUS_hideScreens(){
 
     [
-        incomingScreen,
-        outgoingScreen,
-        activeScreen
-    ].forEach(s=>{
-        s.classList.remove("show");
-    });
-}
-
-
-function setOnlineStatus(online){
-
-    statusText.textContent =
-        online
-            ? "ONLINE"
-            : "DESCONECTADO";
-
-    statusDot.style.background =
-        online
-            ? "#35dc7c"
-            : "#e83e4d";
-
-    statusDot.style.boxShadow =
-        online
-            ? "0 0 12px #35dc7c"
-            : "0 0 12px #e83e4d";
-}
-
-
-/* =========================================================
-   TECLADO
-========================================================= */
-
-function pressKey(key){
-
-    if(
-        key !== "*" &&
-        key !== "#" &&
-        dialValue.length >= 5
-    ){
-        return;
-    }
-
-    if(
-        key === "*" ||
-        key === "#"
-    ){
-        return;
-    }
-
-    dialValue += key;
-
-    updateDial();
-}
-
-
-function updateDial(){
-
-    if(dialValue.length === 0){
-
-        dialNumber.textContent =
-            "-----";
-
-        dialNumber.classList.add(
-            "empty"
-        );
-
-    }else{
-
-        dialNumber.textContent =
-            dialValue;
-
-        dialNumber.classList.remove(
-            "empty"
-        );
-    }
-}
-
-
-function backspace(){
-
-    dialValue =
-        dialValue.slice(0,-1);
-
-    updateDial();
-}
-
-
-function clearNumber(){
-
-    dialValue = "";
-
-    updateDial();
-}
-
-
-/* =========================================================
-   MENÚ LLAMADA
-========================================================= */
-
-function openCallChoice(){
-
-    if(dialValue.length !== 5){
-
-        log(
-            "⚠️ Escribe un número NEXUS de 5 dígitos"
-        );
-
-        return;
-    }
-
-    document.getElementById(
-        "choiceNumber"
-    ).textContent =
-        "NEXUS " + dialValue;
-
-    callChoiceModal.classList.add(
-        "show"
-    );
-}
-
-
-function closeCallChoice(){
-
-    callChoiceModal.classList.remove(
-        "show"
+        NEXUS_el.incomingScreen,
+        NEXUS_el.outgoingScreen,
+        NEXUS_el.activeScreen
+    ].forEach(
+        item=>{
+            item.classList.remove("show");
+        }
     );
 }
 
 
 /* =========================================================
-   INICIO NEXUS
+   AUTH
 ========================================================= */
 
-async function initializeNexus(){
+async function NEXUS_initialize(){
 
     try{
 
-        log("Inicializando NEXUS...");
+        NEXUS_log(
+            "Inicializando NEXUS..."
+        );
 
-        let {
-            data:{
-                session
-            }
-        } =
-            await supabaseClient.auth
+        let result =
+            await NEXUS_client.auth
                 .getSession();
+
+        let session =
+            result.data.session;
 
         if(!session){
 
-            log(
-                "Creando sesión anónima..."
-            );
-
-            const result =
-                await supabaseClient.auth
+            const login =
+                await NEXUS_client.auth
                     .signInAnonymously();
 
-            if(result.error){
-                throw result.error;
+            if(login.error){
+                throw login.error;
             }
 
             session =
-                result.data.session;
+                login.data.session;
         }
 
-        if(!session){
-
-            throw new Error(
-                "No se pudo obtener sesión"
-            );
-        }
-
-        myUserId =
+        NEXUS_userId =
             session.user.id;
 
-        await loadOrCreateNexusNumber();
+        await NEXUS_loadNumber();
 
-        await setupSignaling();
+        await NEXUS_setupRealtime();
 
-        await setPresence(true);
+        await NEXUS_presence(true);
 
-        setOnlineStatus(true);
+        NEXUS_setStatus(true);
 
-        log(
-            "✅ NEXUS LISTO: " +
-            myNumber
+        NEXUS_log(
+            "✅ ONLINE • " +
+            NEXUS_myNumber
         );
 
     }catch(error){
 
         console.error(error);
 
-        setOnlineStatus(false);
+        NEXUS_setStatus(false);
 
-        log(
-            "❌ ERROR: " +
+        NEXUS_log(
+            "❌ " +
             error.message
         );
     }
@@ -1166,182 +1231,172 @@ async function initializeNexus(){
 
 
 /* =========================================================
-   CREAR / RECUPERAR NÚMERO
+   NÚMERO
 ========================================================= */
 
-async function loadOrCreateNexusNumber(){
+async function NEXUS_loadNumber(){
 
-    const {
-        data,
-        error
-    } =
-        await supabaseClient
+    const result =
+        await NEXUS_client
             .from("nexus_users")
             .select("*")
-            .eq("id",myUserId)
+            .eq("id",NEXUS_userId)
             .maybeSingle();
 
-    if(error){
-        throw error;
+    if(result.error){
+        throw result.error;
     }
 
-    if(data){
+    if(result.data){
 
-        myNumber =
-            String(data.nexus_number);
+        NEXUS_myNumber =
+            String(
+                result.data.nexus_number
+            );
 
-        saveNexusNumber(myNumber);
-
-        myNumberElement.textContent =
-            myNumber;
-
-        log(
-            "Número recuperado: " +
-            myNumber
+        NEXUS_saveNumber(
+            NEXUS_myNumber
         );
+
+        NEXUS_el.myNumber.textContent =
+            NEXUS_myNumber;
 
         return;
     }
 
+
     const saved =
-        getSavedNexusNumber();
+        NEXUS_getSavedNumber();
 
     if(saved){
 
-        const {
-            data:existing
-        } =
-            await supabaseClient
+        const existing =
+            await NEXUS_client
                 .from("nexus_users")
                 .select("id")
-                .eq(
-                    "nexus_number",
-                    saved
-                )
+                .eq("nexus_number",saved)
                 .maybeSingle();
 
-        if(!existing){
+        if(!existing.data){
 
-            const {
-                error:insertError
-            } =
-                await supabaseClient
+            const insert =
+                await NEXUS_client
                     .from("nexus_users")
                     .insert({
-                        id:myUserId,
+                        id:NEXUS_userId,
                         nexus_number:saved,
                         online:false
                     });
 
-            if(!insertError){
+            if(!insert.error){
 
-                myNumber =
+                NEXUS_myNumber =
                     saved;
 
-                myNumberElement.textContent =
-                    myNumber;
-
-                log(
-                    "Número local recuperado: " +
-                    myNumber
-                );
+                NEXUS_el.myNumber.textContent =
+                    saved;
 
                 return;
             }
         }
     }
 
+
     for(let i=0;i<50;i++){
 
         const candidate =
-            generateNexusNumber();
+            NEXUS_generateNumber();
 
-        const {
-            data:exists
-        } =
-            await supabaseClient
+        const exists =
+            await NEXUS_client
                 .from("nexus_users")
                 .select("id")
-                .eq(
-                    "nexus_number",
-                    candidate
-                )
+                .eq("nexus_number",candidate)
                 .maybeSingle();
 
-        if(exists){
+        if(exists.data){
             continue;
         }
 
-        const {
-            error:insertError
-        } =
-            await supabaseClient
+        const insert =
+            await NEXUS_client
                 .from("nexus_users")
                 .insert({
-                    id:myUserId,
+                    id:NEXUS_userId,
                     nexus_number:candidate,
                     online:false
                 });
 
-        if(!insertError){
+        if(!insert.error){
 
-            myNumber =
+            NEXUS_myNumber =
                 candidate;
 
-            saveNexusNumber(
-                myNumber
+            NEXUS_saveNumber(
+                candidate
             );
 
-            myNumberElement.textContent =
-                myNumber;
-
-            log(
-                "Nuevo número: " +
-                myNumber
-            );
+            NEXUS_el.myNumber.textContent =
+                candidate;
 
             return;
         }
     }
 
     throw new Error(
-        "No se pudo crear número NEXUS"
+        "No se pudo crear el número"
     );
 }
 
 
 /* =========================================================
-   PRESENCIA
+   STATUS
 ========================================================= */
 
-async function setPresence(online){
+function NEXUS_setStatus(online){
 
-    if(!myUserId){
+    NEXUS_el.statusText.textContent =
+        online
+            ? "ONLINE"
+            : "DESCONECTADO";
+
+    NEXUS_el.statusDot.style.background =
+        online
+            ? "#35dc7c"
+            : "#e83e4d";
+
+    NEXUS_el.statusDot.style.boxShadow =
+        online
+            ? "0 0 12px #35dc7c"
+            : "0 0 12px #e83e4d";
+}
+
+
+async function NEXUS_presence(online){
+
+    if(!NEXUS_userId){
         return;
     }
 
-    await supabaseClient
+    await NEXUS_client
         .from("nexus_users")
         .update({
-            online,
+            online:online,
             last_seen:
                 new Date().toISOString()
         })
-        .eq(
-            "id",
-            myUserId
-        );
+        .eq("id",NEXUS_userId);
 }
 
 
 /* =========================================================
-   SIGNALING
+   REALTIME
 ========================================================= */
 
-async function setupSignaling(){
+async function NEXUS_setupRealtime(){
 
-    signalingChannel =
-        supabaseClient.channel(
+    NEXUS_signalingChannel =
+        NEXUS_client.channel(
             "nexus-signaling",
             {
                 config:{
@@ -1352,47 +1407,45 @@ async function setupSignaling(){
             }
         );
 
-    signalingChannel.on(
+    NEXUS_signalingChannel.on(
         "broadcast",
         {
             event:"signal"
         },
         ({payload})=>{
-            handleSignal(payload);
+            NEXUS_handleSignal(payload);
         }
     );
 
     const status =
-        await signalingChannel.subscribe();
+        await NEXUS_signalingChannel
+            .subscribe();
 
-    log(
-        "NEXUS CHANNEL: " +
+    NEXUS_log(
+        "CHANNEL: " +
         status
     );
 }
 
 
-async function sendSignal(payload){
+async function NEXUS_sendSignal(payload){
 
-    if(!signalingChannel){
+    if(!NEXUS_signalingChannel){
         return;
     }
 
     try{
 
-        await signalingChannel.send({
+        await NEXUS_signalingChannel.send({
             type:"broadcast",
             event:"signal",
             payload:{
                 ...payload,
-                from:myNumber,
-                callId:
-                    payload.callId ||
-                    currentCallId
+                from:NEXUS_myNumber
             }
         });
 
-        log(
+        NEXUS_log(
             "📤 " +
             payload.type +
             " → " +
@@ -1401,7 +1454,7 @@ async function sendSignal(payload){
 
     }catch(error){
 
-        log(
+        NEXUS_log(
             "❌ SIGNAL: " +
             error.message
         );
@@ -1409,143 +1462,188 @@ async function sendSignal(payload){
 }
 
 
-async function handleSignal(payload){
+/* =========================================================
+   SEÑALES
+========================================================= */
+
+async function NEXUS_handleSignal(payload){
 
     if(!payload){
         return;
     }
 
-    if(payload.to !== myNumber){
+    if(
+        payload.to !==
+        NEXUS_myNumber
+    ){
         return;
     }
-
-    log(
-        "📡 " +
-        payload.type
-    );
 
     switch(payload.type){
 
         case "incoming_call":
-            handleIncomingCall(payload);
+            NEXUS_handleIncoming(payload);
             break;
 
         case "call_accept":
-            await handleCallAccepted(payload);
+            await NEXUS_handleAccepted(payload);
             break;
 
         case "offer":
-            await handleOffer(payload);
+            await NEXUS_handleOffer(payload);
             break;
 
         case "answer":
-            await handleAnswer(payload);
+            await NEXUS_handleAnswer(payload);
             break;
 
         case "ice":
-            await handleIce(payload);
+            await NEXUS_handleIce(payload);
             break;
 
         case "reject":
-            handleReject(payload);
+            NEXUS_handleReject(payload);
             break;
 
         case "hangup":
-            handleRemoteHangup(payload);
+            NEXUS_handleHangup(payload);
             break;
     }
 }
 
 
 /* =========================================================
-   LLAMAR
+   ELEGIR LLAMADA
 ========================================================= */
 
-async function startCall(mode){
+window.NEXUS_openCallChoice =
+function(){
 
-    closeCallChoice();
+    if(
+        NEXUS_dialValue.length !== 5
+    ){
 
-    if(dialValue.length !== 5){
-        return;
-    }
-
-    if(dialValue === myNumber){
-
-        log(
-            "⚠️ No puedes llamarte a ti mismo"
+        NEXUS_log(
+            "⚠️ Escribe exactamente 5 dígitos"
         );
 
         return;
     }
 
-    destination =
-        dialValue;
+    if(
+        NEXUS_dialValue ===
+        NEXUS_myNumber
+    ){
 
-    callMode =
+        NEXUS_log(
+            "⚠️ No puedes llamarte"
+        );
+
+        return;
+    }
+
+    NEXUS_el.choiceNumber.textContent =
+        "NEXUS " +
+        NEXUS_dialValue;
+
+    NEXUS_el.choiceModal.classList.add(
+        "show"
+    );
+};
+
+
+window.NEXUS_closeCallChoice =
+function(){
+
+    NEXUS_el.choiceModal.classList.remove(
+        "show"
+    );
+};
+
+
+/* =========================================================
+   INICIAR LLAMADA
+========================================================= */
+
+window.NEXUS_startCall =
+async function(mode){
+
+    NEXUS_closeCallChoice();
+
+    NEXUS_destination =
+        NEXUS_dialValue;
+
+    NEXUS_callMode =
         mode === "video"
             ? "video"
             : "voice";
 
-    currentCallId =
-        generateCallId();
+    NEXUS_callId =
+        NEXUS_generateCallId();
 
-    outgoingNumber.textContent =
-        destination;
+    NEXUS_callActive = false;
 
-    outgoingState.textContent =
-        callMode === "video"
-            ? "Videollamada • esperando..."
-            : "Llamada de voz • esperando...";
+    NEXUS_el.outgoingNumber.textContent =
+        NEXUS_destination;
 
-    showScreen(
-        outgoingScreen
+    NEXUS_el.outgoingState.textContent =
+        NEXUS_callMode === "video"
+            ? "📹 Esperando respuesta..."
+            : "☎ Esperando respuesta...";
+
+    NEXUS_showScreen(
+        NEXUS_el.outgoingScreen
     );
 
-    await sendSignal({
+    await NEXUS_sendSignal({
+
         type:"incoming_call",
-        to:destination,
-        callId:currentCallId,
-        mode:callMode
+
+        to:NEXUS_destination,
+
+        callId:NEXUS_callId,
+
+        mode:NEXUS_callMode
     });
-}
+};
 
 
 /* =========================================================
    ENTRANTE
 ========================================================= */
 
-function handleIncomingCall(payload){
+function NEXUS_handleIncoming(payload){
 
-    if(callActive){
+    if(NEXUS_callActive){
         return;
     }
 
-    incomingCallId =
+    NEXUS_incomingCallId =
         payload.callId;
 
-    incomingFrom =
+    NEXUS_incomingFrom =
         payload.from;
 
-    incomingCallMode =
+    NEXUS_incomingCallType =
         payload.mode === "video"
             ? "video"
             : "voice";
 
-    incomingNumber.textContent =
-        incomingFrom;
+    NEXUS_el.incomingNumber.textContent =
+        NEXUS_incomingFrom;
 
-    incomingModeLabel.textContent =
-        incomingCallMode === "video"
+    NEXUS_el.incomingModeText.textContent =
+        NEXUS_incomingCallType === "video"
             ? "📹 Videollamada"
             : "☎ Llamada de voz";
 
-    showScreen(
-        incomingScreen
+    NEXUS_showScreen(
+        NEXUS_el.incomingScreen
     );
 
-    log(
-        "📞 LLAMADA DE " +
-        incomingFrom
+    NEXUS_log(
+        "📞 ENTRANTE " +
+        NEXUS_incomingFrom
     );
 }
 
@@ -1554,132 +1652,189 @@ function handleIncomingCall(payload){
    ACEPTAR
 ========================================================= */
 
-async function acceptIncoming(){
+window.NEXUS_acceptIncoming =
+async function(){
 
-    destination =
-        incomingFrom;
+    NEXUS_destination =
+        NEXUS_incomingFrom;
 
-    currentCallId =
-        incomingCallId;
+    NEXUS_callId =
+        NEXUS_incomingCallId;
 
-    callMode =
-        incomingCallMode;
+    NEXUS_callMode =
+        NEXUS_incomingCallType;
 
-    callActive = true;
+    NEXUS_callActive = true;
 
-    activeNumber.textContent =
-        destination;
+    NEXUS_el.activeNumber.textContent =
+        NEXUS_destination;
 
-    activeStatus.textContent =
-        "Preparando...";
+    NEXUS_el.activeStatus.textContent =
+        "Conectando...";
 
-    showScreen(
-        activeScreen
+    NEXUS_showScreen(
+        NEXUS_el.activeScreen
     );
 
     try{
 
-        await prepareLocalMedia(
-            callMode
+        await NEXUS_prepareMedia(
+            NEXUS_callMode
         );
 
-        await createPeerConnection();
+        await NEXUS_createPeer();
 
-        await sendSignal({
+        await NEXUS_sendSignal({
+
             type:"call_accept",
-            to:destination,
-            callId:currentCallId,
-            mode:callMode
+
+            to:NEXUS_destination,
+
+            callId:NEXUS_callId,
+
+            mode:NEXUS_callMode
         });
 
-        activeStatus.textContent =
-            "Esperando conexión...";
+        NEXUS_incomingFrom = null;
+        NEXUS_incomingCallId = null;
 
-        incomingFrom = null;
-        incomingCallId = null;
+        NEXUS_log(
+            "✅ LLAMADA ACEPTADA"
+        );
 
     }catch(error){
 
-        log(
+        NEXUS_log(
             "❌ ACEPTAR: " +
             error.message
         );
 
-        cleanupCall();
+        await NEXUS_sendSignal({
+
+            type:"reject",
+
+            to:NEXUS_destination,
+
+            callId:NEXUS_callId
+        });
+
+        NEXUS_cleanup();
     }
-}
+};
 
 
 /* =========================================================
    RECHAZAR
 ========================================================= */
 
-async function rejectIncoming(){
+window.NEXUS_rejectIncoming =
+async function(){
 
-    if(incomingFrom){
+    if(NEXUS_incomingFrom){
 
-        await sendSignal({
+        await NEXUS_sendSignal({
+
             type:"reject",
-            to:incomingFrom,
-            callId:incomingCallId
+
+            to:NEXUS_incomingFrom,
+
+            callId:NEXUS_incomingCallId
         });
     }
 
-    hideAllScreens();
+    NEXUS_incomingFrom = null;
+    NEXUS_incomingCallId = null;
 
-    incomingFrom = null;
-    incomingCallId = null;
-}
+    NEXUS_hideScreens();
+};
 
 
 /* =========================================================
-   ACEPTACIÓN
+   EL OTRO ACEPTÓ
 ========================================================= */
 
-async function handleCallAccepted(payload){
+async function NEXUS_handleAccepted(payload){
 
     if(
-        payload.callId !== currentCallId
+        payload.callId !==
+        NEXUS_callId
     ){
         return;
     }
 
+    NEXUS_callActive = true;
+
+    /*
+       ESTA ES LA CORRECCIÓN PRINCIPAL.
+
+       El dispositivo que llamó deja de mostrar
+       "esperando" y entra a la pantalla activa.
+    */
+
+    NEXUS_el.activeNumber.textContent =
+        NEXUS_destination;
+
+    NEXUS_el.activeStatus.textContent =
+        "Preparando conexión...";
+
+    NEXUS_showScreen(
+        NEXUS_el.activeScreen
+    );
+
+
     try{
 
-        await prepareLocalMedia(
-            callMode
+        await NEXUS_prepareMedia(
+            NEXUS_callMode
         );
 
-        await createPeerConnection();
+        await NEXUS_createPeer();
+
+
+        NEXUS_el.activeStatus.textContent =
+            "Conectando...";
+
 
         const offer =
-            await peerConnection
+            await NEXUS_peer
                 .createOffer();
 
-        await peerConnection
+
+        await NEXUS_peer
             .setLocalDescription(
                 offer
             );
 
-        await sendSignal({
+
+        await NEXUS_sendSignal({
+
             type:"offer",
-            to:destination,
-            callId:currentCallId,
-            mode:callMode,
+
+            to:NEXUS_destination,
+
+            callId:NEXUS_callId,
+
+            mode:NEXUS_callMode,
+
             offer:{
                 type:offer.type,
                 sdp:offer.sdp
             }
         });
 
-        log("📤 OFFER ENVIADO");
+        NEXUS_log(
+            "📡 OFFER ENVIADO"
+        );
 
     }catch(error){
 
-        log(
-            "❌ OFFER: " +
+        NEXUS_log(
+            "❌ CREANDO OFFER: " +
             error.message
         );
+
+        NEXUS_el.activeStatus.textContent =
+            "Error de conexión";
     }
 }
 
@@ -1688,55 +1843,72 @@ async function handleCallAccepted(payload){
    MEDIA
 ========================================================= */
 
-async function prepareLocalMedia(mode){
+async function NEXUS_prepareMedia(mode){
+
+    if(NEXUS_localStream){
+
+        NEXUS_localStream
+            .getTracks()
+            .forEach(
+                track=>track.stop()
+            );
+    }
 
     const constraints = {
+
         audio:{
             echoCancellation:true,
             noiseSuppression:true,
             autoGainControl:true
         },
+
         video:
             mode === "video"
             ? {
-                width:{ideal:1280},
-                height:{ideal:720},
+                width:{
+                    ideal:1280
+                },
+                height:{
+                    ideal:720
+                },
                 facingMode:"user"
             }
             : false
     };
 
-    log(
-        mode === "video"
-            ? "🎥 Solicitando cámara..."
-            : "🎙 Solicitando micrófono..."
-    );
 
-    localStream =
+    NEXUS_localStream =
         await navigator
             .mediaDevices
             .getUserMedia(
                 constraints
             );
 
-    localVideo.srcObject =
-        localStream;
 
-    cameraEnabled =
+    NEXUS_el.localVideo.srcObject =
+        NEXUS_localStream;
+
+
+    NEXUS_cameraEnabled =
         mode === "video";
 
-    localVideo.style.display =
-        mode === "video"
-            ? "block"
-            : "none";
 
     if(mode === "video"){
-        activeScreen.classList.add(
-            "video-call"
-        );
+
+        NEXUS_el.activeScreen
+            .classList.add(
+                "video-call"
+            );
+
+    }else{
+
+        NEXUS_el.activeScreen
+            .classList.remove(
+                "video-call"
+            );
     }
 
-    updateButtons();
+    NEXUS_updateButtons();
 }
 
 
@@ -1744,18 +1916,20 @@ async function prepareLocalMedia(mode){
    PEER CONNECTION
 ========================================================= */
 
-async function createPeerConnection(){
+async function NEXUS_createPeer(){
 
-    remoteDescriptionSet =
+    NEXUS_remoteDescriptionReady =
         false;
 
-    pendingIceCandidates = [];
+    NEXUS_pendingIce = [];
 
-    remoteStream =
+    NEXUS_remoteStream =
         new MediaStream();
 
-    peerConnection =
+
+    NEXUS_peer =
         new RTCPeerConnection({
+
             iceServers:[
                 {
                     urls:
@@ -1768,107 +1942,169 @@ async function createPeerConnection(){
             ]
         });
 
-    if(localStream){
 
-        localStream
+    if(NEXUS_localStream){
+
+        NEXUS_localStream
             .getTracks()
-            .forEach(track=>{
-
-                peerConnection.addTrack(
-                    track,
-                    localStream
-                );
-            });
+            .forEach(
+                track=>{
+                    NEXUS_peer.addTrack(
+                        track,
+                        NEXUS_localStream
+                    );
+                }
+            );
     }
 
-    videoTransceiver =
-        peerConnection.addTransceiver(
+
+    NEXUS_videoTransceiver =
+        NEXUS_peer.addTransceiver(
             "video",
             {
                 direction:
-                    callMode === "video"
+                    NEXUS_callMode === "video"
                         ? "sendrecv"
                         : "recvonly"
             }
         );
 
-    peerConnection.onicecandidate =
-        async event=>{
 
-            if(event.candidate){
+    NEXUS_peer.onicecandidate =
+    async event=>{
 
-                await sendSignal({
-                    type:"ice",
-                    to:destination,
-                    callId:currentCallId,
-                    candidate:event.candidate
-                });
-            }
-        };
+        if(event.candidate){
 
-    peerConnection.ontrack =
-        event=>{
+            await NEXUS_sendSignal({
 
-            remoteStream.addTrack(
-                event.track
+                type:"ice",
+
+                to:NEXUS_destination,
+
+                callId:NEXUS_callId,
+
+                candidate:event.candidate
+            });
+        }
+    };
+
+
+    NEXUS_peer.ontrack =
+    event=>{
+
+        if(
+            !NEXUS_remoteStream
+        ){
+
+            NEXUS_remoteStream =
+                new MediaStream();
+        }
+
+
+        NEXUS_remoteStream.addTrack(
+            event.track
+        );
+
+
+        NEXUS_el.remoteAudio.srcObject =
+            NEXUS_remoteStream;
+
+        NEXUS_el.remoteVideo.srcObject =
+            NEXUS_remoteStream;
+
+
+        NEXUS_el.remoteAudio.play()
+            .catch(()=>{});
+
+        NEXUS_el.remoteVideo.play()
+            .catch(()=>{});
+
+
+        NEXUS_log(
+            "🎧 TRACK REMOTA: " +
+            event.track.kind
+        );
+    };
+
+
+    NEXUS_peer.onconnectionstatechange =
+    ()=>{
+
+        const state =
+            NEXUS_peer.connectionState;
+
+        NEXUS_el.connectionState.textContent =
+            state;
+
+
+        if(state === "connecting"){
+
+            NEXUS_el.activeStatus.textContent =
+                "Conectando...";
+        }
+
+
+        if(state === "connected"){
+
+            NEXUS_callActive = true;
+
+            NEXUS_el.activeStatus.textContent =
+                NEXUS_callMode === "video"
+                    ? "📹 Videollamada conectada"
+                    : "☎ Llamada conectada";
+
+            NEXUS_log(
+                "🟢 WEBRTC CONECTADO"
             );
+        }
 
-            remoteAudio.srcObject =
-                remoteStream;
 
-            remoteVideo.srcObject =
-                remoteStream;
+        if(state === "failed"){
 
-            remoteVideo.play()
-                .catch(()=>{});
+            NEXUS_el.activeStatus.textContent =
+                "Conexión fallida";
 
-            remoteAudio.play()
-                .catch(()=>{});
-        };
+            NEXUS_log(
+                "🔴 WEBRTC FAILED"
+            );
+        }
 
-    peerConnection.onconnectionstatechange =
-        ()=>{
 
-            const state =
-                peerConnection.connectionState;
+        if(state === "disconnected"){
 
-            connectionState.textContent =
-                state;
+            NEXUS_el.activeStatus.textContent =
+                "Conexión interrumpida";
 
-            if(state === "connected"){
+            NEXUS_log(
+                "🟠 WEBRTC DISCONNECTED"
+            );
+        }
+    };
 
-                activeStatus.textContent =
-                    callMode === "video"
-                        ? "📹 Videollamada conectada"
-                        : "☎ Llamada conectada";
-            }
 
-            if(
-                state === "failed" ||
-                state === "disconnected"
-            ){
+    NEXUS_peer.oniceconnectionstatechange =
+    ()=>{
 
-                activeStatus.textContent =
-                    "Conexión perdida";
-            }
-        };
+        NEXUS_el.iceState.textContent =
+            NEXUS_peer.iceConnectionState;
 
-    peerConnection.oniceconnectionstatechange =
-        ()=>{
+        NEXUS_log(
+            "ICE: " +
+            NEXUS_peer.iceConnectionState
+        );
+    };
 
-            iceState.textContent =
-                peerConnection.iceConnectionState;
-        };
 
-    peerConnection.onsignalingstatechange =
-        ()=>{
+    NEXUS_peer.onsignalingstatechange =
+    ()=>{
 
-            signalingState.textContent =
-                peerConnection.signalingState;
-        };
+        NEXUS_el.signalingState.textContent =
+            NEXUS_peer.signalingState;
+    };
 
-    connectionMode.textContent =
-        callMode === "video"
+
+    NEXUS_el.connectionMode.textContent =
+        NEXUS_callMode === "video"
             ? "VIDEO"
             : "VOZ";
 }
@@ -1878,63 +2114,77 @@ async function createPeerConnection(){
    OFFER
 ========================================================= */
 
-async function handleOffer(payload){
+async function NEXUS_handleOffer(payload){
 
     if(
-        payload.callId !== currentCallId
+        payload.callId !==
+        NEXUS_callId
     ){
         return;
     }
 
+
     try{
 
-        if(!peerConnection){
+        if(!NEXUS_peer){
 
-            await prepareLocalMedia(
-                callMode
+            await NEXUS_prepareMedia(
+                NEXUS_callMode
             );
 
-            await createPeerConnection();
+            await NEXUS_createPeer();
         }
 
-        await peerConnection
+
+        await NEXUS_peer
             .setRemoteDescription(
                 new RTCSessionDescription(
                     payload.offer
                 )
             );
 
-        remoteDescriptionSet = true;
 
-        await flushPendingIce();
+        NEXUS_remoteDescriptionReady =
+            true;
+
+
+        await NEXUS_flushIce();
+
 
         const answer =
-            await peerConnection
+            await NEXUS_peer
                 .createAnswer();
 
-        await peerConnection
+
+        await NEXUS_peer
             .setLocalDescription(
                 answer
             );
 
-        await sendSignal({
+
+        await NEXUS_sendSignal({
+
             type:"answer",
-            to:destination,
-            callId:currentCallId,
+
+            to:NEXUS_destination,
+
+            callId:NEXUS_callId,
+
             answer:{
                 type:answer.type,
                 sdp:answer.sdp
             }
         });
 
-        log(
-            "📤 ANSWER ENVIADO"
+
+        NEXUS_log(
+            "📡 ANSWER ENVIADO"
         );
 
     }catch(error){
 
-        log(
-            "❌ HANDLE OFFER: " +
+        NEXUS_log(
+            "❌ OFFER: " +
             error.message
         );
     }
@@ -1945,35 +2195,45 @@ async function handleOffer(payload){
    ANSWER
 ========================================================= */
 
-async function handleAnswer(payload){
+async function NEXUS_handleAnswer(payload){
 
     if(
-        payload.callId !== currentCallId ||
-        !peerConnection
+        payload.callId !==
+        NEXUS_callId ||
+        !NEXUS_peer
     ){
         return;
     }
 
+
     try{
 
-        await peerConnection
+        await NEXUS_peer
             .setRemoteDescription(
                 new RTCSessionDescription(
                     payload.answer
                 )
             );
 
-        remoteDescriptionSet = true;
 
-        await flushPendingIce();
+        NEXUS_remoteDescriptionReady =
+            true;
 
-        log(
-            "✅ ANSWER APLICADO"
+
+        await NEXUS_flushIce();
+
+
+        NEXUS_el.activeStatus.textContent =
+            "Conectando audio/video...";
+
+
+        NEXUS_log(
+            "📥 ANSWER RECIBIDO"
         );
 
     }catch(error){
 
-        log(
+        NEXUS_log(
             "❌ ANSWER: " +
             error.message
         );
@@ -1985,29 +2245,32 @@ async function handleAnswer(payload){
    ICE
 ========================================================= */
 
-async function handleIce(payload){
+async function NEXUS_handleIce(payload){
 
     if(
-        payload.callId !== currentCallId
+        payload.callId !==
+        NEXUS_callId
     ){
         return;
     }
 
+
     if(
-        !peerConnection ||
-        !remoteDescriptionSet
+        !NEXUS_peer ||
+        !NEXUS_remoteDescriptionReady
     ){
 
-        pendingIceCandidates.push(
+        NEXUS_pendingIce.push(
             payload.candidate
         );
 
         return;
     }
 
+
     try{
 
-        await peerConnection
+        await NEXUS_peer
             .addIceCandidate(
                 new RTCIceCandidate(
                     payload.candidate
@@ -2016,7 +2279,7 @@ async function handleIce(payload){
 
     }catch(error){
 
-        log(
+        NEXUS_log(
             "❌ ICE: " +
             error.message
         );
@@ -2024,23 +2287,24 @@ async function handleIce(payload){
 }
 
 
-async function flushPendingIce(){
+async function NEXUS_flushIce(){
 
     if(
-        !peerConnection ||
-        !remoteDescriptionSet
+        !NEXUS_peer ||
+        !NEXUS_remoteDescriptionReady
     ){
         return;
     }
 
+
     for(
         const candidate
-        of pendingIceCandidates
+        of NEXUS_pendingIce
     ){
 
         try{
 
-            await peerConnection
+            await NEXUS_peer
                 .addIceCandidate(
                     new RTCIceCandidate(
                         candidate
@@ -2050,316 +2314,424 @@ async function flushPendingIce(){
         }catch(error){}
     }
 
-    pendingIceCandidates = [];
+
+    NEXUS_pendingIce = [];
 }
 
 
 /* =========================================================
-   COLGAR / RECHAZO
+   RECHAZO
 ========================================================= */
 
-function handleReject(payload){
+function NEXUS_handleReject(payload){
 
     if(
-        payload.callId !== currentCallId
+        payload.callId !==
+        NEXUS_callId
     ){
         return;
     }
 
-    outgoingState.textContent =
-        "Llamada rechazada";
+
+    NEXUS_el.activeStatus.textContent =
+        "La llamada fue rechazada";
+
+
+    NEXUS_el.outgoingState.textContent =
+        "La llamada fue rechazada";
+
 
     setTimeout(
-        cleanupCall,
-        700
+        ()=>{
+            NEXUS_cleanup();
+        },
+        1000
     );
 }
 
 
-async function cancelOutgoing(){
+/* =========================================================
+   COLGAR
+========================================================= */
 
-    if(destination){
-
-        await sendSignal({
-            type:"hangup",
-            to:destination,
-            callId:currentCallId
-        });
-    }
-
-    cleanupCall();
-}
-
-
-async function hangup(){
-
-    if(destination){
-
-        await sendSignal({
-            type:"hangup",
-            to:destination,
-            callId:currentCallId
-        });
-    }
-
-    cleanupCall();
-}
-
-
-function handleRemoteHangup(payload){
+function NEXUS_handleHangup(payload){
 
     if(
-        payload.callId !== currentCallId
+        payload.callId !==
+        NEXUS_callId
     ){
         return;
     }
 
-    cleanupCall();
+
+    NEXUS_log(
+        "☎ La otra persona colgó"
+    );
+
+
+    NEXUS_cleanup();
 }
+
+
+window.NEXUS_cancelOutgoing =
+async function(){
+
+    if(NEXUS_destination){
+
+        await NEXUS_sendSignal({
+
+            type:"hangup",
+
+            to:NEXUS_destination,
+
+            callId:NEXUS_callId
+        });
+    }
+
+    NEXUS_cleanup();
+};
+
+
+window.NEXUS_hangup =
+async function(){
+
+    if(NEXUS_destination){
+
+        await NEXUS_sendSignal({
+
+            type:"hangup",
+
+            to:NEXUS_destination,
+
+            callId:NEXUS_callId
+        });
+    }
+
+    NEXUS_cleanup();
+};
 
 
 /* =========================================================
-   LIMPIAR
+   MIC
 ========================================================= */
 
-function cleanupCall(){
+window.NEXUS_toggleMute =
+function(){
 
-    callActive = false;
-
-    if(peerConnection){
-
-        try{
-            peerConnection.close();
-        }catch(error){}
-
-        peerConnection = null;
+    if(!NEXUS_localStream){
+        return;
     }
 
-    if(localStream){
 
-        localStream
-            .getTracks()
-            .forEach(track=>{
-                track.stop();
-            });
+    NEXUS_micEnabled =
+        !NEXUS_micEnabled;
 
-        localStream = null;
-    }
 
-    if(remoteStream){
+    NEXUS_localStream
+        .getAudioTracks()
+        .forEach(
+            track=>{
+                track.enabled =
+                    NEXUS_micEnabled;
+            }
+        );
 
-        remoteStream
-            .getTracks()
-            .forEach(track=>{
-                track.stop();
-            });
 
-        remoteStream = null;
-    }
-
-    localVideo.srcObject = null;
-    remoteVideo.srcObject = null;
-    remoteAudio.srcObject = null;
-
-    videoTransceiver = null;
-
-    destination = null;
-    currentCallId = null;
-
-    remoteDescriptionSet = false;
-    pendingIceCandidates = [];
-
-    cameraEnabled = false;
-    microphoneEnabled = true;
-
-    activeScreen.classList.remove(
-        "video-call"
-    );
-
-    connectionInfo.classList.remove(
-        "show"
-    );
-
-    hideAllScreens();
-
-    updateButtons();
-}
+    NEXUS_updateButtons();
+};
 
 
 /* =========================================================
-   CONTROLES
+   ALTAVOZ
 ========================================================= */
 
-function toggleMute(){
+window.NEXUS_toggleSpeaker =
+function(){
 
-    if(!localStream){
+    NEXUS_speakerEnabled =
+        !NEXUS_speakerEnabled;
+
+
+    NEXUS_el.remoteAudio.volume =
+        NEXUS_speakerEnabled
+            ? 1
+            : 0;
+
+
+    NEXUS_el.remoteVideo.volume =
+        NEXUS_speakerEnabled
+            ? 1
+            : 0;
+
+
+    NEXUS_updateButtons();
+};
+
+
+/* =========================================================
+   CÁMARA
+========================================================= */
+
+window.NEXUS_toggleCamera =
+async function(){
+
+    if(!NEXUS_peer){
         return;
     }
 
-    const tracks =
-        localStream.getAudioTracks();
 
-    microphoneEnabled =
-        !microphoneEnabled;
+    if(NEXUS_cameraEnabled){
 
-    tracks.forEach(track=>{
-        track.enabled =
-            microphoneEnabled;
-    });
+        if(NEXUS_localStream){
 
-    updateButtons();
-}
+            NEXUS_localStream
+                .getVideoTracks()
+                .forEach(
+                    track=>{
+                        track.enabled = false;
+                    }
+                );
+        }
 
+        NEXUS_cameraEnabled = false;
 
-function toggleSpeaker(){
-
-    speakerEnabled =
-        !speakerEnabled;
-
-    remoteAudio.volume =
-        speakerEnabled ? 1 : 0;
-
-    remoteVideo.volume =
-        speakerEnabled ? 1 : 0;
-
-    updateButtons();
-}
-
-
-async function toggleCamera(){
-
-    if(!peerConnection){
-        return;
-    }
-
-    if(cameraEnabled){
-
-        localStream
-            ?.getVideoTracks()
-            .forEach(track=>{
-                track.enabled = false;
-            });
-
-        cameraEnabled = false;
-
-        updateButtons();
+        NEXUS_updateButtons();
 
         return;
     }
+
 
     try{
 
-        const cameraStream =
+        const camera =
             await navigator
                 .mediaDevices
                 .getUserMedia({
                     video:{
-                        width:{ideal:1280},
-                        height:{ideal:720},
+                        width:{
+                            ideal:1280
+                        },
+                        height:{
+                            ideal:720
+                        },
                         facingMode:"user"
                     }
                 });
 
+
         const track =
-            cameraStream.getVideoTracks()[0];
+            camera.getVideoTracks()[0];
 
-        if(!localStream){
 
-            localStream =
+        if(!NEXUS_localStream){
+
+            NEXUS_localStream =
                 new MediaStream();
         }
 
-        localStream.addTrack(track);
 
-        if(videoTransceiver){
+        NEXUS_localStream.addTrack(
+            track
+        );
 
-            await videoTransceiver
+
+        if(NEXUS_videoTransceiver){
+
+            await NEXUS_videoTransceiver
                 .sender
                 .replaceTrack(track);
 
-            videoTransceiver.direction =
+            NEXUS_videoTransceiver.direction =
                 "sendrecv";
 
         }else{
 
-            peerConnection.addTrack(
+            NEXUS_peer.addTrack(
                 track,
-                localStream
+                NEXUS_localStream
             );
         }
 
-        localVideo.srcObject =
-            localStream;
 
-        cameraEnabled = true;
+        NEXUS_el.localVideo.srcObject =
+            NEXUS_localStream;
 
-        activeScreen.classList.add(
-            "video-call"
-        );
 
-        updateButtons();
+        NEXUS_el.activeScreen
+            .classList.add(
+                "video-call"
+            );
+
+
+        NEXUS_cameraEnabled = true;
+
+        NEXUS_updateButtons();
+
 
     }catch(error){
 
-        log(
+        NEXUS_log(
             "❌ CÁMARA: " +
             error.message
         );
     }
-}
+};
 
 
-function updateButtons(){
+/* =========================================================
+   BOTONES
+========================================================= */
 
-    muteBtn.textContent =
-        microphoneEnabled
+function NEXUS_updateButtons(){
+
+    NEXUS_el.muteBtn.textContent =
+        NEXUS_micEnabled
             ? "🎙"
             : "🔇";
 
-    speakerBtn.textContent =
-        speakerEnabled
+    NEXUS_el.speakerBtn.textContent =
+        NEXUS_speakerEnabled
             ? "🔊"
             : "🔇";
 
-    cameraBtn.textContent =
-        cameraEnabled
+    NEXUS_el.cameraBtn.textContent =
+        NEXUS_cameraEnabled
             ? "📹"
             : "🚫";
 
-    muteBtn.classList.toggle(
+
+    NEXUS_el.muteBtn.classList.toggle(
         "active",
-        !microphoneEnabled
+        !NEXUS_micEnabled
     );
 
-    speakerBtn.classList.toggle(
+    NEXUS_el.speakerBtn.classList.toggle(
         "active",
-        !speakerEnabled
+        !NEXUS_speakerEnabled
     );
 
-    cameraBtn.classList.toggle(
+    NEXUS_el.cameraBtn.classList.toggle(
         "active",
-        cameraEnabled
+        NEXUS_cameraEnabled
     );
 }
 
 
-function toggleConnectionInfo(){
+window.NEXUS_toggleConnectionInfo =
+function(){
 
-    connectionInfo.classList.toggle(
-        "show"
-    );
+    NEXUS_el.connectionInfo
+        .classList.toggle(
+            "show"
+        );
 
-    if(peerConnection){
 
-        connectionState.textContent =
-            peerConnection.connectionState;
+    if(NEXUS_peer){
 
-        iceState.textContent =
-            peerConnection.iceConnectionState;
+        NEXUS_el.connectionState.textContent =
+            NEXUS_peer.connectionState;
 
-        signalingState.textContent =
-            peerConnection.signalingState;
+        NEXUS_el.iceState.textContent =
+            NEXUS_peer.iceConnectionState;
+
+        NEXUS_el.signalingState.textContent =
+            NEXUS_peer.signalingState;
     }
+};
+
+
+/* =========================================================
+   LIMPIEZA
+========================================================= */
+
+function NEXUS_cleanup(){
+
+    if(NEXUS_peer){
+
+        try{
+            NEXUS_peer.close();
+        }catch(error){}
+
+        NEXUS_peer = null;
+    }
+
+
+    if(NEXUS_localStream){
+
+        NEXUS_localStream
+            .getTracks()
+            .forEach(
+                track=>{
+                    track.stop();
+                }
+            );
+
+        NEXUS_localStream = null;
+    }
+
+
+    if(NEXUS_remoteStream){
+
+        NEXUS_remoteStream
+            .getTracks()
+            .forEach(
+                track=>{
+                    track.stop();
+                }
+            );
+
+        NEXUS_remoteStream = null;
+    }
+
+
+    NEXUS_el.localVideo.srcObject =
+        null;
+
+    NEXUS_el.remoteVideo.srcObject =
+        null;
+
+    NEXUS_el.remoteAudio.srcObject =
+        null;
+
+
+    NEXUS_videoTransceiver = null;
+
+    NEXUS_remoteDescriptionReady =
+        false;
+
+    NEXUS_pendingIce = [];
+
+
+    NEXUS_destination = null;
+
+    NEXUS_callId = null;
+
+    NEXUS_incomingFrom = null;
+
+    NEXUS_incomingCallId = null;
+
+    NEXUS_callActive = false;
+
+    NEXUS_cameraEnabled = false;
+
+    NEXUS_micEnabled = true;
+
+
+    NEXUS_el.activeScreen
+        .classList.remove(
+            "video-call"
+        );
+
+
+    NEXUS_el.connectionInfo
+        .classList.remove(
+            "show"
+        );
+
+
+    NEXUS_hideScreens();
+
+    NEXUS_updateButtons();
 }
 
 
@@ -2367,15 +2739,17 @@ function toggleConnectionInfo(){
    INICIO
 ========================================================= */
 
-updateDial();
-updateButtons();
+NEXUS_updateDial();
 
-initializeNexus();
+NEXUS_updateButtons();
+
+NEXUS_initialize();
+
 
 window.addEventListener(
     "beforeunload",
     ()=>{
-        setPresence(false);
+        NEXUS_presence(false);
     }
 );
 
@@ -2385,10 +2759,19 @@ window.addEventListener(
 </html>
 ```
 
-Con esto quedan corregidas las **tres cosas**:
+La corrección clave está en `NEXUS_handleAccepted()`: **cuando el otro dispositivo acepta, el que llamó entra inmediatamente a `activeScreen`**, crea su WebRTC y manda el `offer`.
 
-* `incomingMode` ya no está declarado dos veces.
-* `pressKey()` vuelve a cargarse porque el `<script>` ya no se rompe al principio.
-* Tu número NEXUS aparece arriba como **“TU NÚMERO NEXUS 48217”** y se recupera desde Supabase/localStorage.
+Ahora la secuencia debería verse así:
 
-Y un detalle importante: **no borres el almacenamiento del navegador** mientras pruebas. Si lo haces, NEXUS puede necesitar recuperar o generar otra identidad.
+**Dispositivo A**
+`Llamando → Esperando respuesta → Conectando → ☎ Llamada conectada`
+
+**Dispositivo B**
+`Llamada entrante → Aceptar → Conectando → ☎ Llamada conectada`
+
+Y en videollamada:
+
+**A ↔ B**
+`📹 cámara + 🎙 micrófono + 🔊 audio`
+
+Una cosa importante para la prueba: **los dos dispositivos deben abrir NEXUS mediante HTTPS**, por ejemplo tu GitHub Pages. Si uno entra por `http://192.168.100.7:...`, Chrome puede bloquear cámara/micrófono porque las APIs de medios exigen un contexto seguro, salvo excepciones como `localhost`. Si el audio ya funciona pero la cámara falla, este detalle es especialmente sospechoso.
