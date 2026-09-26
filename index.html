@@ -4,7 +4,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-
 <title>NEXUS</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -19,18 +18,22 @@
 body{
     min-height:100vh;
     background:
-        radial-gradient(circle at top,#182235,#080b12 55%,#030408);
+        radial-gradient(circle at top,#18243d 0%,#080b13 45%,#030408 100%);
     color:#fff;
     font-family:Arial,Helvetica,sans-serif;
+    overflow-x:hidden;
+}
+
+button,input{
+    font:inherit;
 }
 
 button{
-    border:0;
-    color:#fff;
     cursor:pointer;
 }
 
 .app{
+    width:100%;
     min-height:100vh;
     display:flex;
     align-items:center;
@@ -39,403 +42,440 @@ button{
 }
 
 .phone{
-    width:390px;
-    max-width:100%;
+    width:100%;
+    max-width:430px;
     min-height:760px;
-    position:relative;
-    overflow:hidden;
-    background:#090d15;
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:30px;
+    background:rgba(9,13,23,.96);
+    border:1px solid rgba(255,255,255,.09);
+    border-radius:28px;
     box-shadow:0 25px 80px rgba(0,0,0,.55);
+    overflow:hidden;
+    position:relative;
 }
 
-.topbar{
-    height:75px;
-    padding:0 22px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
+.top{
+    padding:24px 22px 18px;
     border-bottom:1px solid rgba(255,255,255,.07);
+    background:rgba(255,255,255,.025);
 }
 
 .logo{
-    font-size:22px;
-    font-weight:900;
+    font-size:28px;
+    font-weight:800;
     letter-spacing:4px;
 }
 
-.status{
-    display:flex;
-    align-items:center;
-    gap:7px;
-    color:#9ca8b9;
-    font-size:12px;
+.subtitle{
+    color:#8792a8;
+    margin-top:5px;
+    font-size:13px;
 }
 
-.status-dot{
-    width:8px;
-    height:8px;
-    border-radius:50%;
-    background:#e5a82e;
-}
-
-.my-number{
+.number-box{
+    margin:20px 22px 12px;
+    padding:17px;
+    background:linear-gradient(135deg,#10192c,#0b1120);
+    border:1px solid rgba(93,154,255,.22);
+    border-radius:18px;
     text-align:center;
-    padding:17px 10px 0;
-    color:#7f8ba0;
-    font-size:10px;
+}
+
+.number-label{
+    color:#7f8ba2;
+    font-size:12px;
+    text-transform:uppercase;
     letter-spacing:2px;
 }
 
-.my-number strong{
-    display:block;
-    margin-top:5px;
-    color:#fff;
-    font-size:21px;
-    letter-spacing:5px;
+.my-number{
+    font-size:38px;
+    font-weight:800;
+    letter-spacing:8px;
+    margin-top:7px;
+    color:#72a8ff;
 }
 
-.dial{
-    padding:18px 25px 8px;
+.status{
     text-align:center;
+    color:#7f8ba2;
+    font-size:12px;
+    min-height:17px;
+    padding:4px 20px 10px;
 }
 
-.number{
-    height:60px;
+.screen{
+    padding:18px 22px 26px;
+}
+
+.display{
+    height:70px;
+    background:#050811;
+    border:1px solid rgba(255,255,255,.07);
+    border-radius:18px;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:34px;
-    font-weight:700;
-    letter-spacing:8px;
+    font-size:32px;
+    letter-spacing:7px;
+    margin-bottom:15px;
+    overflow:hidden;
 }
 
-.number.empty{
-    color:#465064;
+.mode-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-bottom:14px;
+}
+
+.mode-btn{
+    padding:12px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.08);
+    background:#101622;
+    color:#aeb8ca;
+}
+
+.mode-btn.active{
+    background:#172c4f;
+    border-color:#438cff;
+    color:#fff;
 }
 
 .keypad{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:12px;
-    padding:20px 25px;
+    gap:10px;
 }
 
 .key{
     height:67px;
+    border:0;
     border-radius:18px;
-    background:#151c29;
-    border:1px solid rgba(255,255,255,.06);
-    font-size:23px;
+    background:#111827;
+    color:#fff;
+    font-size:25px;
+    transition:.12s;
+}
+
+.key:hover{
+    background:#19243a;
 }
 
 .key:active{
-    transform:scale(.94);
+    transform:scale(.95);
+}
+
+.call-buttons{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:13px;
+}
+
+.call{
+    border:0;
+    border-radius:16px;
+    padding:15px 8px;
+    background:#16845c;
+    color:#fff;
+    font-weight:700;
+}
+
+.group{
+    border:0;
+    border-radius:16px;
+    padding:15px 8px;
+    background:#315fa9;
+    color:#fff;
+    font-weight:700;
+}
+
+.clear{
+    margin-top:10px;
+    width:100%;
+    padding:11px;
+    background:#111622;
+    border:1px solid rgba(255,255,255,.08);
+    color:#8792a8;
+    border-radius:14px;
+}
+
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.78);
+    backdrop-filter:blur(10px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+    z-index:100;
+}
+
+.overlay.show{
+    display:flex;
+}
+
+.card{
+    width:min(440px,100%);
+    background:#0b101c;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:25px;
+    padding:25px;
+    box-shadow:0 30px 100px rgba(0,0,0,.65);
+}
+
+.card h2{
+    margin-bottom:8px;
+}
+
+.card p{
+    color:#8995aa;
+    line-height:1.5;
+}
+
+.incoming-number{
+    font-size:38px;
+    letter-spacing:7px;
+    color:#71a8ff;
+    font-weight:800;
+    text-align:center;
+    padding:25px 0;
 }
 
 .actions{
     display:grid;
-    grid-template-columns:1fr 1fr 1fr;
-    gap:10px;
-    padding:5px 25px 20px;
-}
-
-.action{
-    padding:14px 5px;
-    border-radius:14px;
-    background:#151c29;
-    font-size:12px;
-}
-
-.call{
-    background:#20b866;
-    font-weight:800;
-}
-
-.debug{
-    height:120px;
-    margin:0 20px 20px;
-    padding:12px;
-    overflow:auto;
-    background:#05070b;
-    border:1px solid rgba(255,255,255,.06);
-    border-radius:15px;
-    color:#7ff0aa;
-    font-family:Consolas,monospace;
-    font-size:10px;
-}
-
-.screen{
-    position:absolute;
-    inset:0;
-    z-index:20;
-    display:none;
-    flex-direction:column;
-    background:
-        radial-gradient(circle at center,#151d2c,#05070c 70%);
-}
-
-.screen.show{
-    display:flex;
-}
-
-.screen-header{
-    height:75px;
-    padding:0 22px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    border-bottom:1px solid rgba(255,255,255,.07);
-}
-
-.screen-title{
-    font-weight:800;
-    letter-spacing:2px;
-}
-
-.close-screen{
-    width:38px;
-    height:38px;
-    border-radius:50%;
-    background:#161e2c;
-    font-size:18px;
-}
-
-.center{
-    flex:1;
-    padding:30px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-}
-
-.avatar{
-    width:105px;
-    height:105px;
-    margin-bottom:20px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border-radius:50%;
-    background:linear-gradient(145deg,#25334c,#111827);
-    font-size:42px;
-}
-
-.call-number{
-    font-size:29px;
-    font-weight:800;
-    letter-spacing:5px;
-}
-
-.call-state{
-    margin-top:12px;
-    color:#9da9bb;
-    font-size:14px;
-}
-
-.call-buttons{
-    display:flex;
-    gap:18px;
-    margin-top:35px;
-}
-
-.round{
-    width:64px;
-    height:64px;
-    border-radius:50%;
-    font-size:24px;
-}
-
-.accept{
-    background:#20b866;
-}
-
-.reject{
-    background:#e83e4d;
-}
-
-.modal{
-    position:absolute;
-    inset:0;
-    z-index:50;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:25px;
-    background:rgba(0,0,0,.72);
-    backdrop-filter:blur(10px);
-}
-
-.modal.show{
-    display:flex;
-}
-
-.modal-box{
-    width:100%;
-    max-width:320px;
-    padding:25px;
-    border-radius:24px;
-    background:#111827;
-    text-align:center;
-}
-
-.modal-box h2{
-    font-size:18px;
-    margin-bottom:8px;
-}
-
-.modal-box p{
-    color:#9ca8b9;
-    font-size:13px;
-}
-
-.modal-buttons{
-    display:grid;
+    grid-template-columns:1fr 1fr;
     gap:10px;
     margin-top:20px;
 }
 
-.modal-buttons button{
-    padding:15px;
-    border-radius:14px;
+.accept{
+    background:#16845c;
+    color:#fff;
+    border:0;
+    border-radius:15px;
+    padding:14px;
     font-weight:700;
 }
 
-.info{
-    background:#1c2637;
+.reject{
+    background:#3a1620;
+    color:#ff8298;
+    border:1px solid #682537;
+    border-radius:15px;
+    padding:14px;
 }
 
-.video-choice{
-    background:#2365d8;
+.video-overlay{
+    align-items:stretch;
+    padding:0;
 }
 
-.active-call{
-    background:#020307;
-}
-
-.remote-video{
-    position:absolute;
-    inset:0;
+.call-screen{
     width:100%;
     height:100%;
-    object-fit:cover;
-    background:#05070b;
+    min-height:100vh;
+    background:#03050a;
+    display:flex;
+    flex-direction:column;
 }
 
-.local-video{
+.call-head{
+    padding:17px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:linear-gradient(to bottom,rgba(0,0,0,.8),transparent);
     position:absolute;
-    top:90px;
-    right:15px;
-    z-index:3;
-    width:110px;
-    height:155px;
-    display:none;
-    object-fit:cover;
-    border:2px solid rgba(255,255,255,.35);
-    border-radius:16px;
-    background:#111;
-}
-
-.video-call .local-video{
-    display:block;
-}
-
-.call-overlay{
-    position:absolute;
-    inset:0;
-    z-index:4;
-    pointer-events:none;
-    background:
-        linear-gradient(
-            to bottom,
-            rgba(0,0,0,.5),
-            transparent 25%,
-            transparent 70%,
-            rgba(0,0,0,.7)
-        );
-}
-
-.active-info{
-    position:absolute;
-    top:28px;
-    left:22px;
+    left:0;
+    right:0;
+    top:0;
     z-index:5;
 }
 
-.active-name{
-    font-size:20px;
-    font-weight:800;
-    letter-spacing:2px;
+.call-title{
+    font-weight:700;
 }
 
-.active-status{
-    margin-top:5px;
-    color:#aab4c4;
+.call-state{
+    color:#7e8ba1;
     font-size:12px;
+    margin-top:3px;
 }
 
-.bottom-call-menu{
-    position:absolute;
-    left:15px;
-    right:15px;
-    bottom:18px;
-    z-index:10;
-    display:flex;
-    justify-content:space-around;
-    padding:12px;
-    border:1px solid rgba(255,255,255,.1);
-    border-radius:22px;
-    background:rgba(13,18,28,.94);
-    backdrop-filter:blur(20px);
+.remote-grid{
+    flex:1;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:4px;
+    padding:4px;
+    background:#000;
+    min-height:0;
 }
 
-.menu-btn{
-    width:52px;
-    height:52px;
-    border-radius:50%;
-    background:#202938;
-    font-size:19px;
+.remote-tile{
+    position:relative;
+    background:#0a0e16;
+    border-radius:10px;
+    overflow:hidden;
+    min-height:150px;
 }
 
-.menu-btn.active{
-    background:#3378ff;
-}
-
-.menu-btn.danger{
-    background:#df3d4b;
-}
-
-.connection{
-    position:absolute;
-    left:20px;
-    right:20px;
-    bottom:95px;
-    z-index:12;
-    display:none;
-    padding:18px;
-    border-radius:18px;
-    background:rgba(10,14,22,.97);
-    font-size:12px;
-    line-height:1.8;
-}
-
-.connection.show{
+.remote-tile video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
     display:block;
 }
 
-@media(max-width:430px){
+.remote-tile audio{
+    display:none;
+}
 
+.tile-number{
+    position:absolute;
+    bottom:8px;
+    left:8px;
+    padding:5px 9px;
+    border-radius:9px;
+    background:rgba(0,0,0,.65);
+    font-size:12px;
+}
+
+.local-tile{
+    position:absolute;
+    right:14px;
+    bottom:105px;
+    width:120px;
+    height:165px;
+    border-radius:14px;
+    overflow:hidden;
+    background:#111;
+    border:1px solid rgba(255,255,255,.18);
+    z-index:8;
+}
+
+.local-tile video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.local-label{
+    position:absolute;
+    bottom:5px;
+    left:6px;
+    font-size:10px;
+    background:rgba(0,0,0,.65);
+    padding:3px 6px;
+    border-radius:5px;
+}
+
+.controls{
+    height:90px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+    background:#070a11;
+}
+
+.control{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.1);
+    background:#171d2a;
+    color:#fff;
+    font-size:19px;
+}
+
+.control.active{
+    background:#315fa9;
+}
+
+.hangup{
+    background:#b52642;
+    border:0;
+    width:58px;
+    height:58px;
+}
+
+.add-person{
+    background:#315fa9;
+}
+
+.members-box{
+    margin-top:18px;
+    background:#080d17;
+    border:1px solid rgba(255,255,255,.07);
+    border-radius:15px;
+    padding:13px;
+}
+
+.members-title{
+    color:#8792a8;
+    font-size:12px;
+    margin-bottom:8px;
+}
+
+.members-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+}
+
+.member{
+    padding:6px 9px;
+    background:#141d2d;
+    border-radius:9px;
+    font-size:12px;
+}
+
+.invite-list{
+    margin-top:15px;
+}
+
+.invite-input{
+    width:100%;
+    padding:14px;
+    background:#070b13;
+    color:#fff;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:13px;
+    outline:none;
+    letter-spacing:3px;
+    text-align:center;
+}
+
+.small-btn{
+    width:100%;
+    margin-top:10px;
+    padding:13px;
+    border:0;
+    border-radius:13px;
+    background:#315fa9;
+    color:#fff;
+}
+
+.hidden{
+    display:none!important;
+}
+
+@media(max-width:500px){
     .app{
         padding:0;
     }
 
     .phone{
-        width:100%;
-        min-height:100vh;
         border-radius:0;
+        min-height:100vh;
+    }
+
+    .remote-grid{
+        grid-template-columns:1fr 1fr;
     }
 }
 </style>
@@ -444,381 +484,260 @@ button{
 <body>
 
 <div class="app">
-<div class="phone">
+    <main class="phone">
 
-<div class="topbar">
+        <header class="top">
+            <div class="logo">NEXUS</div>
+            <div class="subtitle">Internet Calling Network</div>
+        </header>
 
-    <div class="logo">NEXUS</div>
+        <section class="number-box">
+            <div class="number-label">Tu número NEXUS</div>
+            <div class="my-number" id="myNumber">-----</div>
+        </section>
 
-    <div class="status">
+        <div class="status" id="status">Conectando...</div>
 
-        <span
-            class="status-dot"
-            id="statusDot"
-        ></span>
+        <section class="screen">
 
-        <span id="statusText">
-            CONECTANDO
-        </span>
+            <div class="display" id="display">-----</div>
 
-    </div>
+            <div class="mode-row">
+                <button
+                    class="mode-btn active"
+                    id="voiceMode"
+                    onclick="window.NEXUS_setMode('voice')">
+                    🎙️ Voz
+                </button>
 
+                <button
+                    class="mode-btn"
+                    id="videoMode"
+                    onclick="window.NEXUS_setMode('video')">
+                    📹 Video
+                </button>
+            </div>
+
+            <div class="keypad">
+                <button class="key" onclick="window.NEXUS_pressKey('1')">1</button>
+                <button class="key" onclick="window.NEXUS_pressKey('2')">2</button>
+                <button class="key" onclick="window.NEXUS_pressKey('3')">3</button>
+
+                <button class="key" onclick="window.NEXUS_pressKey('4')">4</button>
+                <button class="key" onclick="window.NEXUS_pressKey('5')">5</button>
+                <button class="key" onclick="window.NEXUS_pressKey('6')">6</button>
+
+                <button class="key" onclick="window.NEXUS_pressKey('7')">7</button>
+                <button class="key" onclick="window.NEXUS_pressKey('8')">8</button>
+                <button class="key" onclick="window.NEXUS_pressKey('9')">9</button>
+
+                <button class="key" onclick="window.NEXUS_pressKey('*')">*</button>
+                <button class="key" onclick="window.NEXUS_pressKey('0')">0</button>
+                <button class="key" onclick="window.NEXUS_pressKey('#')">#</button>
+            </div>
+
+            <div class="call-buttons">
+                <button class="call" onclick="window.NEXUS_startCall()">
+                    📞 LLAMAR
+                </button>
+
+                <button class="group" onclick="window.NEXUS_openGroupDialer()">
+                    👥 GRUPAL
+                </button>
+            </div>
+
+            <button class="clear" onclick="window.NEXUS_clearNumber()">
+                BORRAR
+            </button>
+
+        </section>
+    </main>
 </div>
-
-
-<div class="my-number">
-
-    TU NÚMERO NEXUS
-
-    <strong id="myNumber">
-        -----
-    </strong>
-
-</div>
-
-
-<div class="dial">
-
-    <div
-        class="number empty"
-        id="dialNumber"
-    >
-        -----
-    </div>
-
-</div>
-
-
-<div class="keypad">
-
-    <button class="key" onclick="window.NEXUS_pressKey('1')">1</button>
-    <button class="key" onclick="window.NEXUS_pressKey('2')">2</button>
-    <button class="key" onclick="window.NEXUS_pressKey('3')">3</button>
-
-    <button class="key" onclick="window.NEXUS_pressKey('4')">4</button>
-    <button class="key" onclick="window.NEXUS_pressKey('5')">5</button>
-    <button class="key" onclick="window.NEXUS_pressKey('6')">6</button>
-
-    <button class="key" onclick="window.NEXUS_pressKey('7')">7</button>
-    <button class="key" onclick="window.NEXUS_pressKey('8')">8</button>
-    <button class="key" onclick="window.NEXUS_pressKey('9')">9</button>
-
-    <button class="key" onclick="window.NEXUS_pressKey('*')">*</button>
-    <button class="key" onclick="window.NEXUS_pressKey('0')">0</button>
-    <button class="key" onclick="window.NEXUS_pressKey('#')">#</button>
-
-</div>
-
-
-<div class="actions">
-
-    <button
-        class="action"
-        onclick="window.NEXUS_backspace()"
-    >
-        ⌫ Borrar
-    </button>
-
-    <button
-        class="action call"
-        onclick="window.NEXUS_openCallChoice()"
-    >
-        ☎ Llamar
-    </button>
-
-    <button
-        class="action"
-        onclick="window.NEXUS_clearNumber()"
-    >
-        C Limpiar
-    </button>
-
-</div>
-
-
-<div
-    class="debug"
-    id="debug"
-></div>
 
 
 <!-- LLAMADA ENTRANTE -->
+<div class="overlay" id="incomingOverlay">
+    <div class="card">
+        <h2 id="incomingTitle">Llamada entrante</h2>
+        <p id="incomingDescription">
+            Alguien está intentando comunicarse contigo.
+        </p>
 
-<div
-    class="screen"
-    id="incomingScreen"
->
+        <div class="incoming-number" id="incomingNumber">-----</div>
 
-    <div class="screen-header">
-
-        <div class="screen-title">
-            LLAMADA ENTRANTE
-        </div>
-
-    </div>
-
-    <div class="center">
-
-        <div class="avatar">
-            📞
-        </div>
-
-        <div
-            class="call-number"
-            id="incomingNumber"
-        >
-            -----
-        </div>
-
-        <div
-            class="call-state"
-            id="incomingModeText"
-        >
-            Llamada de voz
-        </div>
-
-        <div class="call-buttons">
-
-            <button
-                class="round reject"
-                onclick="window.NEXUS_rejectIncoming()"
-            >
-                ✕
+        <div class="actions">
+            <button class="accept" onclick="window.NEXUS_acceptIncoming()">
+                ✓ ACEPTAR
             </button>
 
-            <button
-                class="round accept"
-                onclick="window.NEXUS_acceptIncoming()"
-            >
-                ✓
+            <button class="reject" onclick="window.NEXUS_rejectIncoming()">
+                ✕ RECHAZAR
             </button>
-
         </div>
-
     </div>
-
 </div>
 
 
-<!-- LLAMADA SALIENTE -->
+<!-- DIALER GRUPAL -->
+<div class="overlay" id="groupDialerOverlay">
+    <div class="card">
+        <h2>👥 Llamada grupal</h2>
+        <p>
+            Agrega hasta 3 números además del tuyo.
+        </p>
 
-<div
-    class="screen"
-    id="outgoingScreen"
->
+        <div class="invite-list">
+            <input
+                id="groupNumber1"
+                class="invite-input"
+                inputmode="numeric"
+                maxlength="5"
+                placeholder="NÚMERO 1"
+            >
 
-    <div class="screen-header">
+            <input
+                id="groupNumber2"
+                class="invite-input"
+                inputmode="numeric"
+                maxlength="5"
+                placeholder="NÚMERO 2"
+                style="margin-top:8px"
+            >
 
-        <div class="screen-title">
-            NEXUS
+            <input
+                id="groupNumber3"
+                class="invite-input"
+                inputmode="numeric"
+                maxlength="5"
+                placeholder="NÚMERO 3"
+                style="margin-top:8px"
+            >
         </div>
 
-        <button
-            class="close-screen"
-            onclick="window.NEXUS_cancelOutgoing()"
-        >
-            ×
-        </button>
+        <div class="actions">
+            <button
+                class="accept"
+                onclick="window.NEXUS_startGroupCall()">
+                👥 INVITAR
+            </button>
 
+            <button
+                class="reject"
+                onclick="window.NEXUS_closeGroupDialer()">
+                CANCELAR
+            </button>
+        </div>
     </div>
-
-    <div class="center">
-
-        <div class="avatar">
-            📡
-        </div>
-
-        <div
-            class="call-number"
-            id="outgoingNumber"
-        >
-            -----
-        </div>
-
-        <div
-            class="call-state"
-            id="outgoingState"
-        >
-            Esperando respuesta...
-        </div>
-
-    </div>
-
 </div>
 
 
 <!-- LLAMADA ACTIVA -->
+<div class="overlay video-overlay" id="callOverlay">
 
-<div
-    class="screen active-call"
-    id="activeScreen"
->
+    <div class="call-screen">
 
-    <video
-        class="remote-video"
-        id="remoteVideo"
-        autoplay
-        playsinline
-    ></video>
+        <div class="call-head">
+            <div>
+                <div class="call-title" id="callTitle">
+                    NEXUS
+                </div>
+                <div class="call-state" id="callState">
+                    Conectando...
+                </div>
+            </div>
 
-    <video
-        class="local-video"
-        id="localVideo"
-        autoplay
-        muted
-        playsinline
-    ></video>
-
-    <audio
-        id="remoteAudio"
-        autoplay
-    ></audio>
-
-    <div class="call-overlay"></div>
-
-    <div class="active-info">
-
-        <div
-            class="active-name"
-            id="activeNumber"
-        >
-            -----
+            <div id="callModeLabel">
+                🎙️
+            </div>
         </div>
 
-        <div
-            class="active-status"
-            id="activeStatus"
-        >
-            Conectando...
+        <div class="remote-grid" id="remoteGrid"></div>
+
+        <div class="local-tile" id="localTile">
+            <video id="localVideo" autoplay muted playsinline></video>
+            <div class="local-label">Tú</div>
+        </div>
+
+        <div class="controls">
+
+            <button
+                class="control"
+                id="muteButton"
+                onclick="window.NEXUS_toggleMute()">
+                🎙️
+            </button>
+
+            <button
+                class="control"
+                onclick="window.NEXUS_toggleSpeaker()">
+                🔊
+            </button>
+
+            <button
+                class="control"
+                id="cameraButton"
+                onclick="window.NEXUS_toggleCamera()">
+                📹
+            </button>
+
+            <button
+                class="control add-person"
+                id="addPersonButton"
+                onclick="window.NEXUS_addPerson()">
+                ＋
+            </button>
+
+            <button
+                class="control hangup"
+                onclick="window.NEXUS_hangup()">
+                ☎
+            </button>
+
         </div>
 
     </div>
-
-    <div
-        class="connection"
-        id="connectionInfo"
-    >
-
-        <b>CONEXIÓN</b><br>
-
-        Estado:
-        <span id="connectionState">---</span>
-        <br>
-
-        ICE:
-        <span id="iceState">---</span>
-        <br>
-
-        Señal:
-        <span id="signalingState">---</span>
-        <br>
-
-        Tipo:
-        <span id="connectionMode">---</span>
-
-    </div>
-
-    <div class="bottom-call-menu">
-
-        <button
-            class="menu-btn"
-            id="muteBtn"
-            onclick="window.NEXUS_toggleMute()"
-        >
-            🎙
-        </button>
-
-        <button
-            class="menu-btn"
-            id="speakerBtn"
-            onclick="window.NEXUS_toggleSpeaker()"
-        >
-            🔊
-        </button>
-
-        <button
-            class="menu-btn"
-            id="cameraBtn"
-            onclick="window.NEXUS_toggleCamera()"
-        >
-            📹
-        </button>
-
-        <button
-            class="menu-btn"
-            onclick="window.NEXUS_toggleConnectionInfo()"
-        >
-            ⓘ
-        </button>
-
-        <button
-            class="menu-btn danger"
-            onclick="window.NEXUS_hangup()"
-        >
-            ☎
-        </button>
-
-    </div>
-
 </div>
 
 
-<!-- ELEGIR TIPO -->
-
-<div
-    class="modal"
-    id="callChoiceModal"
->
-
-    <div class="modal-box">
-
-        <h2>
-            ¿Cómo quieres llamar?
-        </h2>
-
-        <p id="choiceNumber">
-            NEXUS -----
+<!-- AGREGAR PARTICIPANTE -->
+<div class="overlay" id="addPersonOverlay">
+    <div class="card">
+        <h2>Agregar persona</h2>
+        <p>
+            Introduce el número NEXUS de la persona.
         </p>
 
-        <div class="modal-buttons">
+        <input
+            id="addPersonInput"
+            class="invite-input"
+            inputmode="numeric"
+            maxlength="5"
+            placeholder="48217"
+            style="margin-top:15px"
+        >
 
+        <div class="actions">
             <button
-                class="info"
-                onclick="window.NEXUS_startCall('voice')"
-            >
-                ☎ Llamada de voz
+                class="accept"
+                onclick="window.NEXUS_sendGroupInvite()">
+                INVITAR
             </button>
 
             <button
-                class="video-choice"
-                onclick="window.NEXUS_startCall('video')"
-            >
-                📹 Videollamada
+                class="reject"
+                onclick="window.NEXUS_closeAddPerson()">
+                CANCELAR
             </button>
-
-            <button
-                class="info"
-                onclick="window.NEXUS_closeCallChoice()"
-            >
-                Cancelar
-            </button>
-
         </div>
-
     </div>
-
-</div>
-
-</div>
 </div>
 
 
 <script>
 "use strict";
 
-
 /* =========================================================
-   SUPABASE
+   CONFIGURACIÓN
 ========================================================= */
 
 const NEXUS_SUPABASE_URL =
@@ -842,236 +761,214 @@ const NEXUS_client =
     );
 
 
-/* =========================================================
-   ESTADO
-========================================================= */
-
-const NEXUS_STORAGE_KEY =
+const NEXUS_NUMBER_KEY =
     "nexus_persistent_number_v1";
 
+
+/* =========================================================
+   ESTADO GENERAL
+========================================================= */
+
 let NEXUS_myNumber = null;
-let NEXUS_userId = null;
-
-let NEXUS_dialValue = "";
-
-let NEXUS_destination = null;
-
-let NEXUS_callMode = "voice";
-
-let NEXUS_callId = null;
-
-let NEXUS_incomingCallId = null;
-let NEXUS_incomingFrom = null;
-let NEXUS_incomingCallType = "voice";
-
-let NEXUS_peer = null;
-
-let NEXUS_localStream = null;
-let NEXUS_remoteStream = null;
-
-let NEXUS_videoTransceiver = null;
-
-let NEXUS_micEnabled = true;
-let NEXUS_speakerEnabled = true;
-let NEXUS_cameraEnabled = false;
-
-let NEXUS_remoteDescriptionReady = false;
-let NEXUS_pendingIce = [];
+let NEXUS_session = null;
 
 let NEXUS_signalingChannel = null;
 
-let NEXUS_callActive = false;
+let NEXUS_mode = "voice";
+let NEXUS_currentNumber = "";
+
+let NEXUS_localStream = null;
+
+let NEXUS_peerConnection = null;
+let NEXUS_remoteAudio = null;
+
+let NEXUS_currentCallId = null;
+let NEXUS_incomingCall = null;
+
+let NEXUS_isMuted = false;
+let NEXUS_cameraEnabled = false;
 
 
 /* =========================================================
-   ELEMENTOS
+   ESTADO GRUPAL
 ========================================================= */
 
-const NEXUS_el = {
+let NEXUS_groupCallId = null;
+let NEXUS_groupMembers = [];
+let NEXUS_groupConnections = {};
+let NEXUS_groupStreams = {};
+let NEXUS_groupPendingCandidates = {};
+let NEXUS_groupRemoteDescriptions = {};
 
-    dial:
-        document.getElementById("dialNumber"),
-
-    debug:
-        document.getElementById("debug"),
-
-    myNumber:
-        document.getElementById("myNumber"),
-
-    statusText:
-        document.getElementById("statusText"),
-
-    statusDot:
-        document.getElementById("statusDot"),
-
-    incomingScreen:
-        document.getElementById("incomingScreen"),
-
-    incomingNumber:
-        document.getElementById("incomingNumber"),
-
-    incomingModeText:
-        document.getElementById("incomingModeText"),
-
-    outgoingScreen:
-        document.getElementById("outgoingScreen"),
-
-    outgoingNumber:
-        document.getElementById("outgoingNumber"),
-
-    outgoingState:
-        document.getElementById("outgoingState"),
-
-    activeScreen:
-        document.getElementById("activeScreen"),
-
-    activeNumber:
-        document.getElementById("activeNumber"),
-
-    activeStatus:
-        document.getElementById("activeStatus"),
-
-    localVideo:
-        document.getElementById("localVideo"),
-
-    remoteVideo:
-        document.getElementById("remoteVideo"),
-
-    remoteAudio:
-        document.getElementById("remoteAudio"),
-
-    choiceModal:
-        document.getElementById("callChoiceModal"),
-
-    choiceNumber:
-        document.getElementById("choiceNumber"),
-
-    connectionInfo:
-        document.getElementById("connectionInfo"),
-
-    connectionState:
-        document.getElementById("connectionState"),
-
-    iceState:
-        document.getElementById("iceState"),
-
-    signalingState:
-        document.getElementById("signalingState"),
-
-    connectionMode:
-        document.getElementById("connectionMode"),
-
-    muteBtn:
-        document.getElementById("muteBtn"),
-
-    speakerBtn:
-        document.getElementById("speakerBtn"),
-
-    cameraBtn:
-        document.getElementById("cameraBtn")
-};
+let NEXUS_isGroupCall = false;
 
 
 /* =========================================================
-   DEBUG
+   DOM
 ========================================================= */
 
-function NEXUS_log(message){
+const NEXUS_display =
+    document.getElementById("display");
 
-    console.log(
-        "[NEXUS]",
-        message
+const NEXUS_myNumberEl =
+    document.getElementById("myNumber");
+
+const NEXUS_status =
+    document.getElementById("status");
+
+const NEXUS_incomingOverlay =
+    document.getElementById("incomingOverlay");
+
+const NEXUS_groupDialerOverlay =
+    document.getElementById("groupDialerOverlay");
+
+const NEXUS_callOverlay =
+    document.getElementById("callOverlay");
+
+const NEXUS_addPersonOverlay =
+    document.getElementById("addPersonOverlay");
+
+const NEXUS_remoteGrid =
+    document.getElementById("remoteGrid");
+
+const NEXUS_localVideo =
+    document.getElementById("localVideo");
+
+const NEXUS_localTile =
+    document.getElementById("localTile");
+
+const NEXUS_callTitle =
+    document.getElementById("callTitle");
+
+const NEXUS_callState =
+    document.getElementById("callState");
+
+const NEXUS_callModeLabel =
+    document.getElementById("callModeLabel");
+
+const NEXUS_cameraButton =
+    document.getElementById("cameraButton");
+
+const NEXUS_addPersonButton =
+    document.getElementById("addPersonButton");
+
+
+/* =========================================================
+   UTILIDADES
+========================================================= */
+
+function NEXUS_setStatus(text){
+    NEXUS_status.textContent = text;
+}
+
+function NEXUS_randomId(){
+    return (
+        Date.now().toString(36) +
+        Math.random().toString(36).slice(2,10)
     );
+}
 
-    const line =
-        document.createElement("div");
+function NEXUS_validNumber(number){
+    return /^\d{5}$/.test(number);
+}
 
-    line.textContent =
-        new Date().toLocaleTimeString() +
-        " | " +
-        message;
+function NEXUS_uniqueNumbers(numbers){
+    return [...new Set(
+        numbers.filter(
+            n => NEXUS_validNumber(n) &&
+                 n !== NEXUS_myNumber
+        )
+    )];
+}
 
-    NEXUS_el.debug.appendChild(line);
+function NEXUS_updateDisplay(){
+    NEXUS_display.textContent =
+        NEXUS_currentNumber || "-----";
+}
 
-    NEXUS_el.debug.scrollTop =
-        NEXUS_el.debug.scrollHeight;
+function NEXUS_sleep(ms){
+    return new Promise(resolve => setTimeout(resolve,ms));
 }
 
 
 /* =========================================================
-   TECLADO
+   KEYPAD
 ========================================================= */
 
-window.NEXUS_pressKey =
-function(key){
+window.NEXUS_pressKey = function(key){
 
-    if(
-        key === "*" ||
-        key === "#"
-    ){
+    if(NEXUS_currentNumber.length >= 5){
         return;
     }
 
-    if(
-        NEXUS_dialValue.length >= 5
-    ){
+    if(!/^\d$/.test(key)){
         return;
     }
 
-    NEXUS_dialValue += key;
+    NEXUS_currentNumber += key;
 
-    NEXUS_updateDial();
+    NEXUS_updateDisplay();
 };
 
 
-window.NEXUS_backspace =
-function(){
+window.NEXUS_clearNumber = function(){
 
-    NEXUS_dialValue =
-        NEXUS_dialValue.slice(
-            0,
-            -1
-        );
+    NEXUS_currentNumber =
+        NEXUS_currentNumber.slice(0,-1);
 
-    NEXUS_updateDial();
+    NEXUS_updateDisplay();
 };
 
 
-window.NEXUS_clearNumber =
-function(){
+window.NEXUS_setMode = function(mode){
 
-    NEXUS_dialValue = "";
+    NEXUS_mode = mode;
 
-    NEXUS_updateDial();
+    document
+        .getElementById("voiceMode")
+        .classList.toggle(
+            "active",
+            mode === "voice"
+        );
+
+    document
+        .getElementById("videoMode")
+        .classList.toggle(
+            "active",
+            mode === "video"
+        );
 };
-
-
-function NEXUS_updateDial(){
-
-    if(!NEXUS_dialValue){
-
-        NEXUS_el.dial.textContent =
-            "-----";
-
-        NEXUS_el.dial.classList.add(
-            "empty"
-        );
-
-    }else{
-
-        NEXUS_el.dial.textContent =
-            NEXUS_dialValue;
-
-        NEXUS_el.dial.classList.remove(
-            "empty"
-        );
-    }
-}
 
 
 /* =========================================================
-   NÚMERO
+   AUTH + NÚMERO NEXUS
 ========================================================= */
+
+async function NEXUS_getSession(){
+
+    const result =
+        await NEXUS_client.auth.getSession();
+
+    if(result.data && result.data.session){
+        NEXUS_session =
+            result.data.session;
+
+        return NEXUS_session;
+    }
+
+    const login =
+        await NEXUS_client.auth.signInAnonymously();
+
+    if(login.error){
+        throw login.error;
+    }
+
+    NEXUS_session =
+        login.data.session;
+
+    return NEXUS_session;
+}
+
 
 function NEXUS_generateNumber(){
 
@@ -1084,308 +981,157 @@ function NEXUS_generateNumber(){
 }
 
 
-function NEXUS_getSavedNumber(){
+async function NEXUS_findExistingNumber(){
 
-    try{
+    if(!NEXUS_session){
+        return null;
+    }
 
-        const saved =
-            localStorage.getItem(
-                NEXUS_STORAGE_KEY
-            );
+    const result =
+        await NEXUS_client
+            .from("nexus_users")
+            .select("nexus_number")
+            .eq("id",NEXUS_session.user.id)
+            .maybeSingle();
 
-        if(
-            saved &&
-            /^\d{5}$/.test(saved)
-        ){
-            return saved;
-        }
+    if(result.error){
+        console.warn(
+            "Error buscando número:",
+            result.error
+        );
+        return null;
+    }
 
-    }catch(error){}
-
-    return null;
+    return result.data
+        ? result.data.nexus_number
+        : null;
 }
 
 
-function NEXUS_saveNumber(number){
+async function NEXUS_createNumber(){
+
+    for(let attempt=0;attempt<20;attempt++){
+
+        const number =
+            NEXUS_generateNumber();
+
+        const result =
+            await NEXUS_client
+                .from("nexus_users")
+                .insert({
+                    id:NEXUS_session.user.id,
+                    nexus_number:number,
+                    online:true,
+                    last_seen:new Date().toISOString()
+                })
+                .select()
+                .single();
+
+        if(!result.error){
+            return number;
+        }
+    }
+
+    throw new Error(
+        "No se pudo generar un número NEXUS."
+    );
+}
+
+
+async function NEXUS_loadNumber(){
 
     try{
+
+        await NEXUS_getSession();
+
+        let number =
+            await NEXUS_findExistingNumber();
+
+        if(!number){
+
+            const local =
+                localStorage.getItem(
+                    NEXUS_NUMBER_KEY
+                );
+
+            if(
+                local &&
+                NEXUS_validNumber(local)
+            ){
+                number = local;
+
+                const update =
+                    await NEXUS_client
+                        .from("nexus_users")
+                        .upsert({
+                            id:NEXUS_session.user.id,
+                            nexus_number:number,
+                            online:true,
+                            last_seen:new Date().toISOString()
+                        });
+
+                if(update.error){
+                    console.warn(update.error);
+                }
+            }
+        }
+
+        if(!number){
+            number =
+                await NEXUS_createNumber();
+        }
+
+        NEXUS_myNumber =
+            String(number);
 
         localStorage.setItem(
-            NEXUS_STORAGE_KEY,
-            number
-        );
-
-    }catch(error){}
-}
-
-
-function NEXUS_generateCallId(){
-
-    return (
-        Date.now().toString(36) +
-        "-" +
-        Math.random()
-            .toString(36)
-            .slice(2,10)
-    );
-}
-
-
-/* =========================================================
-   PANTALLAS
-========================================================= */
-
-function NEXUS_showScreen(screen){
-
-    [
-        NEXUS_el.incomingScreen,
-        NEXUS_el.outgoingScreen,
-        NEXUS_el.activeScreen
-    ].forEach(
-        item=>{
-            item.classList.remove("show");
-        }
-    );
-
-    if(screen){
-        screen.classList.add("show");
-    }
-}
-
-
-function NEXUS_hideScreens(){
-
-    [
-        NEXUS_el.incomingScreen,
-        NEXUS_el.outgoingScreen,
-        NEXUS_el.activeScreen
-    ].forEach(
-        item=>{
-            item.classList.remove("show");
-        }
-    );
-}
-
-
-/* =========================================================
-   AUTH
-========================================================= */
-
-async function NEXUS_initialize(){
-
-    try{
-
-        NEXUS_log(
-            "Inicializando NEXUS..."
-        );
-
-        let result =
-            await NEXUS_client.auth
-                .getSession();
-
-        let session =
-            result.data.session;
-
-        if(!session){
-
-            const login =
-                await NEXUS_client.auth
-                    .signInAnonymously();
-
-            if(login.error){
-                throw login.error;
-            }
-
-            session =
-                login.data.session;
-        }
-
-        NEXUS_userId =
-            session.user.id;
-
-        await NEXUS_loadNumber();
-
-        await NEXUS_setupRealtime();
-
-        await NEXUS_presence(true);
-
-        NEXUS_setStatus(true);
-
-        NEXUS_log(
-            "✅ ONLINE • " +
+            NEXUS_NUMBER_KEY,
             NEXUS_myNumber
         );
+
+        NEXUS_myNumberEl.textContent =
+            NEXUS_myNumber;
+
+        NEXUS_setStatus(
+            "Conectado a NEXUS"
+        );
+
+        await NEXUS_setOnline(true);
+
+        await NEXUS_setupRealtime();
 
     }catch(error){
 
         console.error(error);
 
-        NEXUS_setStatus(false);
-
-        NEXUS_log(
-            "❌ " +
-            error.message
+        NEXUS_setStatus(
+            "Error de conexión con NEXUS"
         );
     }
 }
 
 
-/* =========================================================
-   NÚMERO
-========================================================= */
+async function NEXUS_setOnline(online){
 
-async function NEXUS_loadNumber(){
+    if(!NEXUS_session || !NEXUS_myNumber){
+        return;
+    }
 
     const result =
         await NEXUS_client
             .from("nexus_users")
-            .select("*")
-            .eq("id",NEXUS_userId)
-            .maybeSingle();
+            .update({
+                online,
+                last_seen:new Date().toISOString()
+            })
+            .eq("id",NEXUS_session.user.id);
 
     if(result.error){
-        throw result.error;
-    }
-
-    if(result.data){
-
-        NEXUS_myNumber =
-            String(
-                result.data.nexus_number
-            );
-
-        NEXUS_saveNumber(
-            NEXUS_myNumber
+        console.warn(
+            "Estado online:",
+            result.error
         );
-
-        NEXUS_el.myNumber.textContent =
-            NEXUS_myNumber;
-
-        return;
     }
-
-
-    const saved =
-        NEXUS_getSavedNumber();
-
-    if(saved){
-
-        const existing =
-            await NEXUS_client
-                .from("nexus_users")
-                .select("id")
-                .eq("nexus_number",saved)
-                .maybeSingle();
-
-        if(!existing.data){
-
-            const insert =
-                await NEXUS_client
-                    .from("nexus_users")
-                    .insert({
-                        id:NEXUS_userId,
-                        nexus_number:saved,
-                        online:false
-                    });
-
-            if(!insert.error){
-
-                NEXUS_myNumber =
-                    saved;
-
-                NEXUS_el.myNumber.textContent =
-                    saved;
-
-                return;
-            }
-        }
-    }
-
-
-    for(let i=0;i<50;i++){
-
-        const candidate =
-            NEXUS_generateNumber();
-
-        const exists =
-            await NEXUS_client
-                .from("nexus_users")
-                .select("id")
-                .eq("nexus_number",candidate)
-                .maybeSingle();
-
-        if(exists.data){
-            continue;
-        }
-
-        const insert =
-            await NEXUS_client
-                .from("nexus_users")
-                .insert({
-                    id:NEXUS_userId,
-                    nexus_number:candidate,
-                    online:false
-                });
-
-        if(!insert.error){
-
-            NEXUS_myNumber =
-                candidate;
-
-            NEXUS_saveNumber(
-                candidate
-            );
-
-            NEXUS_el.myNumber.textContent =
-                candidate;
-
-            return;
-        }
-    }
-
-    throw new Error(
-        "No se pudo crear el número"
-    );
-}
-
-
-/* =========================================================
-   STATUS
-========================================================= */
-
-function NEXUS_setStatus(online){
-
-    NEXUS_el.statusText.textContent =
-        online
-            ? "ONLINE"
-            : "DESCONECTADO";
-
-    NEXUS_el.statusDot.style.background =
-        online
-            ? "#35dc7c"
-            : "#e83e4d";
-
-    NEXUS_el.statusDot.style.boxShadow =
-        online
-            ? "0 0 12px #35dc7c"
-            : "0 0 12px #e83e4d";
-}
-
-
-async function NEXUS_presence(online){
-
-    if(!NEXUS_userId){
-        return;
-    }
-
-    await NEXUS_client
-        .from("nexus_users")
-        .update({
-            online:online,
-            last_seen:
-                new Date().toISOString()
-        })
-        .eq("id",NEXUS_userId);
 }
 
 
@@ -1394,6 +1140,10 @@ async function NEXUS_presence(online){
 ========================================================= */
 
 async function NEXUS_setupRealtime(){
+
+    if(NEXUS_signalingChannel){
+        return;
+    }
 
     NEXUS_signalingChannel =
         NEXUS_client.channel(
@@ -1407,23 +1157,25 @@ async function NEXUS_setupRealtime(){
             }
         );
 
+
     NEXUS_signalingChannel.on(
         "broadcast",
-        {
-            event:"signal"
-        },
-        ({payload})=>{
-            NEXUS_handleSignal(payload);
+        {event:"signal"},
+        ({payload}) => {
+
+            NEXUS_handleSignal(
+                payload
+            );
         }
     );
 
-    const status =
-        await NEXUS_signalingChannel
-            .subscribe();
 
-    NEXUS_log(
-        "CHANNEL: " +
-        status
+    const result =
+        await NEXUS_signalingChannel.subscribe();
+
+    console.log(
+        "NEXUS Realtime:",
+        result
     );
 }
 
@@ -1431,7 +1183,7 @@ async function NEXUS_setupRealtime(){
 async function NEXUS_sendSignal(payload){
 
     if(!NEXUS_signalingChannel){
-        return;
+        return false;
     }
 
     try{
@@ -1439,402 +1191,19 @@ async function NEXUS_sendSignal(payload){
         await NEXUS_signalingChannel.send({
             type:"broadcast",
             event:"signal",
-            payload:{
-                ...payload,
-                from:NEXUS_myNumber
-            }
+            payload
         });
 
-        NEXUS_log(
-            "📤 " +
-            payload.type +
-            " → " +
-            payload.to
-        );
+        return true;
 
     }catch(error){
 
-        NEXUS_log(
-            "❌ SIGNAL: " +
-            error.message
-        );
-    }
-}
-
-
-/* =========================================================
-   SEÑALES
-========================================================= */
-
-async function NEXUS_handleSignal(payload){
-
-    if(!payload){
-        return;
-    }
-
-    if(
-        payload.to !==
-        NEXUS_myNumber
-    ){
-        return;
-    }
-
-    switch(payload.type){
-
-        case "incoming_call":
-            NEXUS_handleIncoming(payload);
-            break;
-
-        case "call_accept":
-            await NEXUS_handleAccepted(payload);
-            break;
-
-        case "offer":
-            await NEXUS_handleOffer(payload);
-            break;
-
-        case "answer":
-            await NEXUS_handleAnswer(payload);
-            break;
-
-        case "ice":
-            await NEXUS_handleIce(payload);
-            break;
-
-        case "reject":
-            NEXUS_handleReject(payload);
-            break;
-
-        case "hangup":
-            NEXUS_handleHangup(payload);
-            break;
-    }
-}
-
-
-/* =========================================================
-   ELEGIR LLAMADA
-========================================================= */
-
-window.NEXUS_openCallChoice =
-function(){
-
-    if(
-        NEXUS_dialValue.length !== 5
-    ){
-
-        NEXUS_log(
-            "⚠️ Escribe exactamente 5 dígitos"
+        console.error(
+            "Signal error:",
+            error
         );
 
-        return;
-    }
-
-    if(
-        NEXUS_dialValue ===
-        NEXUS_myNumber
-    ){
-
-        NEXUS_log(
-            "⚠️ No puedes llamarte"
-        );
-
-        return;
-    }
-
-    NEXUS_el.choiceNumber.textContent =
-        "NEXUS " +
-        NEXUS_dialValue;
-
-    NEXUS_el.choiceModal.classList.add(
-        "show"
-    );
-};
-
-
-window.NEXUS_closeCallChoice =
-function(){
-
-    NEXUS_el.choiceModal.classList.remove(
-        "show"
-    );
-};
-
-
-/* =========================================================
-   INICIAR LLAMADA
-========================================================= */
-
-window.NEXUS_startCall =
-async function(mode){
-
-    NEXUS_closeCallChoice();
-
-    NEXUS_destination =
-        NEXUS_dialValue;
-
-    NEXUS_callMode =
-        mode === "video"
-            ? "video"
-            : "voice";
-
-    NEXUS_callId =
-        NEXUS_generateCallId();
-
-    NEXUS_callActive = false;
-
-    NEXUS_el.outgoingNumber.textContent =
-        NEXUS_destination;
-
-    NEXUS_el.outgoingState.textContent =
-        NEXUS_callMode === "video"
-            ? "📹 Esperando respuesta..."
-            : "☎ Esperando respuesta...";
-
-    NEXUS_showScreen(
-        NEXUS_el.outgoingScreen
-    );
-
-    await NEXUS_sendSignal({
-
-        type:"incoming_call",
-
-        to:NEXUS_destination,
-
-        callId:NEXUS_callId,
-
-        mode:NEXUS_callMode
-    });
-};
-
-
-/* =========================================================
-   ENTRANTE
-========================================================= */
-
-function NEXUS_handleIncoming(payload){
-
-    if(NEXUS_callActive){
-        return;
-    }
-
-    NEXUS_incomingCallId =
-        payload.callId;
-
-    NEXUS_incomingFrom =
-        payload.from;
-
-    NEXUS_incomingCallType =
-        payload.mode === "video"
-            ? "video"
-            : "voice";
-
-    NEXUS_el.incomingNumber.textContent =
-        NEXUS_incomingFrom;
-
-    NEXUS_el.incomingModeText.textContent =
-        NEXUS_incomingCallType === "video"
-            ? "📹 Videollamada"
-            : "☎ Llamada de voz";
-
-    NEXUS_showScreen(
-        NEXUS_el.incomingScreen
-    );
-
-    NEXUS_log(
-        "📞 ENTRANTE " +
-        NEXUS_incomingFrom
-    );
-}
-
-
-/* =========================================================
-   ACEPTAR
-========================================================= */
-
-window.NEXUS_acceptIncoming =
-async function(){
-
-    NEXUS_destination =
-        NEXUS_incomingFrom;
-
-    NEXUS_callId =
-        NEXUS_incomingCallId;
-
-    NEXUS_callMode =
-        NEXUS_incomingCallType;
-
-    NEXUS_callActive = true;
-
-    NEXUS_el.activeNumber.textContent =
-        NEXUS_destination;
-
-    NEXUS_el.activeStatus.textContent =
-        "Conectando...";
-
-    NEXUS_showScreen(
-        NEXUS_el.activeScreen
-    );
-
-    try{
-
-        await NEXUS_prepareMedia(
-            NEXUS_callMode
-        );
-
-        await NEXUS_createPeer();
-
-        await NEXUS_sendSignal({
-
-            type:"call_accept",
-
-            to:NEXUS_destination,
-
-            callId:NEXUS_callId,
-
-            mode:NEXUS_callMode
-        });
-
-        NEXUS_incomingFrom = null;
-        NEXUS_incomingCallId = null;
-
-        NEXUS_log(
-            "✅ LLAMADA ACEPTADA"
-        );
-
-    }catch(error){
-
-        NEXUS_log(
-            "❌ ACEPTAR: " +
-            error.message
-        );
-
-        await NEXUS_sendSignal({
-
-            type:"reject",
-
-            to:NEXUS_destination,
-
-            callId:NEXUS_callId
-        });
-
-        NEXUS_cleanup();
-    }
-};
-
-
-/* =========================================================
-   RECHAZAR
-========================================================= */
-
-window.NEXUS_rejectIncoming =
-async function(){
-
-    if(NEXUS_incomingFrom){
-
-        await NEXUS_sendSignal({
-
-            type:"reject",
-
-            to:NEXUS_incomingFrom,
-
-            callId:NEXUS_incomingCallId
-        });
-    }
-
-    NEXUS_incomingFrom = null;
-    NEXUS_incomingCallId = null;
-
-    NEXUS_hideScreens();
-};
-
-
-/* =========================================================
-   EL OTRO ACEPTÓ
-========================================================= */
-
-async function NEXUS_handleAccepted(payload){
-
-    if(
-        payload.callId !==
-        NEXUS_callId
-    ){
-        return;
-    }
-
-    NEXUS_callActive = true;
-
-    /*
-       ESTA ES LA CORRECCIÓN PRINCIPAL.
-
-       El dispositivo que llamó deja de mostrar
-       "esperando" y entra a la pantalla activa.
-    */
-
-    NEXUS_el.activeNumber.textContent =
-        NEXUS_destination;
-
-    NEXUS_el.activeStatus.textContent =
-        "Preparando conexión...";
-
-    NEXUS_showScreen(
-        NEXUS_el.activeScreen
-    );
-
-
-    try{
-
-        await NEXUS_prepareMedia(
-            NEXUS_callMode
-        );
-
-        await NEXUS_createPeer();
-
-
-        NEXUS_el.activeStatus.textContent =
-            "Conectando...";
-
-
-        const offer =
-            await NEXUS_peer
-                .createOffer();
-
-
-        await NEXUS_peer
-            .setLocalDescription(
-                offer
-            );
-
-
-        await NEXUS_sendSignal({
-
-            type:"offer",
-
-            to:NEXUS_destination,
-
-            callId:NEXUS_callId,
-
-            mode:NEXUS_callMode,
-
-            offer:{
-                type:offer.type,
-                sdp:offer.sdp
-            }
-        });
-
-        NEXUS_log(
-            "📡 OFFER ENVIADO"
-        );
-
-    }catch(error){
-
-        NEXUS_log(
-            "❌ CREANDO OFFER: " +
-            error.message
-        );
-
-        NEXUS_el.activeStatus.textContent =
-            "Error de conexión";
+        return false;
     }
 }
 
@@ -1843,91 +1212,57 @@ async function NEXUS_handleAccepted(payload){
    MEDIA
 ========================================================= */
 
-async function NEXUS_prepareMedia(mode){
+async function NEXUS_getLocalMedia(mode){
 
     if(NEXUS_localStream){
-
-        NEXUS_localStream
-            .getTracks()
-            .forEach(
-                track=>track.stop()
-            );
+        return NEXUS_localStream;
     }
 
-    const constraints = {
-
-        audio:{
-            echoCancellation:true,
-            noiseSuppression:true,
-            autoGainControl:true
-        },
-
-        video:
-            mode === "video"
-            ? {
-                width:{
-                    ideal:1280
-                },
-                height:{
-                    ideal:720
-                },
-                facingMode:"user"
-            }
-            : false
-    };
-
-
     NEXUS_localStream =
-        await navigator
-            .mediaDevices
-            .getUserMedia(
-                constraints
-            );
+        await navigator.mediaDevices.getUserMedia({
 
+            audio:{
+                echoCancellation:true,
+                noiseSuppression:true,
+                autoGainControl:true
+            },
 
-    NEXUS_el.localVideo.srcObject =
-        NEXUS_localStream;
-
+            video:
+                mode === "video"
+                ? {
+                    width:{ideal:1280},
+                    height:{ideal:720},
+                    facingMode:"user"
+                }
+                : false
+        });
 
     NEXUS_cameraEnabled =
         mode === "video";
 
+    NEXUS_localVideo.srcObject =
+        NEXUS_localStream;
 
-    if(mode === "video"){
+    NEXUS_localTile.classList.toggle(
+        "hidden",
+        mode !== "video"
+    );
 
-        NEXUS_el.activeScreen
-            .classList.add(
-                "video-call"
-            );
-
-    }else{
-
-        NEXUS_el.activeScreen
-            .classList.remove(
-                "video-call"
-            );
-    }
-
-    NEXUS_updateButtons();
+    return NEXUS_localStream;
 }
 
 
 /* =========================================================
-   PEER CONNECTION
+   INDIVIDUAL WEBRTC
 ========================================================= */
 
-async function NEXUS_createPeer(){
+function NEXUS_createIndividualPC(remoteNumber){
 
-    NEXUS_remoteDescriptionReady =
-        false;
+    if(NEXUS_peerConnection){
+        NEXUS_peerConnection.close();
+    }
 
-    NEXUS_pendingIce = [];
-
-    NEXUS_remoteStream =
-        new MediaStream();
-
-
-    NEXUS_peer =
+    NEXUS_peerConnection =
         new RTCPeerConnection({
 
             iceServers:[
@@ -1943,409 +1278,2181 @@ async function NEXUS_createPeer(){
         });
 
 
-    if(NEXUS_localStream){
-
-        NEXUS_localStream
-            .getTracks()
-            .forEach(
-                track=>{
-                    NEXUS_peer.addTrack(
-                        track,
-                        NEXUS_localStream
-                    );
-                }
-            );
-    }
+    const pc =
+        NEXUS_peerConnection;
 
 
-    NEXUS_videoTransceiver =
-        NEXUS_peer.addTransceiver(
-            "video",
-            {
-                direction:
-                    NEXUS_callMode === "video"
-                        ? "sendrecv"
-                        : "recvonly"
-            }
-        );
+    pc.onicecandidate = event => {
 
-
-    NEXUS_peer.onicecandidate =
-    async event=>{
-
-        if(event.candidate){
-
-            await NEXUS_sendSignal({
-
-                type:"ice",
-
-                to:NEXUS_destination,
-
-                callId:NEXUS_callId,
-
-                candidate:event.candidate
-            });
+        if(!event.candidate){
+            return;
         }
+
+        NEXUS_sendSignal({
+            type:"ice",
+            from:NEXUS_myNumber,
+            to:remoteNumber,
+            callId:NEXUS_currentCallId,
+            candidate:event.candidate
+        });
     };
 
 
-    NEXUS_peer.ontrack =
-    event=>{
+    pc.ontrack = event => {
+
+        if(!NEXUS_remoteAudio){
+
+            NEXUS_remoteAudio =
+                document.createElement("audio");
+
+            NEXUS_remoteAudio.autoplay = true;
+            NEXUS_remoteAudio.playsInline = true;
+
+            document.body.appendChild(
+                NEXUS_remoteAudio
+            );
+        }
+
+        NEXUS_remoteAudio.srcObject =
+            event.streams[0];
+
+        NEXUS_remoteAudio.play()
+            .catch(()=>{});
+
 
         if(
-            !NEXUS_remoteStream
+            NEXUS_mode === "video" &&
+            event.track.kind === "video"
         ){
 
-            NEXUS_remoteStream =
-                new MediaStream();
+            let video =
+                document.getElementById(
+                    "individualRemoteVideo"
+                );
+
+            if(!video){
+
+                video =
+                    document.createElement("video");
+
+                video.id =
+                    "individualRemoteVideo";
+
+                video.autoplay = true;
+                video.playsInline = true;
+
+                video.style.cssText =
+                    "position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;";
+
+                NEXUS_remoteGrid.innerHTML =
+                    "";
+
+                NEXUS_remoteGrid.appendChild(
+                    video
+                );
+            }
+
+            video.srcObject =
+                event.streams[0];
         }
-
-
-        NEXUS_remoteStream.addTrack(
-            event.track
-        );
-
-
-        NEXUS_el.remoteAudio.srcObject =
-            NEXUS_remoteStream;
-
-        NEXUS_el.remoteVideo.srcObject =
-            NEXUS_remoteStream;
-
-
-        NEXUS_el.remoteAudio.play()
-            .catch(()=>{});
-
-        NEXUS_el.remoteVideo.play()
-            .catch(()=>{});
-
-
-        NEXUS_log(
-            "🎧 TRACK REMOTA: " +
-            event.track.kind
-        );
     };
 
 
-    NEXUS_peer.onconnectionstatechange =
-    ()=>{
+    pc.onconnectionstatechange = () => {
 
         const state =
-            NEXUS_peer.connectionState;
+            pc.connectionState;
 
-        NEXUS_el.connectionState.textContent =
+        NEXUS_callState.textContent =
             state;
 
-
-        if(state === "connecting"){
-
-            NEXUS_el.activeStatus.textContent =
-                "Conectando...";
-        }
-
-
         if(state === "connected"){
-
-            NEXUS_callActive = true;
-
-            NEXUS_el.activeStatus.textContent =
-                NEXUS_callMode === "video"
-                    ? "📹 Videollamada conectada"
-                    : "☎ Llamada conectada";
-
-            NEXUS_log(
-                "🟢 WEBRTC CONECTADO"
-            );
+            NEXUS_callState.textContent =
+                "Conectado";
         }
 
-
-        if(state === "failed"){
-
-            NEXUS_el.activeStatus.textContent =
-                "Conexión fallida";
-
-            NEXUS_log(
-                "🔴 WEBRTC FAILED"
-            );
-        }
-
-
-        if(state === "disconnected"){
-
-            NEXUS_el.activeStatus.textContent =
-                "Conexión interrumpida";
-
-            NEXUS_log(
-                "🟠 WEBRTC DISCONNECTED"
-            );
+        if(
+            state === "failed" ||
+            state === "closed"
+        ){
+            NEXUS_callState.textContent =
+                "Conexión terminada";
         }
     };
 
 
-    NEXUS_peer.oniceconnectionstatechange =
-    ()=>{
+    return pc;
+}
 
-        NEXUS_el.iceState.textContent =
-            NEXUS_peer.iceConnectionState;
 
-        NEXUS_log(
-            "ICE: " +
-            NEXUS_peer.iceConnectionState
+async function NEXUS_prepareIndividualPC(remoteNumber){
+
+    const stream =
+        await NEXUS_getLocalMedia(
+            NEXUS_mode
         );
-    };
 
+    const pc =
+        NEXUS_createIndividualPC(
+            remoteNumber
+        );
 
-    NEXUS_peer.onsignalingstatechange =
-    ()=>{
+    stream.getTracks().forEach(
+        track => {
+            pc.addTrack(
+                track,
+                stream
+            );
+        }
+    );
 
-        NEXUS_el.signalingState.textContent =
-            NEXUS_peer.signalingState;
-    };
-
-
-    NEXUS_el.connectionMode.textContent =
-        NEXUS_callMode === "video"
-            ? "VIDEO"
-            : "VOZ";
+    return pc;
 }
 
 
 /* =========================================================
-   OFFER
+   LLAMADA INDIVIDUAL
 ========================================================= */
 
-async function NEXUS_handleOffer(payload){
+window.NEXUS_startCall = async function(){
+
+    if(!NEXUS_validNumber(NEXUS_currentNumber)){
+        NEXUS_setStatus(
+            "Introduce un número NEXUS de 5 dígitos."
+        );
+        return;
+    }
 
     if(
-        payload.callId !==
-        NEXUS_callId
+        NEXUS_currentNumber ===
+        NEXUS_myNumber
+    ){
+        NEXUS_setStatus(
+            "No puedes llamarte a ti mismo."
+        );
+        return;
+    }
+
+    const remote =
+        NEXUS_currentNumber;
+
+    NEXUS_currentCallId =
+        NEXUS_randomId();
+
+    NEXUS_isGroupCall =
+        false;
+
+    try{
+
+        await NEXUS_getLocalMedia(
+            NEXUS_mode
+        );
+
+        NEXUS_openCallUI(
+            "Llamando a " + remote,
+            NEXUS_mode
+        );
+
+        NEXUS_callState.textContent =
+            "Esperando respuesta...";
+
+        await NEXUS_sendSignal({
+
+            type:"incoming_call",
+
+            from:NEXUS_myNumber,
+
+            to:remote,
+
+            callId:NEXUS_currentCallId,
+
+            mode:NEXUS_mode
+
+        });
+
+    }catch(error){
+
+        console.error(error);
+
+        NEXUS_closeCallUI();
+
+        NEXUS_setStatus(
+            "No se pudo iniciar la llamada."
+        );
+    }
+};
+
+
+/* =========================================================
+   ACEPTAR / RECHAZAR INDIVIDUAL
+========================================================= */
+
+async function NEXUS_acceptIndividual(){
+
+    const call =
+        NEXUS_incomingCall;
+
+    if(!call){
+        return;
+    }
+
+    NEXUS_currentCallId =
+        call.callId;
+
+    NEXUS_mode =
+        call.mode || "voice";
+
+    NEXUS_isGroupCall =
+        false;
+
+    NEXUS_incomingCall =
+        null;
+
+    NEXUS_incomingOverlay.classList.remove(
+        "show"
+    );
+
+    try{
+
+        await NEXUS_prepareIndividualPC(
+            call.from
+        );
+
+        NEXUS_openCallUI(
+            "Llamada con " + call.from,
+            NEXUS_mode
+        );
+
+        NEXUS_callState.textContent =
+            "Aceptando...";
+
+        await NEXUS_sendSignal({
+
+            type:"call_accept",
+
+            from:NEXUS_myNumber,
+
+            to:call.from,
+
+            callId:call.callId
+
+        });
+
+    }catch(error){
+
+        console.error(error);
+
+        NEXUS_setStatus(
+            "No se pudo aceptar."
+        );
+    }
+}
+
+
+window.NEXUS_acceptIncoming = function(){
+
+    if(
+        NEXUS_incomingCall &&
+        NEXUS_incomingCall.group
+    ){
+
+        NEXUS_acceptGroupInvite();
+
+    }else{
+
+        NEXUS_acceptIndividual();
+    }
+};
+
+
+window.NEXUS_rejectIncoming = async function(){
+
+    const call =
+        NEXUS_incomingCall;
+
+    if(!call){
+        return;
+    }
+
+    await NEXUS_sendSignal({
+
+        type:call.group
+            ? "group_reject"
+            : "reject",
+
+        from:NEXUS_myNumber,
+
+        to:call.from,
+
+        callId:call.callId,
+
+        groupCallId:call.groupCallId
+
+    });
+
+    NEXUS_incomingCall =
+        null;
+
+    NEXUS_incomingOverlay.classList.remove(
+        "show"
+    );
+};
+
+
+/* =========================================================
+   SEÑALIZACIÓN INDIVIDUAL
+========================================================= */
+
+async function NEXUS_handleIndividualSignal(payload){
+
+    if(
+        payload.to !== NEXUS_myNumber
     ){
         return;
     }
 
 
-    try{
+    if(
+        payload.type === "incoming_call"
+    ){
 
-        if(!NEXUS_peer){
+        NEXUS_incomingCall =
+            payload;
 
-            await NEXUS_prepareMedia(
-                NEXUS_callMode
+        document.getElementById(
+            "incomingTitle"
+        ).textContent =
+            payload.mode === "video"
+            ? "📹 Videollamada entrante"
+            : "🎙️ Llamada entrante";
+
+        document.getElementById(
+            "incomingDescription"
+        ).textContent =
+            "NEXUS " +
+            payload.from +
+            " quiere comunicarse contigo.";
+
+        document.getElementById(
+            "incomingNumber"
+        ).textContent =
+            payload.from;
+
+        NEXUS_incomingOverlay.classList.add(
+            "show"
+        );
+
+        return;
+    }
+
+
+    if(
+        payload.callId !==
+        NEXUS_currentCallId
+    ){
+        return;
+    }
+
+
+    if(payload.type === "call_accept"){
+
+        try{
+
+            NEXUS_callState.textContent =
+                "Creando conexión...";
+
+            await NEXUS_prepareIndividualPC(
+                payload.from
             );
 
-            await NEXUS_createPeer();
+            const offer =
+                await NEXUS_peerConnection
+                    .createOffer();
+
+            await NEXUS_peerConnection
+                .setLocalDescription(
+                    offer
+                );
+
+            await NEXUS_sendSignal({
+
+                type:"offer",
+
+                from:NEXUS_myNumber,
+
+                to:payload.from,
+
+                callId:payload.callId,
+
+                offer
+
+            });
+
+        }catch(error){
+
+            console.error(error);
+
+            NEXUS_callState.textContent =
+                "Error creando llamada.";
+        }
+
+        return;
+    }
+
+
+    if(payload.type === "offer"){
+
+        try{
+
+            if(!NEXUS_peerConnection){
+
+                await NEXUS_prepareIndividualPC(
+                    payload.from
+                );
+            }
+
+            await NEXUS_peerConnection
+                .setRemoteDescription(
+                    new RTCSessionDescription(
+                        payload.offer
+                    )
+                );
+
+            const answer =
+                await NEXUS_peerConnection
+                    .createAnswer();
+
+            await NEXUS_peerConnection
+                .setLocalDescription(
+                    answer
+                );
+
+            await NEXUS_sendSignal({
+
+                type:"answer",
+
+                from:NEXUS_myNumber,
+
+                to:payload.from,
+
+                callId:payload.callId,
+
+                answer
+
+            });
+
+        }catch(error){
+
+            console.error(error);
+        }
+
+        return;
+    }
+
+
+    if(payload.type === "answer"){
+
+        try{
+
+            if(NEXUS_peerConnection){
+
+                await NEXUS_peerConnection
+                    .setRemoteDescription(
+                        new RTCSessionDescription(
+                            payload.answer
+                        )
+                    );
+            }
+
+        }catch(error){
+
+            console.error(error);
+        }
+
+        return;
+    }
+
+
+    if(payload.type === "ice"){
+
+        try{
+
+            if(NEXUS_peerConnection){
+
+                await NEXUS_peerConnection
+                    .addIceCandidate(
+                        new RTCIceCandidate(
+                            payload.candidate
+                        )
+                    );
+            }
+
+        }catch(error){
+
+            console.warn(
+                "ICE individual:",
+                error
+            );
+        }
+
+        return;
+    }
+
+
+    if(payload.type === "reject"){
+
+        NEXUS_callState.textContent =
+            "Llamada rechazada.";
+
+        setTimeout(
+            NEXUS_closeCallUI,
+            1000
+        );
+
+        return;
+    }
+
+
+    if(payload.type === "hangup"){
+
+        NEXUS_closeCallUI();
+
+        return;
+    }
+}
+
+
+/* =========================================================
+   GRUPAL: DIALER
+========================================================= */
+
+window.NEXUS_openGroupDialer = function(){
+
+    document
+        .getElementById("groupNumber1")
+        .value = "";
+
+    document
+        .getElementById("groupNumber2")
+        .value = "";
+
+    document
+        .getElementById("groupNumber3")
+        .value = "";
+
+    NEXUS_groupDialerOverlay.classList.add(
+        "show"
+    );
+};
+
+
+window.NEXUS_closeGroupDialer = function(){
+
+    NEXUS_groupDialerOverlay.classList.remove(
+        "show"
+    );
+};
+
+
+/* =========================================================
+   GRUPAL: CREAR LLAMADA
+========================================================= */
+
+window.NEXUS_startGroupCall = async function(){
+
+    const numbers =
+        NEXUS_uniqueNumbers([
+
+            document.getElementById(
+                "groupNumber1"
+            ).value.trim(),
+
+            document.getElementById(
+                "groupNumber2"
+            ).value.trim(),
+
+            document.getElementById(
+                "groupNumber3"
+            ).value.trim()
+
+        ]);
+
+
+    if(numbers.length === 0){
+
+        NEXUS_setStatus(
+            "Introduce al menos un número."
+        );
+
+        return;
+    }
+
+
+    NEXUS_groupCallId =
+        NEXUS_randomId();
+
+    NEXUS_isGroupCall =
+        true;
+
+    NEXUS_groupMembers =
+        [
+            NEXUS_myNumber,
+            ...numbers
+        ];
+
+
+    try{
+
+        await NEXUS_getLocalMedia(
+            NEXUS_mode
+        );
+
+        NEXUS_groupDialerOverlay.classList.remove(
+            "show"
+        );
+
+        NEXUS_openCallUI(
+            "👥 Llamada grupal",
+            NEXUS_mode
+        );
+
+        NEXUS_callState.textContent =
+            "Invitando participantes...";
+
+        for(const number of numbers){
+
+            await NEXUS_sendSignal({
+
+                type:"group_invite",
+
+                from:NEXUS_myNumber,
+
+                to:number,
+
+                callId:
+                    NEXUS_groupCallId,
+
+                groupCallId:
+                    NEXUS_groupCallId,
+
+                mode:NEXUS_mode,
+
+                members:NEXUS_groupMembers
+
+            });
+
+            await NEXUS_sleep(100);
+        }
+
+        NEXUS_renderMembers();
+
+    }catch(error){
+
+        console.error(error);
+
+        NEXUS_closeCallUI();
+
+        NEXUS_setStatus(
+            "No se pudo crear la llamada grupal."
+        );
+    }
+};
+
+
+/* =========================================================
+   GRUPAL: INVITACIÓN ENTRANTE
+========================================================= */
+
+function NEXUS_showGroupInvite(payload){
+
+    NEXUS_incomingCall =
+        payload;
+
+    document.getElementById(
+        "incomingTitle"
+    ).textContent =
+        payload.mode === "video"
+        ? "👥📹 Videollamada grupal"
+        : "👥🎙️ Llamada grupal";
+
+    document.getElementById(
+        "incomingDescription"
+    ).textContent =
+        "NEXUS " +
+        payload.from +
+        " te está invitando a una llamada grupal.";
+
+    document.getElementById(
+        "incomingNumber"
+    ).textContent =
+        payload.from;
+
+    NEXUS_incomingOverlay.classList.add(
+        "show"
+    );
+}
+
+
+async function NEXUS_acceptGroupInvite(){
+
+    const invite =
+        NEXUS_incomingCall;
+
+    if(!invite){
+        return;
+    }
+
+    NEXUS_incomingCall =
+        null;
+
+    NEXUS_groupCallId =
+        invite.groupCallId ||
+        invite.callId;
+
+    NEXUS_mode =
+        invite.mode || "voice";
+
+    NEXUS_isGroupCall =
+        true;
+
+    NEXUS_groupMembers =
+        NEXUS_uniqueNumbers(
+            invite.members || []
+        );
+
+
+    if(
+        !NEXUS_groupMembers.includes(
+            NEXUS_myNumber
+        )
+    ){
+        NEXUS_groupMembers.push(
+            NEXUS_myNumber
+        );
+    }
+
+
+    NEXUS_incomingOverlay.classList.remove(
+        "show"
+    );
+
+
+    try{
+
+        await NEXUS_getLocalMedia(
+            NEXUS_mode
+        );
+
+        NEXUS_openCallUI(
+            "👥 Llamada grupal",
+            NEXUS_mode
+        );
+
+        NEXUS_callState.textContent =
+            "Uniéndote...";
+
+        await NEXUS_sendSignal({
+
+            type:"group_accept",
+
+            from:NEXUS_myNumber,
+
+            to:invite.from,
+
+            callId:
+                invite.callId,
+
+            groupCallId:
+                NEXUS_groupCallId,
+
+            mode:NEXUS_mode
+
+        });
+
+
+        await NEXUS_sendSignal({
+
+            type:"group_joined",
+
+            from:NEXUS_myNumber,
+
+            to:null,
+
+            groupCallId:
+                NEXUS_groupCallId,
+
+            members:
+                NEXUS_groupMembers
+
+        });
+
+
+        NEXUS_renderMembers();
+
+    }catch(error){
+
+        console.error(error);
+
+        NEXUS_closeCallUI();
+
+        NEXUS_setStatus(
+            "No se pudo entrar a la llamada."
+        );
+    }
+}
+
+
+/* =========================================================
+   GRUPAL: PEER CONNECTION
+========================================================= */
+
+function NEXUS_createGroupPC(remoteNumber){
+
+    if(
+        NEXUS_groupConnections[
+            remoteNumber
+        ]
+    ){
+        return NEXUS_groupConnections[
+            remoteNumber
+        ];
+    }
+
+
+    const pc =
+        new RTCPeerConnection({
+
+            iceServers:[
+                {
+                    urls:
+                        "stun:stun.l.google.com:19302"
+                },
+                {
+                    urls:
+                        "stun:stun1.l.google.com:19302"
+                }
+            ]
+
+        });
+
+
+    NEXUS_groupConnections[
+        remoteNumber
+    ] = pc;
+
+
+    NEXUS_groupPendingCandidates[
+        remoteNumber
+    ] = [];
+
+
+    NEXUS_groupRemoteDescriptions[
+        remoteNumber
+    ] = false;
+
+
+    pc.onicecandidate =
+        event => {
+
+            if(!event.candidate){
+                return;
+            }
+
+            NEXUS_sendSignal({
+
+                type:"group_ice",
+
+                from:NEXUS_myNumber,
+
+                to:remoteNumber,
+
+                groupCallId:
+                    NEXUS_groupCallId,
+
+                candidate:
+                    event.candidate
+
+            });
+        };
+
+
+    pc.ontrack =
+        event => {
+
+            const stream =
+                event.streams[0];
+
+            NEXUS_groupStreams[
+                remoteNumber
+            ] = stream;
+
+            NEXUS_renderRemoteParticipant(
+                remoteNumber,
+                stream
+            );
+        };
+
+
+    pc.onconnectionstatechange =
+        () => {
+
+            const state =
+                pc.connectionState;
+
+            console.log(
+                "Grupo",
+                remoteNumber,
+                state
+            );
+
+            if(
+                state === "connected"
+            ){
+                NEXUS_callState.textContent =
+                    "Llamada grupal conectada";
+            }
+
+            if(
+                state === "failed" ||
+                state === "closed"
+            ){
+
+                NEXUS_removeRemoteParticipant(
+                    remoteNumber
+                );
+            }
+        };
+
+
+    if(NEXUS_localStream){
+
+        NEXUS_localStream
+            .getTracks()
+            .forEach(track => {
+
+                pc.addTrack(
+                    track,
+                    NEXUS_localStream
+                );
+
+            });
+    }
+
+
+    return pc;
+}
+
+
+/* =========================================================
+   GRUPAL: CREAR OFFER
+========================================================= */
+
+async function NEXUS_groupCreateOffer(
+    remoteNumber
+){
+
+    const pc =
+        NEXUS_createGroupPC(
+            remoteNumber
+        );
+
+
+    const offer =
+        await pc.createOffer();
+
+
+    await pc.setLocalDescription(
+        offer
+    );
+
+
+    await NEXUS_sendSignal({
+
+        type:"group_offer",
+
+        from:NEXUS_myNumber,
+
+        to:remoteNumber,
+
+        groupCallId:
+            NEXUS_groupCallId,
+
+        offer
+
+    });
+}
+
+
+/* =========================================================
+   GRUPAL: CREAR CONEXIONES
+========================================================= */
+
+async function NEXUS_updateGroupConnections(){
+
+    if(!NEXUS_groupCallId){
+        return;
+    }
+
+
+    const members =
+        NEXUS_uniqueNumbers(
+            NEXUS_groupMembers
+        );
+
+
+    for(const remote of members){
+
+        if(
+            remote ===
+            NEXUS_myNumber
+        ){
+            continue;
         }
 
 
-        await NEXUS_peer
-            .setRemoteDescription(
+        NEXUS_createGroupPC(
+            remote
+        );
+    }
+
+
+    /*
+      Para evitar colisiones de ofertas:
+
+      el número NEXUS menor inicia
+      la conexión con el mayor.
+    */
+
+    for(const remote of members){
+
+        if(
+            remote ===
+            NEXUS_myNumber
+        ){
+            continue;
+        }
+
+
+        if(
+            NEXUS_myNumber <
+            remote
+        ){
+
+            const pc =
+                NEXUS_groupConnections[
+                    remote
+                ];
+
+            if(
+                pc &&
+                pc.signalingState ===
+                "stable"
+            ){
+
+                try{
+
+                    await NEXUS_groupCreateOffer(
+                        remote
+                    );
+
+                }catch(error){
+
+                    console.warn(
+                        "Offer grupal:",
+                        error
+                    );
+                }
+            }
+        }
+    }
+}
+
+
+/* =========================================================
+   GRUPAL: MIEMBROS
+========================================================= */
+
+function NEXUS_updateGroupMembers(
+    members
+){
+
+    const clean =
+        NEXUS_uniqueNumbers(
+            members || []
+        );
+
+
+    if(
+        !clean.includes(
+            NEXUS_myNumber
+        )
+    ){
+        clean.push(
+            NEXUS_myNumber
+        );
+    }
+
+
+    NEXUS_groupMembers =
+        clean.slice(0,4);
+
+
+    NEXUS_renderMembers();
+
+    NEXUS_updateGroupConnections();
+}
+
+
+function NEXUS_renderMembers(){
+
+    let existing =
+        document.getElementById(
+            "groupMembersBox"
+        );
+
+
+    if(!existing){
+
+        existing =
+            document.createElement("div");
+
+        existing.id =
+            "groupMembersBox";
+
+        existing.className =
+            "members-box";
+
+        NEXUS_callTitle
+            .parentElement
+            .appendChild(existing);
+    }
+
+
+    existing.innerHTML = `
+        <div class="members-title">
+            PARTICIPANTES
+        </div>
+
+        <div class="members-list">
+            ${
+                NEXUS_groupMembers
+                    .map(
+                        number =>
+                            `<span class="member">${
+                                number === NEXUS_myNumber
+                                ? "Tú · " + number
+                                : number
+                            }</span>`
+                    )
+                    .join("")
+            }
+        </div>
+    `;
+}
+
+
+/* =========================================================
+   GRUPAL: VIDEO REMOTO
+========================================================= */
+
+function NEXUS_renderRemoteParticipant(
+    number,
+    stream
+){
+
+    let tile =
+        document.getElementById(
+            "groupTile_" + number
+        );
+
+
+    if(!tile){
+
+        tile =
+            document.createElement("div");
+
+        tile.id =
+            "groupTile_" + number;
+
+        tile.className =
+            "remote-tile";
+
+
+        const video =
+            document.createElement("video");
+
+        video.autoplay = true;
+        video.playsInline = true;
+
+        video.srcObject =
+            stream;
+
+
+        const audio =
+            document.createElement("audio");
+
+        audio.autoplay = true;
+        audio.srcObject =
+            stream;
+
+
+        const label =
+            document.createElement("div");
+
+        label.className =
+            "tile-number";
+
+        label.textContent =
+            number;
+
+
+        tile.appendChild(video);
+        tile.appendChild(audio);
+        tile.appendChild(label);
+
+        NEXUS_remoteGrid.appendChild(
+            tile
+        );
+
+        audio.play()
+            .catch(()=>{});
+
+        video.play()
+            .catch(()=>{});
+
+    }else{
+
+        const video =
+            tile.querySelector("video");
+
+        const audio =
+            tile.querySelector("audio");
+
+        if(video){
+            video.srcObject =
+                stream;
+        }
+
+        if(audio){
+            audio.srcObject =
+                stream;
+            audio.play().catch(()=>{});
+        }
+    }
+}
+
+
+function NEXUS_removeRemoteParticipant(
+    number
+){
+
+    const tile =
+        document.getElementById(
+            "groupTile_" + number
+        );
+
+    if(tile){
+        tile.remove();
+    }
+
+    delete NEXUS_groupStreams[
+        number
+    ];
+}
+
+
+/* =========================================================
+   GRUPAL: SEÑALIZACIÓN
+========================================================= */
+
+async function NEXUS_handleGroupSignal(
+    payload
+){
+
+    if(
+        payload.groupCallId &&
+        payload.groupCallId !==
+        NEXUS_groupCallId
+    ){
+        return;
+    }
+
+
+    if(
+        payload.type ===
+        "group_invite"
+    ){
+
+        NEXUS_showGroupInvite(
+            payload
+        );
+
+        return;
+    }
+
+
+    if(
+        payload.type ===
+        "group_accept"
+    ){
+
+        if(
+            !NEXUS_groupMembers.includes(
+                payload.from
+            )
+        ){
+
+            if(
+                NEXUS_groupMembers.length <
+                4
+            ){
+
+                NEXUS_groupMembers.push(
+                    payload.from
+                );
+            }
+        }
+
+
+        NEXUS_updateGroupMembers(
+            NEXUS_groupMembers
+        );
+
+
+        /*
+          Compartimos la lista actualizada
+          con todos los participantes.
+        */
+
+        for(
+            const member of
+            NEXUS_groupMembers
+        ){
+
+            if(
+                member ===
+                NEXUS_myNumber
+            ){
+                continue;
+            }
+
+            await NEXUS_sendSignal({
+
+                type:"group_members",
+
+                from:NEXUS_myNumber,
+
+                to:member,
+
+                groupCallId:
+                    NEXUS_groupCallId,
+
+                members:
+                    NEXUS_groupMembers
+
+            });
+        }
+
+        return;
+    }
+
+
+    if(
+        payload.type ===
+        "group_joined"
+    ){
+
+        NEXUS_updateGroupMembers(
+            payload.members
+        );
+
+        return;
+    }
+
+
+    if(
+        payload.type ===
+        "group_members"
+    ){
+
+        NEXUS_updateGroupMembers(
+            payload.members
+        );
+
+        return;
+    }
+
+
+    if(
+        payload.type ===
+        "group_offer"
+    ){
+
+        try{
+
+            const remote =
+                payload.from;
+
+            const pc =
+                NEXUS_createGroupPC(
+                    remote
+                );
+
+
+            await pc.setRemoteDescription(
                 new RTCSessionDescription(
                     payload.offer
                 )
             );
 
 
-        NEXUS_remoteDescriptionReady =
-            true;
+            NEXUS_groupRemoteDescriptions[
+                remote
+            ] = true;
 
 
-        await NEXUS_flushIce();
+            const pending =
+                NEXUS_groupPendingCandidates[
+                    remote
+                ] || [];
 
 
-        const answer =
-            await NEXUS_peer
-                .createAnswer();
+            for(
+                const candidate of
+                pending
+            ){
+
+                await pc.addIceCandidate(
+                    new RTCIceCandidate(
+                        candidate
+                    )
+                );
+            }
 
 
-        await NEXUS_peer
-            .setLocalDescription(
+            NEXUS_groupPendingCandidates[
+                remote
+            ] = [];
+
+
+            const answer =
+                await pc.createAnswer();
+
+
+            await pc.setLocalDescription(
                 answer
             );
 
 
-        await NEXUS_sendSignal({
+            await NEXUS_sendSignal({
 
-            type:"answer",
+                type:"group_answer",
 
-            to:NEXUS_destination,
+                from:NEXUS_myNumber,
 
-            callId:NEXUS_callId,
+                to:remote,
 
-            answer:{
-                type:answer.type,
-                sdp:answer.sdp
-            }
-        });
+                groupCallId:
+                    NEXUS_groupCallId,
 
+                answer
 
-        NEXUS_log(
-            "📡 ANSWER ENVIADO"
-        );
+            });
 
-    }catch(error){
+        }catch(error){
 
-        NEXUS_log(
-            "❌ OFFER: " +
-            error.message
-        );
-    }
-}
+            console.error(
+                "Group offer:",
+                error
+            );
+        }
 
-
-/* =========================================================
-   ANSWER
-========================================================= */
-
-async function NEXUS_handleAnswer(payload){
-
-    if(
-        payload.callId !==
-        NEXUS_callId ||
-        !NEXUS_peer
-    ){
         return;
     }
 
 
-    try{
+    if(
+        payload.type ===
+        "group_answer"
+    ){
 
-        await NEXUS_peer
-            .setRemoteDescription(
+        try{
+
+            const remote =
+                payload.from;
+
+            const pc =
+                NEXUS_groupConnections[
+                    remote
+                ];
+
+
+            if(!pc){
+                return;
+            }
+
+
+            await pc.setRemoteDescription(
                 new RTCSessionDescription(
                     payload.answer
                 )
             );
 
 
-        NEXUS_remoteDescriptionReady =
-            true;
+            NEXUS_groupRemoteDescriptions[
+                remote
+            ] = true;
 
 
-        await NEXUS_flushIce();
+            const pending =
+                NEXUS_groupPendingCandidates[
+                    remote
+                ] || [];
 
 
-        NEXUS_el.activeStatus.textContent =
-            "Conectando audio/video...";
+            for(
+                const candidate of
+                pending
+            ){
+
+                await pc.addIceCandidate(
+                    new RTCIceCandidate(
+                        candidate
+                    )
+                );
+            }
 
 
-        NEXUS_log(
-            "📥 ANSWER RECIBIDO"
-        );
+            NEXUS_groupPendingCandidates[
+                remote
+            ] = [];
 
-    }catch(error){
+        }catch(error){
 
-        NEXUS_log(
-            "❌ ANSWER: " +
-            error.message
-        );
-    }
-}
-
-
-/* =========================================================
-   ICE
-========================================================= */
-
-async function NEXUS_handleIce(payload){
-
-    if(
-        payload.callId !==
-        NEXUS_callId
-    ){
-        return;
-    }
-
-
-    if(
-        !NEXUS_peer ||
-        !NEXUS_remoteDescriptionReady
-    ){
-
-        NEXUS_pendingIce.push(
-            payload.candidate
-        );
+            console.error(
+                "Group answer:",
+                error
+            );
+        }
 
         return;
     }
 
 
-    try{
+    if(
+        payload.type ===
+        "group_ice"
+    ){
 
-        await NEXUS_peer
-            .addIceCandidate(
+        const remote =
+            payload.from;
+
+        const pc =
+            NEXUS_groupConnections[
+                remote
+            ];
+
+
+        if(
+            !pc ||
+            !NEXUS_groupRemoteDescriptions[
+                remote
+            ]
+        ){
+
+            if(
+                !NEXUS_groupPendingCandidates[
+                    remote
+                ]
+            ){
+
+                NEXUS_groupPendingCandidates[
+                    remote
+                ] = [];
+            }
+
+
+            NEXUS_groupPendingCandidates[
+                remote
+            ].push(
+                payload.candidate
+            );
+
+            return;
+        }
+
+
+        try{
+
+            await pc.addIceCandidate(
                 new RTCIceCandidate(
                     payload.candidate
                 )
             );
 
+        }catch(error){
+
+            console.warn(
+                "Group ICE:",
+                error
+            );
+        }
+
+        return;
+    }
+
+
+    if(
+        payload.type ===
+        "group_leave"
+    ){
+
+        NEXUS_removeGroupPeer(
+            payload.from
+        );
+
+        return;
+    }
+}
+
+
+/* =========================================================
+   SEÑAL PRINCIPAL
+========================================================= */
+
+async function NEXUS_handleSignal(
+    payload
+){
+
+    if(!payload){
+        return;
+    }
+
+
+    if(
+        payload.to &&
+        payload.to !==
+        NEXUS_myNumber
+    ){
+        return;
+    }
+
+
+    if(
+        payload.type.startsWith(
+            "group_"
+        )
+    ){
+
+        await NEXUS_handleGroupSignal(
+            payload
+        );
+
+        return;
+    }
+
+
+    await NEXUS_handleIndividualSignal(
+        payload
+    );
+}
+
+
+/* =========================================================
+   AGREGAR PERSONA DURANTE LLAMADA
+========================================================= */
+
+window.NEXUS_addPerson = function(){
+
+    if(!NEXUS_isGroupCall){
+        return;
+    }
+
+    NEXUS_addPersonOverlay.classList.add(
+        "show"
+    );
+
+    document.getElementById(
+        "addPersonInput"
+    ).value = "";
+};
+
+
+window.NEXUS_closeAddPerson = function(){
+
+    NEXUS_addPersonOverlay.classList.remove(
+        "show"
+    );
+};
+
+
+window.NEXUS_sendGroupInvite = async function(){
+
+    const input =
+        document.getElementById(
+            "addPersonInput"
+        );
+
+    const number =
+        input.value.trim();
+
+
+    if(!NEXUS_validNumber(number)){
+
+        alert(
+            "El número debe tener 5 dígitos."
+        );
+
+        return;
+    }
+
+
+    if(
+        number ===
+        NEXUS_myNumber
+    ){
+
+        alert(
+            "Ese eres tú."
+        );
+
+        return;
+    }
+
+
+    if(
+        NEXUS_groupMembers.includes(
+            number
+        )
+    ){
+
+        alert(
+            "Esa persona ya está en la llamada."
+        );
+
+        return;
+    }
+
+
+    if(
+        NEXUS_groupMembers.length >= 4
+    ){
+
+        alert(
+            "NEXUS permite hasta 4 participantes en esta versión."
+        );
+
+        return;
+    }
+
+
+    NEXUS_groupMembers.push(
+        number
+    );
+
+
+    await NEXUS_sendSignal({
+
+        type:"group_invite",
+
+        from:NEXUS_myNumber,
+
+        to:number,
+
+        callId:
+            NEXUS_groupCallId,
+
+        groupCallId:
+            NEXUS_groupCallId,
+
+        mode:NEXUS_mode,
+
+        members:
+            NEXUS_groupMembers
+
+    });
+
+
+    NEXUS_renderMembers();
+
+    NEXUS_closeAddPerson();
+};
+
+
+/* =========================================================
+   QUITAR PARTICIPANTE
+========================================================= */
+
+function NEXUS_removeGroupPeer(
+    number
+){
+
+    const pc =
+        NEXUS_groupConnections[
+            number
+        ];
+
+    if(pc){
+        pc.close();
+    }
+
+
+    delete NEXUS_groupConnections[
+        number
+    ];
+
+    delete NEXUS_groupStreams[
+        number
+    ];
+
+    delete NEXUS_groupPendingCandidates[
+        number
+    ];
+
+    delete NEXUS_groupRemoteDescriptions[
+        number
+    ];
+
+
+    NEXUS_removeRemoteParticipant(
+        number
+    );
+
+
+    NEXUS_groupMembers =
+        NEXUS_groupMembers.filter(
+            member =>
+                member !== number
+        );
+
+
+    NEXUS_renderMembers();
+}
+
+
+/* =========================================================
+   AUDIO / VIDEO
+========================================================= */
+
+window.NEXUS_toggleMute = function(){
+
+    if(!NEXUS_localStream){
+        return;
+    }
+
+    const tracks =
+        NEXUS_localStream.getAudioTracks();
+
+    if(!tracks.length){
+        return;
+    }
+
+    NEXUS_isMuted =
+        !NEXUS_isMuted;
+
+    tracks.forEach(
+        track => {
+            track.enabled =
+                !NEXUS_isMuted;
+        }
+    );
+
+
+    document.getElementById(
+        "muteButton"
+    ).textContent =
+        NEXUS_isMuted
+        ? "🔇"
+        : "🎙️";
+};
+
+
+window.NEXUS_toggleSpeaker = function(){
+
+    if(
+        NEXUS_remoteAudio &&
+        "setSinkId" in NEXUS_remoteAudio
+    ){
+
+        /*
+          El navegador puede permitir
+          seleccionar salida de audio.
+          Aquí mantenemos el control visual.
+        */
+
+        NEXUS_remoteAudio.muted =
+            !NEXUS_remoteAudio.muted;
+    }
+};
+
+
+window.NEXUS_toggleCamera = async function(){
+
+    if(!NEXUS_localStream){
+        return;
+    }
+
+
+    let tracks =
+        NEXUS_localStream.getVideoTracks();
+
+
+    if(tracks.length){
+
+        const enabled =
+            tracks[0].enabled;
+
+        tracks.forEach(
+            track => {
+                track.enabled =
+                    !enabled;
+            }
+        );
+
+        NEXUS_cameraEnabled =
+            !enabled;
+
+        NEXUS_cameraButton.textContent =
+            NEXUS_cameraEnabled
+            ? "📹"
+            : "🚫";
+
+        return;
+    }
+
+
+    /*
+      Si empezó como llamada de voz,
+      podemos activar cámara.
+    */
+
+    try{
+
+        const cameraStream =
+            await navigator.mediaDevices
+                .getUserMedia({
+
+                    video:{
+                        width:{ideal:1280},
+                        height:{ideal:720},
+                        facingMode:"user"
+                    },
+
+                    audio:false
+
+                });
+
+
+        const videoTrack =
+            cameraStream.getVideoTracks()[0];
+
+
+        NEXUS_localStream.addTrack(
+            videoTrack
+        );
+
+
+        NEXUS_localVideo.srcObject =
+            NEXUS_localStream;
+
+
+        NEXUS_localTile.classList.remove(
+            "hidden"
+        );
+
+
+        NEXUS_cameraEnabled =
+            true;
+
+
+        NEXUS_cameraButton.textContent =
+            "📹";
+
+
+        /*
+          En llamada grupal agregamos
+          el track a cada conexión.
+        */
+
+        if(NEXUS_isGroupCall){
+
+            for(
+                const remote in
+                NEXUS_groupConnections
+            ){
+
+                const pc =
+                    NEXUS_groupConnections[
+                        remote
+                    ];
+
+                pc.addTrack(
+                    videoTrack,
+                    NEXUS_localStream
+                );
+            }
+
+        }else if(NEXUS_peerConnection){
+
+            pc.addTrack(
+                videoTrack,
+                NEXUS_localStream
+            );
+        }
+
     }catch(error){
 
-        NEXUS_log(
-            "❌ ICE: " +
-            error.message
+        console.error(error);
+
+        alert(
+            "No se pudo activar la cámara."
+        );
+    }
+};
+
+
+/* =========================================================
+   UI DE LLAMADA
+========================================================= */
+
+function NEXUS_openCallUI(
+    title,
+    mode
+){
+
+    NEXUS_callTitle.textContent =
+        title;
+
+    NEXUS_callModeLabel.textContent =
+        mode === "video"
+        ? "📹"
+        : "🎙️";
+
+
+    NEXUS_callOverlay.classList.add(
+        "show"
+    );
+
+
+    NEXUS_localTile.classList.toggle(
+        "hidden",
+        mode !== "video"
+    );
+
+
+    NEXUS_cameraButton.classList.toggle(
+        "hidden",
+        false
+    );
+
+
+    if(!NEXUS_isGroupCall){
+
+        NEXUS_addPersonButton.classList.add(
+            "hidden"
+        );
+
+    }else{
+
+        NEXUS_addPersonButton.classList.remove(
+            "hidden"
         );
     }
 }
 
 
-async function NEXUS_flushIce(){
+function NEXUS_closeCallUI(){
 
-    if(
-        !NEXUS_peer ||
-        !NEXUS_remoteDescriptionReady
-    ){
-        return;
+    NEXUS_callOverlay.classList.remove(
+        "show"
+    );
+
+    NEXUS_remoteGrid.innerHTML =
+        "";
+
+    const oldIndividual =
+        document.getElementById(
+            "individualRemoteVideo"
+        );
+
+    if(oldIndividual){
+        oldIndividual.remove();
+    }
+
+
+    if(NEXUS_remoteAudio){
+
+        try{
+            NEXUS_remoteAudio.pause();
+        }catch(e){}
+
+        NEXUS_remoteAudio.remove();
+
+        NEXUS_remoteAudio =
+            null;
+    }
+
+
+    if(NEXUS_peerConnection){
+
+        try{
+            NEXUS_peerConnection.close();
+        }catch(e){}
+
+        NEXUS_peerConnection =
+            null;
     }
 
 
     for(
-        const candidate
-        of NEXUS_pendingIce
+        const number in
+        NEXUS_groupConnections
     ){
 
         try{
-
-            await NEXUS_peer
-                .addIceCandidate(
-                    new RTCIceCandidate(
-                        candidate
-                    )
-                );
-
-        }catch(error){}
+            NEXUS_groupConnections[
+                number
+            ].close();
+        }catch(e){}
     }
 
 
-    NEXUS_pendingIce = [];
-}
+    NEXUS_groupConnections = {};
+    NEXUS_groupStreams = {};
+    NEXUS_groupPendingCandidates = {};
+    NEXUS_groupRemoteDescriptions = {};
+
+    NEXUS_groupMembers = [];
+
+    NEXUS_groupCallId = null;
+
+    NEXUS_currentCallId = null;
+
+    NEXUS_isGroupCall = false;
 
 
-/* =========================================================
-   RECHAZO
-========================================================= */
+    if(NEXUS_localStream){
 
-function NEXUS_handleReject(payload){
+        NEXUS_localStream
+            .getTracks()
+            .forEach(
+                track => track.stop()
+            );
 
-    if(
-        payload.callId !==
-        NEXUS_callId
-    ){
-        return;
+        NEXUS_localStream =
+            null;
     }
 
 
-    NEXUS_el.activeStatus.textContent =
-        "La llamada fue rechazada";
+    NEXUS_localVideo.srcObject =
+        null;
 
+    NEXUS_localTile.classList.add(
+        "hidden"
+    );
 
-    NEXUS_el.outgoingState.textContent =
-        "La llamada fue rechazada";
-
-
-    setTimeout(
-        ()=>{
-            NEXUS_cleanup();
-        },
-        1000
+    NEXUS_setStatus(
+        "Conectado a NEXUS"
     );
 }
 
@@ -2354,424 +3461,184 @@ function NEXUS_handleReject(payload){
    COLGAR
 ========================================================= */
 
-function NEXUS_handleHangup(payload){
+window.NEXUS_hangup = async function(){
 
-    if(
-        payload.callId !==
-        NEXUS_callId
-    ){
-        return;
-    }
+    if(NEXUS_isGroupCall){
 
+        for(
+            const member of
+            NEXUS_groupMembers
+        ){
 
-    NEXUS_log(
-        "☎ La otra persona colgó"
-    );
-
-
-    NEXUS_cleanup();
-}
-
-
-window.NEXUS_cancelOutgoing =
-async function(){
-
-    if(NEXUS_destination){
-
-        await NEXUS_sendSignal({
-
-            type:"hangup",
-
-            to:NEXUS_destination,
-
-            callId:NEXUS_callId
-        });
-    }
-
-    NEXUS_cleanup();
-};
-
-
-window.NEXUS_hangup =
-async function(){
-
-    if(NEXUS_destination){
-
-        await NEXUS_sendSignal({
-
-            type:"hangup",
-
-            to:NEXUS_destination,
-
-            callId:NEXUS_callId
-        });
-    }
-
-    NEXUS_cleanup();
-};
-
-
-/* =========================================================
-   MIC
-========================================================= */
-
-window.NEXUS_toggleMute =
-function(){
-
-    if(!NEXUS_localStream){
-        return;
-    }
-
-
-    NEXUS_micEnabled =
-        !NEXUS_micEnabled;
-
-
-    NEXUS_localStream
-        .getAudioTracks()
-        .forEach(
-            track=>{
-                track.enabled =
-                    NEXUS_micEnabled;
+            if(
+                member ===
+                NEXUS_myNumber
+            ){
+                continue;
             }
-        );
+
+            await NEXUS_sendSignal({
+
+                type:"group_leave",
+
+                from:NEXUS_myNumber,
+
+                to:member,
+
+                groupCallId:
+                    NEXUS_groupCallId
+
+            });
+        }
+
+    }else{
+
+        /*
+          En individual sabemos con quién
+          estamos conectados.
+        */
+
+        let remote =
+            null;
+
+        if(
+            NEXUS_incomingCall
+        ){
+            remote =
+                NEXUS_incomingCall.from;
+        }
 
 
-    NEXUS_updateButtons();
-};
+        if(
+            NEXUS_currentNumber &&
+            NEXUS_currentNumber !==
+            NEXUS_myNumber
+        ){
+            remote =
+                NEXUS_currentNumber;
+        }
 
 
-/* =========================================================
-   ALTAVOZ
-========================================================= */
+        if(remote){
 
-window.NEXUS_toggleSpeaker =
-function(){
+            await NEXUS_sendSignal({
 
-    NEXUS_speakerEnabled =
-        !NEXUS_speakerEnabled;
+                type:"hangup",
 
+                from:NEXUS_myNumber,
 
-    NEXUS_el.remoteAudio.volume =
-        NEXUS_speakerEnabled
-            ? 1
-            : 0;
+                to:remote,
 
+                callId:
+                    NEXUS_currentCallId
 
-    NEXUS_el.remoteVideo.volume =
-        NEXUS_speakerEnabled
-            ? 1
-            : 0;
-
-
-    NEXUS_updateButtons();
-};
-
-
-/* =========================================================
-   CÁMARA
-========================================================= */
-
-window.NEXUS_toggleCamera =
-async function(){
-
-    if(!NEXUS_peer){
-        return;
+            });
+        }
     }
 
 
-    if(NEXUS_cameraEnabled){
+    NEXUS_closeCallUI();
+};
 
-        if(NEXUS_localStream){
 
-            NEXUS_localStream
-                .getVideoTracks()
-                .forEach(
-                    track=>{
-                        track.enabled = false;
-                    }
+/* =========================================================
+   AGREGAR PARTICIPANTES DESDE LA LISTA
+========================================================= */
+
+setInterval(
+    () => {
+
+        if(
+            NEXUS_isGroupCall &&
+            NEXUS_groupMembers.length
+        ){
+
+            NEXUS_renderMembers();
+        }
+
+    },
+    5000
+);
+
+
+/* =========================================================
+   EVENTOS DE SESIÓN
+========================================================= */
+
+NEXUS_client.auth.onAuthStateChange(
+    async (event,session) => {
+
+        if(session){
+            NEXUS_session =
+                session;
+        }
+    }
+);
+
+
+/* =========================================================
+   AL CERRAR / CAMBIAR PÁGINA
+========================================================= */
+
+window.addEventListener(
+    "beforeunload",
+    () => {
+
+        if(NEXUS_groupCallId){
+
+            for(
+                const member of
+                NEXUS_groupMembers
+            ){
+
+                if(
+                    member !==
+                    NEXUS_myNumber
+                ){
+
+                    NEXUS_sendSignal({
+
+                        type:"group_leave",
+
+                        from:NEXUS_myNumber,
+
+                        to:member,
+
+                        groupCallId:
+                            NEXUS_groupCallId
+
+                    });
+                }
+            }
+        }
+
+
+        if(NEXUS_session){
+
+            NEXUS_client
+                .from("nexus_users")
+                .update({
+                    online:false,
+                    last_seen:
+                        new Date().toISOString()
+                })
+                .eq(
+                    "id",
+                    NEXUS_session.user.id
                 );
         }
-
-        NEXUS_cameraEnabled = false;
-
-        NEXUS_updateButtons();
-
-        return;
     }
-
-
-    try{
-
-        const camera =
-            await navigator
-                .mediaDevices
-                .getUserMedia({
-                    video:{
-                        width:{
-                            ideal:1280
-                        },
-                        height:{
-                            ideal:720
-                        },
-                        facingMode:"user"
-                    }
-                });
-
-
-        const track =
-            camera.getVideoTracks()[0];
-
-
-        if(!NEXUS_localStream){
-
-            NEXUS_localStream =
-                new MediaStream();
-        }
-
-
-        NEXUS_localStream.addTrack(
-            track
-        );
-
-
-        if(NEXUS_videoTransceiver){
-
-            await NEXUS_videoTransceiver
-                .sender
-                .replaceTrack(track);
-
-            NEXUS_videoTransceiver.direction =
-                "sendrecv";
-
-        }else{
-
-            NEXUS_peer.addTrack(
-                track,
-                NEXUS_localStream
-            );
-        }
-
-
-        NEXUS_el.localVideo.srcObject =
-            NEXUS_localStream;
-
-
-        NEXUS_el.activeScreen
-            .classList.add(
-                "video-call"
-            );
-
-
-        NEXUS_cameraEnabled = true;
-
-        NEXUS_updateButtons();
-
-
-    }catch(error){
-
-        NEXUS_log(
-            "❌ CÁMARA: " +
-            error.message
-        );
-    }
-};
-
-
-/* =========================================================
-   BOTONES
-========================================================= */
-
-function NEXUS_updateButtons(){
-
-    NEXUS_el.muteBtn.textContent =
-        NEXUS_micEnabled
-            ? "🎙"
-            : "🔇";
-
-    NEXUS_el.speakerBtn.textContent =
-        NEXUS_speakerEnabled
-            ? "🔊"
-            : "🔇";
-
-    NEXUS_el.cameraBtn.textContent =
-        NEXUS_cameraEnabled
-            ? "📹"
-            : "🚫";
-
-
-    NEXUS_el.muteBtn.classList.toggle(
-        "active",
-        !NEXUS_micEnabled
-    );
-
-    NEXUS_el.speakerBtn.classList.toggle(
-        "active",
-        !NEXUS_speakerEnabled
-    );
-
-    NEXUS_el.cameraBtn.classList.toggle(
-        "active",
-        NEXUS_cameraEnabled
-    );
-}
-
-
-window.NEXUS_toggleConnectionInfo =
-function(){
-
-    NEXUS_el.connectionInfo
-        .classList.toggle(
-            "show"
-        );
-
-
-    if(NEXUS_peer){
-
-        NEXUS_el.connectionState.textContent =
-            NEXUS_peer.connectionState;
-
-        NEXUS_el.iceState.textContent =
-            NEXUS_peer.iceConnectionState;
-
-        NEXUS_el.signalingState.textContent =
-            NEXUS_peer.signalingState;
-    }
-};
-
-
-/* =========================================================
-   LIMPIEZA
-========================================================= */
-
-function NEXUS_cleanup(){
-
-    if(NEXUS_peer){
-
-        try{
-            NEXUS_peer.close();
-        }catch(error){}
-
-        NEXUS_peer = null;
-    }
-
-
-    if(NEXUS_localStream){
-
-        NEXUS_localStream
-            .getTracks()
-            .forEach(
-                track=>{
-                    track.stop();
-                }
-            );
-
-        NEXUS_localStream = null;
-    }
-
-
-    if(NEXUS_remoteStream){
-
-        NEXUS_remoteStream
-            .getTracks()
-            .forEach(
-                track=>{
-                    track.stop();
-                }
-            );
-
-        NEXUS_remoteStream = null;
-    }
-
-
-    NEXUS_el.localVideo.srcObject =
-        null;
-
-    NEXUS_el.remoteVideo.srcObject =
-        null;
-
-    NEXUS_el.remoteAudio.srcObject =
-        null;
-
-
-    NEXUS_videoTransceiver = null;
-
-    NEXUS_remoteDescriptionReady =
-        false;
-
-    NEXUS_pendingIce = [];
-
-
-    NEXUS_destination = null;
-
-    NEXUS_callId = null;
-
-    NEXUS_incomingFrom = null;
-
-    NEXUS_incomingCallId = null;
-
-    NEXUS_callActive = false;
-
-    NEXUS_cameraEnabled = false;
-
-    NEXUS_micEnabled = true;
-
-
-    NEXUS_el.activeScreen
-        .classList.remove(
-            "video-call"
-        );
-
-
-    NEXUS_el.connectionInfo
-        .classList.remove(
-            "show"
-        );
-
-
-    NEXUS_hideScreens();
-
-    NEXUS_updateButtons();
-}
+);
 
 
 /* =========================================================
    INICIO
 ========================================================= */
 
-NEXUS_updateDial();
-
-NEXUS_updateButtons();
-
-NEXUS_initialize();
-
-
-window.addEventListener(
-    "beforeunload",
-    ()=>{
-        NEXUS_presence(false);
-    }
-);
+NEXUS_loadNumber();
 
 </script>
 
 </body>
 </html>
 ```
-
-La corrección clave está en `NEXUS_handleAccepted()`: **cuando el otro dispositivo acepta, el que llamó entra inmediatamente a `activeScreen`**, crea su WebRTC y manda el `offer`.
-
-Ahora la secuencia debería verse así:
-
-**Dispositivo A**
-`Llamando → Esperando respuesta → Conectando → ☎ Llamada conectada`
-
-**Dispositivo B**
-`Llamada entrante → Aceptar → Conectando → ☎ Llamada conectada`
-
-Y en videollamada:
-
-**A ↔ B**
-`📹 cámara + 🎙 micrófono + 🔊 audio`
-
-Una cosa importante para la prueba: **los dos dispositivos deben abrir NEXUS mediante HTTPS**, por ejemplo tu GitHub Pages. Si uno entra por `http://192.168.100.7:...`, Chrome puede bloquear cámara/micrófono porque las APIs de medios exigen un contexto seguro, salvo excepciones como `localhost`. Si el audio ya funciona pero la cámara falla, este detalle es especialmente sospechoso.
