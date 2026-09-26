@@ -1,5 +1,5 @@
-```html
-<!DOCTYPE html>https://supabase.com/docs/guides/auth/auth-anonymous?utm_source=chatgpt.com
+
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -283,6 +283,23 @@ main{
     color:white;
 }
 
+#audioUnlock{
+    position:fixed;
+    left:50%;
+    bottom:30px;
+    transform:translateX(-50%);
+    z-index:9999;
+    padding:16px 25px;
+    border:0;
+    border-radius:14px;
+    background:#20d879;
+    color:#03140b;
+    font-weight:800;
+    font-size:16px;
+    cursor:pointer;
+    box-shadow:0 10px 40px rgba(0,0,0,.4);
+}
+
 #errorBox{
     position:fixed;
     bottom:10px;
@@ -296,7 +313,7 @@ main{
     color:#ff9d9d;
     font-size:11px;
     display:none;
-    z-index:100;
+    z-index:10000;
 }
 </style>
 </head>
@@ -320,7 +337,10 @@ main{
     <div class="mybox">
         <div class="label">TU NÚMERO NEXUS</div>
         <div id="myNumber" class="my-number">-----</div>
-        <button class="copy" onclick="copyMyNumber()">Copiar número</button>
+
+        <button class="copy" onclick="copyMyNumber()">
+            Copiar número
+        </button>
     </div>
 
     <div class="dial">
@@ -348,7 +368,7 @@ main{
             <button class="key" onclick="pressKey('8')">8</button>
             <button class="key" onclick="pressKey('9')">9</button>
 
-            <button class="key" onclick="clearDial()">⌫</button>
+            <button class="key" onclick="backspace()">⌫</button>
             <button class="key" onclick="pressKey('0')">0</button>
             <button class="key" onclick="clearDial()">C</button>
 
@@ -367,15 +387,19 @@ main{
 </div>
 
 
-<!-- PANTALLA DE LLAMADA -->
+<!-- LLAMADA -->
 
 <div id="callScreen" class="screen">
 
     <div class="avatar">☎</div>
 
-    <div class="calling-label">LLAMANDO A</div>
+    <div class="calling-label">
+        LLAMANDO A
+    </div>
 
-    <div id="callingNumber" class="calling-number">-----</div>
+    <div id="callingNumber" class="calling-number">
+        -----
+    </div>
 
     <div id="callState" class="call-state">
         Preparando llamada...
@@ -383,11 +407,16 @@ main{
 
     <div class="actions">
 
-        <button id="muteBtn" class="action" onclick="toggleMute()">
+        <button
+            id="muteBtn"
+            class="action"
+            onclick="toggleMute()">
             🎙️
         </button>
 
-        <button class="action hangup" onclick="hangUp()">
+        <button
+            class="action hangup"
+            onclick="hangUp()">
             ☎
         </button>
 
@@ -396,13 +425,15 @@ main{
 </div>
 
 
-<!-- LLAMADA ENTRANTE -->
+<!-- ENTRANTE -->
 
 <div id="incomingScreen" class="screen">
 
     <div class="avatar">📞</div>
 
-    <div class="incoming-title">LLAMADA NEXUS</div>
+    <div class="incoming-title">
+        LLAMADA NEXUS
+    </div>
 
     <div id="incomingNumber" class="incoming-number">
         -----
@@ -430,9 +461,17 @@ main{
 
 </div>
 
+
 <div id="errorBox"></div>
 
-<audio id="remoteAudio" autoplay playsinline></audio>
+
+<!-- AUDIO REMOTO -->
+
+<audio
+    id="remoteAudio"
+    autoplay
+    playsinline>
+</audio>
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -440,7 +479,7 @@ main{
 <script>
 
 /* =========================================================
-   CONFIGURACIÓN SUPABASE
+   SUPABASE
 ========================================================= */
 
 const SUPABASE_URL =
@@ -470,7 +509,6 @@ let peerConnection = null;
 let localStream = null;
 
 let myChannel = null;
-let remoteChannel = null;
 
 let incomingOffer = null;
 let incomingCaller = null;
@@ -523,18 +561,22 @@ const remoteAudio =
    INICIO
 ========================================================= */
 
-window.addEventListener("load", initializeNexus);
+window.addEventListener(
+    "load",
+    initializeNexus
+);
 
 
 /* =========================================================
-   ACTIVAR AUDIO
+   AUDIO
 ========================================================= */
 
 document.addEventListener(
     "pointerdown",
     unlockAudio,
-    { once:true }
+    {once:true}
 );
+
 
 async function unlockAudio(){
 
@@ -550,13 +592,21 @@ async function unlockAudio(){
 
         }
 
-        if(audioContext.state === "suspended"){
+        if(
+            audioContext.state ===
+            "suspended"
+        ){
+
             await audioContext.resume();
+
         }
 
-    }catch(e){
+    }catch(error){
 
-        console.log("Audio:",e);
+        console.warn(
+            "AudioContext:",
+            error
+        );
 
     }
 
@@ -564,7 +614,7 @@ async function unlockAudio(){
 
 
 /* =========================================================
-   INICIALIZAR NEXUS
+   INICIALIZAR
 ========================================================= */
 
 async function initializeNexus(){
@@ -576,25 +626,18 @@ async function initializeNexus(){
             false
         );
 
-        /*
-         * Intentamos recuperar una sesión existente.
-         */
 
         let {
-            data: sessionData
+            data:sessionData
         } =
         await supabaseClient
             .auth
             .getSession();
 
+
         let session =
             sessionData.session;
 
-
-        /*
-         * Si no existe sesión,
-         * creamos usuario anónimo.
-         */
 
         if(!session){
 
@@ -606,9 +649,11 @@ async function initializeNexus(){
                 .auth
                 .signInAnonymously();
 
+
             if(error){
                 throw error;
             }
+
 
             session =
                 data.session;
@@ -616,20 +661,21 @@ async function initializeNexus(){
         }
 
 
-        if(!session || !session.user){
+        if(
+            !session ||
+            !session.user
+        ){
+
             throw new Error(
                 "No se pudo crear la identidad NEXUS."
             );
+
         }
 
 
         myUserId =
             session.user.id;
 
-
-        /*
-         * Buscamos nuestro número.
-         */
 
         const {
             data:userRow,
@@ -650,8 +696,9 @@ async function initializeNexus(){
         if(userRow){
 
             myNexusNumber =
-                String(userRow.nexus_number)
-                .padStart(5,"0");
+                String(
+                    userRow.nexus_number
+                ).padStart(5,"0");
 
         }else{
 
@@ -665,16 +712,7 @@ async function initializeNexus(){
             myNexusNumber;
 
 
-        /*
-         * Nos marcamos como online.
-         */
-
         await updateOnlineStatus(true);
-
-
-        /*
-         * Creamos nuestro canal personal.
-         */
 
         await setupMyChannel();
 
@@ -684,15 +722,11 @@ async function initializeNexus(){
             true
         );
 
+
         setMessage(
             "Tu número está listo."
         );
 
-
-        /*
-         * Cuando se cierre la página,
-         * intentamos marcar offline.
-         */
 
         window.addEventListener(
             "beforeunload",
@@ -722,12 +756,16 @@ async function initializeNexus(){
 
 
 /* =========================================================
-   CREAR NÚMERO NEXUS
+   NÚMERO NEXUS
 ========================================================= */
 
 async function createNexusNumber(){
 
-    for(let attempt = 0; attempt < 30; attempt++){
+    for(
+        let attempt = 0;
+        attempt < 30;
+        attempt++
+    ){
 
         const number =
             String(
@@ -737,6 +775,7 @@ async function createNexusNumber(){
                 )
             );
 
+
         const {
             data,
             error
@@ -744,10 +783,17 @@ async function createNexusNumber(){
         await supabaseClient
             .from("nexus_users")
             .insert({
+
                 id:myUserId,
+
                 nexus_number:number,
+
                 online:true,
-                last_seen:new Date().toISOString()
+
+                last_seen:
+                    new Date()
+                    .toISOString()
+
             })
             .select()
             .single();
@@ -759,11 +805,6 @@ async function createNexusNumber(){
 
         }
 
-
-        /*
-         * Si el número ya existe,
-         * intentamos otro.
-         */
 
         if(
             error &&
@@ -778,22 +819,26 @@ async function createNexusNumber(){
 
     }
 
+
     throw new Error(
-        "No se pudo generar un número NEXUS disponible."
+        "No se pudo generar un número NEXUS."
     );
 
 }
 
 
 /* =========================================================
-   ESTADO ONLINE
+   ONLINE
 ========================================================= */
 
-async function updateOnlineStatus(online){
+async function updateOnlineStatus(
+    online
+){
 
     if(!myUserId){
         return;
     }
+
 
     const {
         error
@@ -801,16 +846,27 @@ async function updateOnlineStatus(online){
     await supabaseClient
         .from("nexus_users")
         .update({
+
             online:online,
-            last_seen:new Date().toISOString()
+
+            last_seen:
+                new Date()
+                .toISOString()
+
         })
-        .eq("id",myUserId);
+        .eq(
+            "id",
+            myUserId
+        );
+
 
     if(error){
+
         console.warn(
             "Estado:",
             error.message
         );
+
     }
 
 }
@@ -822,30 +878,25 @@ async function updateOnlineStatus(online){
 
 async function setupMyChannel(){
 
-    if(myChannel){
-
-        try{
-            await supabaseClient
-                .removeChannel(myChannel);
-        }catch(e){}
-
-    }
-
-
     myChannel =
         supabaseClient.channel(
-            "nexus:" + myNexusNumber
+            "nexus:" +
+            myNexusNumber
         );
 
 
     myChannel.on(
         "broadcast",
-        { event:"signal" },
+        {
+            event:"signal"
+        },
         async ({payload}) => {
 
             try{
 
-                await handleSignal(payload);
+                await handleSignal(
+                    payload
+                );
 
             }catch(error){
 
@@ -867,21 +918,29 @@ async function setupMyChannel(){
                 status => {
 
                     console.log(
-                        "Canal:",
+                        "NEXUS CHANNEL:",
                         status
                     );
 
-                    if(status === "SUBSCRIBED"){
+
+                    if(
+                        status ===
+                        "SUBSCRIBED"
+                    ){
 
                         resolve();
 
                     }
 
-                    if(status === "CHANNEL_ERROR"){
+
+                    if(
+                        status ===
+                        "CHANNEL_ERROR"
+                    ){
 
                         reject(
                             new Error(
-                                "No se pudo conectar al canal NEXUS."
+                                "Error conectando Realtime."
                             )
                         );
 
@@ -897,45 +956,6 @@ async function setupMyChannel(){
 
 
 /* =========================================================
-   CONECTAR AL NÚMERO DESTINO
-========================================================= */
-
-async function setupRemoteChannel(number){
-
-    if(remoteChannel){
-
-        try{
-            await supabaseClient
-                .removeChannel(remoteChannel);
-        }catch(e){}
-
-        remoteChannel = null;
-
-    }
-
-
-    remoteChannel =
-        supabaseClient.channel(
-            "nexus:" + number
-        );
-
-
-    remoteChannel.subscribe();
-
-
-    /*
-     * Esperamos un momento para asegurarnos
-     * de que el canal se una.
-     */
-
-    await new Promise(
-        resolve => setTimeout(resolve,500)
-    );
-
-}
-
-
-/* =========================================================
    ENVIAR SEÑAL
 ========================================================= */
 
@@ -945,69 +965,123 @@ async function sendSignal(
 ){
 
     const channel =
-        destination === myNexusNumber
-            ? myChannel
-            : (
-                remoteChannel &&
-                remoteChannel.topic ===
-                "realtime:nexus:" + destination
-                    ? remoteChannel
-                    : null
-            );
-
-
-    if(!channel){
-
-        /*
-         * Canal temporal para mandar señal.
-         */
-
-        const temp =
-            supabaseClient.channel(
-                "nexus:" + destination
-            );
-
-        temp.subscribe();
-
-        await new Promise(
-            resolve => setTimeout(resolve,300)
+        supabaseClient.channel(
+            "nexus:" +
+            destination
         );
 
-        await temp.send({
-            type:"broadcast",
-            event:"signal",
-            payload:payload
-        });
 
-        await supabaseClient
-            .removeChannel(temp);
+    return new Promise(
+        (resolve,reject) => {
 
-        return;
-
-    }
+            let finished = false;
 
 
-    await channel.send({
+            const finish = (
+                error
+            ) => {
 
-        type:"broadcast",
+                if(finished){
+                    return;
+                }
 
-        event:"signal",
+                finished = true;
 
-        payload:payload
+                if(error){
+                    reject(error);
+                }else{
+                    resolve();
+                }
 
-    });
+            };
+
+
+            channel.subscribe(
+                async status => {
+
+                    if(
+                        status ===
+                        "SUBSCRIBED"
+                    ){
+
+                        try{
+
+                            const result =
+                                await channel.send({
+
+                                    type:
+                                        "broadcast",
+
+                                    event:
+                                        "signal",
+
+                                    payload:
+                                        payload
+
+                                });
+
+
+                            await supabaseClient
+                                .removeChannel(
+                                    channel
+                                );
+
+
+                            finish(
+                                result
+                            );
+
+                        }catch(error){
+
+                            try{
+
+                                await supabaseClient
+                                    .removeChannel(
+                                        channel
+                                    );
+
+                            }catch(e){}
+
+
+                            finish(error);
+
+                        }
+
+                    }
+
+
+                    if(
+                        status ===
+                        "CHANNEL_ERROR"
+                    ){
+
+                        finish(
+                            new Error(
+                                "No se pudo enviar la señal."
+                            )
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+    );
 
 }
 
 
 /* =========================================================
-   GENERAR ID DE LLAMADA
+   ID DE LLAMADA
 ========================================================= */
 
 function createCallId(){
 
     return (
-        Date.now().toString(36) +
+        Date.now()
+            .toString(36) +
+
         Math.random()
             .toString(36)
             .slice(2)
@@ -1022,7 +1096,8 @@ function createCallId(){
 
 async function startCall(){
 
-    unlockAudio();
+    await unlockAudio();
+
 
     const target =
         dialInput.value.trim();
@@ -1039,7 +1114,10 @@ async function startCall(){
     }
 
 
-    if(target === myNexusNumber){
+    if(
+        target ===
+        myNexusNumber
+    ){
 
         setMessage(
             "No puedes llamarte a ti mismo."
@@ -1051,10 +1129,6 @@ async function startCall(){
 
 
     try{
-
-        /*
-         * Verificamos que exista.
-         */
 
         const {
             data:user,
@@ -1099,34 +1173,30 @@ async function startCall(){
 
         showCallScreen(
             target,
-            "Llamando..."
+            "Solicitando micrófono..."
         );
 
 
-        /*
-         * Obtenemos micrófono.
-         */
-
         localStream =
-            await navigator.mediaDevices
+            await navigator
+                .mediaDevices
                 .getUserMedia({
-                    audio:true,
+
+                    audio:{
+                        echoCancellation:true,
+                        noiseSuppression:true,
+                        autoGainControl:true
+                    },
+
                     video:false
+
                 });
 
-
-        /*
-         * Creamos conexión WebRTC.
-         */
 
         await createPeerConnection(
             target
         );
 
-
-        /*
-         * Creamos oferta.
-         */
 
         const offer =
             await peerConnection
@@ -1134,22 +1204,29 @@ async function startCall(){
 
 
         await peerConnection
-            .setLocalDescription(offer);
+            .setLocalDescription(
+                offer
+            );
 
-
-        /*
-         * Mandamos la oferta
-         * al número destino.
-         */
 
         await sendSignal(
             target,
             {
+
                 type:"incoming_call",
-                callId:currentCallId,
-                from:myNexusNumber,
-                to:target,
-                offer:offer
+
+                callId:
+                    currentCallId,
+
+                from:
+                    myNexusNumber,
+
+                to:
+                    target,
+
+                offer:
+                    offer
+
             }
         );
 
@@ -1175,7 +1252,7 @@ async function startCall(){
 
 
 /* =========================================================
-   CREAR PEER CONNECTION
+   WEBRTC
 ========================================================= */
 
 async function createPeerConnection(
@@ -1211,41 +1288,80 @@ async function createPeerConnection(
         });
 
 
-    /*
-     * Micrófono local.
-     */
-
     if(localStream){
 
         localStream
             .getTracks()
-            .forEach(track => {
+            .forEach(
+                track => {
 
-                peerConnection.addTrack(
-                    track,
-                    localStream
-                );
+                    peerConnection.addTrack(
+                        track,
+                        localStream
+                    );
 
-            });
+                }
+            );
 
     }
 
 
     /*
-     * Audio remoto.
+     * AUDIO REMOTO
      */
 
     peerConnection.ontrack =
-        event => {
+        async event => {
 
-            if(event.streams[0]){
+            console.log(
+                "🎧 AUDIO REMOTO:",
+                event.streams
+            );
 
-                remoteAudio.srcObject =
-                    event.streams[0];
 
-                remoteAudio
-                    .play()
-                    .catch(() => {});
+            const stream =
+                event.streams &&
+                event.streams[0];
+
+
+            if(!stream){
+
+                console.warn(
+                    "No llegó stream remoto."
+                );
+
+                return;
+
+            }
+
+
+            remoteAudio.srcObject =
+                stream;
+
+
+            try{
+
+                await remoteAudio.play();
+
+
+                console.log(
+                    "🔊 AUDIO REPRODUCIÉNDOSE"
+                );
+
+
+                callStateEl.textContent =
+                    "🟢 Audio conectado";
+
+
+            }catch(error){
+
+                console.warn(
+                    "Autoplay bloqueado:",
+                    error
+                );
+
+
+                showAudioUnlock();
 
             }
 
@@ -1253,7 +1369,7 @@ async function createPeerConnection(
 
 
     /*
-     * ICE candidates.
+     * ICE
      */
 
     peerConnection.onicecandidate =
@@ -1264,52 +1380,126 @@ async function createPeerConnection(
                 currentCallId
             ){
 
-                await sendSignal(
-                    remoteNumber,
-                    {
-                        type:"ice",
-                        callId:currentCallId,
-                        from:myNexusNumber,
-                        to:remoteNumber,
-                        candidate:event.candidate
-                    }
-                );
+                try{
+
+                    await sendSignal(
+                        remoteNumber,
+                        {
+
+                            type:"ice",
+
+                            callId:
+                                currentCallId,
+
+                            from:
+                                myNexusNumber,
+
+                            to:
+                                remoteNumber,
+
+                            candidate:
+                                event.candidate
+
+                        }
+                    );
+
+                }catch(error){
+
+                    console.error(
+                        "ICE:",
+                        error
+                    );
+
+                }
 
             }
 
         };
 
 
-    peerConnection.onconnectionstatechange =
+    /*
+     * CONEXIÓN
+     */
+
+    peerConnection
+        .onconnectionstatechange =
         () => {
 
-            const state =
-                peerConnection.connectionState;
-
-
-            if(state === "connected"){
-
-                callStateEl.textContent =
-                    "Conectado";
-
+            if(!peerConnection){
+                return;
             }
 
-            if(state === "connecting"){
+
+            const state =
+                peerConnection
+                    .connectionState;
+
+
+            console.log(
+                "WEBRTC:",
+                state
+            );
+
+
+            if(
+                state ===
+                "connecting"
+            ){
 
                 callStateEl.textContent =
                     "Conectando audio...";
 
             }
 
+
             if(
-                state === "failed" ||
-                state === "disconnected"
+                state ===
+                "connected"
             ){
 
                 callStateEl.textContent =
-                    "Conexión perdida";
+                    "🟢 Conectado";
 
             }
+
+
+            if(
+                state ===
+                "disconnected"
+            ){
+
+                callStateEl.textContent =
+                    "⚠️ Conexión perdida";
+
+            }
+
+
+            if(
+                state ===
+                "failed"
+            ){
+
+                callStateEl.textContent =
+                    "❌ WebRTC no pudo conectar";
+
+            }
+
+        };
+
+
+    /*
+     * ICE STATE
+     */
+
+    peerConnection
+        .oniceconnectionstatechange =
+        () => {
+
+            console.log(
+                "ICE STATE:",
+                peerConnection
+                    .iceConnectionState
+            );
 
         };
 
@@ -1317,10 +1507,12 @@ async function createPeerConnection(
 
 
 /* =========================================================
-   PROCESAR SEÑALES
+   SEÑALES
 ========================================================= */
 
-async function handleSignal(payload){
+async function handleSignal(
+    payload
+){
 
     if(!payload){
         return;
@@ -1329,7 +1521,8 @@ async function handleSignal(payload){
 
     if(
         payload.to &&
-        payload.to !== myNexusNumber
+        payload.to !==
+        myNexusNumber
     ){
 
         return;
@@ -1341,7 +1534,10 @@ async function handleSignal(payload){
      * LLAMADA ENTRANTE
      */
 
-    if(payload.type === "incoming_call"){
+    if(
+        payload.type ===
+        "incoming_call"
+    ){
 
         if(currentCallId){
             return;
@@ -1378,16 +1574,22 @@ async function handleSignal(payload){
 
 
     /*
-     * RESPUESTA
+     * ANSWER
      */
 
-    if(payload.type === "answer"){
+    if(
+        payload.type ===
+        "answer"
+    ){
 
         if(
             !peerConnection ||
-            payload.callId !== currentCallId
+            payload.callId !==
+            currentCallId
         ){
+
             return;
+
         }
 
 
@@ -1402,6 +1604,7 @@ async function handleSignal(payload){
         callStateEl.textContent =
             "Conectando audio...";
 
+
         return;
 
     }
@@ -1411,13 +1614,19 @@ async function handleSignal(payload){
      * ICE
      */
 
-    if(payload.type === "ice"){
+    if(
+        payload.type ===
+        "ice"
+    ){
 
         if(
             !peerConnection ||
-            payload.callId !== currentCallId
+            payload.callId !==
+            currentCallId
         ){
+
             return;
+
         }
 
 
@@ -1433,11 +1642,12 @@ async function handleSignal(payload){
         }catch(error){
 
             console.warn(
-                "ICE:",
+                "ICE candidate:",
                 error
             );
 
         }
+
 
         return;
 
@@ -1448,22 +1658,30 @@ async function handleSignal(payload){
      * RECHAZO
      */
 
-    if(payload.type === "reject"){
+    if(
+        payload.type ===
+        "reject"
+    ){
 
         if(
-            payload.callId !== currentCallId
+            payload.callId !==
+            currentCallId
         ){
+
             return;
+
         }
 
 
         callStateEl.textContent =
             "Llamada rechazada";
 
+
         setTimeout(
             closeCall,
             1000
         );
+
 
         return;
 
@@ -1474,18 +1692,22 @@ async function handleSignal(payload){
      * COLGAR
      */
 
-    if(payload.type === "hangup"){
+    if(
+        payload.type ===
+        "hangup"
+    ){
 
         if(
-            payload.callId !== currentCallId
+            payload.callId !==
+            currentCallId
         ){
+
             return;
+
         }
 
 
         closeCall();
-
-        return;
 
     }
 
@@ -1493,12 +1715,12 @@ async function handleSignal(payload){
 
 
 /* =========================================================
-   ACEPTAR LLAMADA
+   ACEPTAR
 ========================================================= */
 
 async function acceptIncoming(){
 
-    unlockAudio();
+    await unlockAudio();
 
     stopRingtone();
 
@@ -1509,6 +1731,7 @@ async function acceptIncoming(){
     ){
 
         rejectIncoming();
+
         return;
 
     }
@@ -1521,17 +1744,25 @@ async function acceptIncoming(){
 
     showCallScreen(
         incomingCaller,
-        "Aceptando..."
+        "Solicitando micrófono..."
     );
 
 
     try{
 
         localStream =
-            await navigator.mediaDevices
+            await navigator
+                .mediaDevices
                 .getUserMedia({
-                    audio:true,
+
+                    audio:{
+                        echoCancellation:true,
+                        noiseSuppression:true,
+                        autoGainControl:true
+                    },
+
                     video:false
+
                 });
 
 
@@ -1554,17 +1785,29 @@ async function acceptIncoming(){
 
 
         await peerConnection
-            .setLocalDescription(answer);
+            .setLocalDescription(
+                answer
+            );
 
 
         await sendSignal(
             incomingCaller,
             {
+
                 type:"answer",
-                callId:currentCallId,
-                from:myNexusNumber,
-                to:incomingCaller,
-                answer:answer
+
+                callId:
+                    currentCallId,
+
+                from:
+                    myNexusNumber,
+
+                to:
+                    incomingCaller,
+
+                answer:
+                    answer
+
             }
         );
 
@@ -1581,12 +1824,12 @@ async function acceptIncoming(){
 
         console.error(error);
 
+        closeCall();
+
         showError(
             error.message ||
             "No se pudo aceptar la llamada."
         );
-
-        closeCall();
 
     }
 
@@ -1602,17 +1845,28 @@ async function rejectIncoming(){
     stopRingtone();
 
 
-    if(incomingCaller && currentCallId){
+    if(
+        incomingCaller &&
+        currentCallId
+    ){
 
         try{
 
             await sendSignal(
                 incomingCaller,
                 {
+
                     type:"reject",
-                    callId:currentCallId,
-                    from:myNexusNumber,
-                    to:incomingCaller
+
+                    callId:
+                        currentCallId,
+
+                    from:
+                        myNexusNumber,
+
+                    to:
+                        incomingCaller
+
                 }
             );
 
@@ -1650,10 +1904,18 @@ async function hangUp(){
             await sendSignal(
                 currentRemoteNumber,
                 {
+
                     type:"hangup",
-                    callId:currentCallId,
-                    from:myNexusNumber,
-                    to:currentRemoteNumber
+
+                    callId:
+                        currentCallId,
+
+                    from:
+                        myNexusNumber,
+
+                    to:
+                        currentRemoteNumber
+
                 }
             );
 
@@ -1668,7 +1930,7 @@ async function hangUp(){
 
 
 /* =========================================================
-   CERRAR LLAMADA
+   CERRAR
 ========================================================= */
 
 function closeCall(){
@@ -1691,16 +1953,21 @@ function closeCall(){
 
         localStream
             .getTracks()
-            .forEach(track => {
-                track.stop();
-            });
+            .forEach(
+                track => {
+                    track.stop();
+                }
+            );
 
         localStream = null;
 
     }
 
 
-    remoteAudio.srcObject = null;
+    remoteAudio.pause();
+
+    remoteAudio.srcObject =
+        null;
 
 
     callScreen
@@ -1721,10 +1988,22 @@ function closeCall(){
 
     isMuted = false;
 
-    const muteBtn =
-        document.getElementById("muteBtn");
 
-    muteBtn.classList.remove("active");
+    document
+        .getElementById("muteBtn")
+        .classList
+        .remove("active");
+
+
+    const unlock =
+        document.getElementById(
+            "audioUnlock"
+        );
+
+
+    if(unlock){
+        unlock.remove();
+    }
 
 }
 
@@ -1740,33 +2019,35 @@ function toggleMute(){
     }
 
 
-    isMuted = !isMuted;
+    isMuted =
+        !isMuted;
 
 
     localStream
         .getAudioTracks()
-        .forEach(track => {
+        .forEach(
+            track => {
 
-            track.enabled =
-                !isMuted;
+                track.enabled =
+                    !isMuted;
 
-        });
-
-
-    const button =
-        document.getElementById("muteBtn");
+            }
+        );
 
 
-    button.classList.toggle(
-        "active",
-        isMuted
-    );
+    document
+        .getElementById("muteBtn")
+        .classList
+        .toggle(
+            "active",
+            isMuted
+        );
 
 }
 
 
 /* =========================================================
-   TONO DE LLAMADA
+   TONO
 ========================================================= */
 
 function startRingtone(){
@@ -1790,23 +2071,28 @@ function startRingtone(){
             return;
         }
 
+
         playing = true;
 
 
         try{
 
             const oscillator =
-                audioContext.createOscillator();
+                audioContext
+                    .createOscillator();
+
 
             const gain =
-                audioContext.createGain();
+                audioContext
+                    .createGain();
+
+
+            oscillator.type =
+                "sine";
 
 
             oscillator.frequency.value =
                 780;
-
-            oscillator.type =
-                "sine";
 
 
             gain.gain.setValueAtTime(
@@ -1814,25 +2100,36 @@ function startRingtone(){
                 audioContext.currentTime
             );
 
-            gain.gain.exponentialRampToValueAtTime(
-                0.16,
-                audioContext.currentTime + 0.03
-            );
 
-            gain.gain.exponentialRampToValueAtTime(
-                0.0001,
-                audioContext.currentTime + 0.7
-            );
+            gain.gain
+                .exponentialRampToValueAtTime(
+                    0.16,
+                    audioContext.currentTime +
+                    0.03
+                );
+
+
+            gain.gain
+                .exponentialRampToValueAtTime(
+                    0.0001,
+                    audioContext.currentTime +
+                    0.7
+                );
 
 
             oscillator.connect(gain);
-            gain.connect(audioContext.destination);
+
+            gain.connect(
+                audioContext.destination
+            );
 
 
             oscillator.start();
 
+
             oscillator.stop(
-                audioContext.currentTime + 0.7
+                audioContext.currentTime +
+                0.7
             );
 
 
@@ -1841,7 +2138,8 @@ function startRingtone(){
                     playing = false;
                 };
 
-        }catch(e){
+
+        }catch(error){
 
             playing = false;
 
@@ -1851,6 +2149,7 @@ function startRingtone(){
 
 
     beep();
+
 
     ringtoneInterval =
         setInterval(
@@ -1877,29 +2176,114 @@ function stopRingtone(){
 
 
 /* =========================================================
+   ACTIVAR AUDIO
+========================================================= */
+
+function showAudioUnlock(){
+
+    if(
+        document.getElementById(
+            "audioUnlock"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    const button =
+        document.createElement(
+            "button"
+        );
+
+
+    button.id =
+        "audioUnlock";
+
+
+    button.textContent =
+        "🔊 ACTIVAR AUDIO";
+
+
+    button.onclick =
+        async () => {
+
+            try{
+
+                await unlockAudio();
+
+                await remoteAudio.play();
+
+
+                button.remove();
+
+
+                callStateEl.textContent =
+                    "🟢 Audio conectado";
+
+
+            }catch(error){
+
+                console.error(
+                    "Audio:",
+                    error
+                );
+
+            }
+
+        };
+
+
+    document.body.appendChild(
+        button
+    );
+
+}
+
+
+/* =========================================================
    TECLADO
 ========================================================= */
 
 function pressKey(number){
 
-    if(dialInput.value.length >= 5){
+    if(
+        dialInput.value.length >= 5
+    ){
+
         return;
+
     }
 
-    dialInput.value += number;
+
+    dialInput.value +=
+        number;
+
+}
+
+
+function backspace(){
+
+    dialInput.value =
+        dialInput.value.slice(
+            0,
+            -1
+        );
 
 }
 
 
 function clearDial(){
 
-    dialInput.value = "";
+    dialInput.value =
+        "";
 
 }
 
 
 /* =========================================================
-   COPIAR NÚMERO
+   COPIAR
 ========================================================= */
 
 async function copyMyNumber(){
@@ -1910,11 +2294,13 @@ async function copyMyNumber(){
             myNexusNumber
         );
 
+
         setMessage(
             "Número copiado."
         );
 
-    }catch(e){
+
+    }catch(error){
 
         setMessage(
             "No se pudo copiar."
@@ -1978,8 +2364,10 @@ function showError(text){
             "errorBox"
         );
 
+
     box.textContent =
         text;
+
 
     box.style.display =
         "block";
@@ -1987,8 +2375,10 @@ function showError(text){
 
     setTimeout(
         () => {
+
             box.style.display =
                 "none";
+
         },
         6000
     );
@@ -2009,23 +2399,27 @@ document.addEventListener(
             event.key <= "9"
         ){
 
-            pressKey(event.key);
+            pressKey(
+                event.key
+            );
 
         }
 
 
-        if(event.key === "Backspace"){
+        if(
+            event.key ===
+            "Backspace"
+        ){
 
-            dialInput.value =
-                dialInput.value.slice(
-                    0,
-                    -1
-                );
+            backspace();
 
         }
 
 
-        if(event.key === "Enter"){
+        if(
+            event.key ===
+            "Enter"
+        ){
 
             startCall();
 
@@ -2038,4 +2432,4 @@ document.addEventListener(
 
 </body>
 </html>
-```
+
