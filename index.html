@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -214,6 +214,7 @@ main{
 .call-state{
     margin-top:10px;
     color:#8d99b1;
+    text-align:center;
 }
 
 .actions{
@@ -234,7 +235,7 @@ main{
 }
 
 .action.active{
-    background:#ffffff;
+    background:#fff;
     color:#111;
 }
 
@@ -307,13 +308,34 @@ main{
     right:10px;
     max-width:410px;
     margin:auto;
-    padding:10px;
+    padding:12px;
     border-radius:10px;
     background:#2b1111;
     color:#ff9d9d;
     font-size:11px;
     display:none;
     z-index:10000;
+    word-break:break-word;
+}
+
+#debugBox{
+    position:fixed;
+    top:10px;
+    left:10px;
+    right:10px;
+    max-width:410px;
+    margin:auto;
+    padding:10px;
+    border-radius:10px;
+    background:rgba(4,8,15,.94);
+    border:1px solid rgba(255,255,255,.1);
+    color:#8df5ba;
+    font-size:10px;
+    line-height:1.5;
+    display:none;
+    z-index:10001;
+    max-height:130px;
+    overflow:auto;
 }
 </style>
 </head>
@@ -336,7 +358,10 @@ main{
 
     <div class="mybox">
         <div class="label">TU NÚMERO NEXUS</div>
-        <div id="myNumber" class="my-number">-----</div>
+
+        <div id="myNumber" class="my-number">
+            -----
+        </div>
 
         <button class="copy" onclick="copyMyNumber()">
             Copiar número
@@ -391,7 +416,9 @@ main{
 
 <div id="callScreen" class="screen">
 
-    <div class="avatar">☎</div>
+    <div class="avatar">
+        ☎
+    </div>
 
     <div class="calling-label">
         LLAMANDO A
@@ -425,11 +452,13 @@ main{
 </div>
 
 
-<!-- ENTRANTE -->
+<!-- LLAMADA ENTRANTE -->
 
 <div id="incomingScreen" class="screen">
 
-    <div class="avatar">📞</div>
+    <div class="avatar">
+        📞
+    </div>
 
     <div class="incoming-title">
         LLAMADA NEXUS
@@ -462,16 +491,15 @@ main{
 </div>
 
 
-<div id="errorBox"></div>
-
-
-<!-- AUDIO REMOTO -->
-
 <audio
     id="remoteAudio"
     autoplay
     playsinline>
 </audio>
+
+
+<div id="errorBox"></div>
+<div id="debugBox"></div>
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -558,6 +586,55 @@ const remoteAudio =
 
 
 /* =========================================================
+   DEBUG
+========================================================= */
+
+function debugLog(...args){
+
+    console.log(...args);
+
+    const box =
+        document.getElementById(
+            "debugBox"
+        );
+
+    box.style.display =
+        "block";
+
+    const line =
+        document.createElement("div");
+
+    line.textContent =
+        args
+            .map(x => {
+
+                try{
+                    return typeof x === "object"
+                        ? JSON.stringify(x)
+                        : String(x);
+                }catch{
+                    return String(x);
+                }
+
+            })
+            .join(" ");
+
+    box.appendChild(line);
+
+    while(
+        box.children.length > 8
+    ){
+
+        box.removeChild(
+            box.firstChild
+        );
+
+    }
+
+}
+
+
+/* =========================================================
    INICIO
 ========================================================= */
 
@@ -568,7 +645,7 @@ window.addEventListener(
 
 
 /* =========================================================
-   AUDIO
+   DESBLOQUEAR AUDIO
 ========================================================= */
 
 document.addEventListener(
@@ -614,12 +691,16 @@ async function unlockAudio(){
 
 
 /* =========================================================
-   INICIALIZAR
+   INICIALIZAR NEXUS
 ========================================================= */
 
 async function initializeNexus(){
 
     try{
+
+        debugLog(
+            "🔵 INICIANDO NEXUS"
+        );
 
         setStatus(
             "Conectando...",
@@ -640,6 +721,11 @@ async function initializeNexus(){
 
 
         if(!session){
+
+            debugLog(
+                "👤 CREANDO SESIÓN ANÓNIMA"
+            );
+
 
             const {
                 data,
@@ -677,6 +763,12 @@ async function initializeNexus(){
             session.user.id;
 
 
+        debugLog(
+            "👤 USER:",
+            myUserId
+        );
+
+
         const {
             data:userRow,
             error:userError
@@ -712,6 +804,12 @@ async function initializeNexus(){
             myNexusNumber;
 
 
+        debugLog(
+            "📞 NÚMERO:",
+            myNexusNumber
+        );
+
+
         await updateOnlineStatus(true);
 
         await setupMyChannel();
@@ -740,6 +838,11 @@ async function initializeNexus(){
 
         console.error(error);
 
+        debugLog(
+            "❌ ERROR INICIAL:",
+            error.message
+        );
+
         setStatus(
             "Error de conexión",
             false
@@ -756,7 +859,7 @@ async function initializeNexus(){
 
 
 /* =========================================================
-   NÚMERO NEXUS
+   CREAR NÚMERO
 ========================================================= */
 
 async function createNexusNumber(){
@@ -828,7 +931,7 @@ async function createNexusNumber(){
 
 
 /* =========================================================
-   ONLINE
+   ESTADO ONLINE
 ========================================================= */
 
 async function updateOnlineStatus(
@@ -873,7 +976,7 @@ async function updateOnlineStatus(
 
 
 /* =========================================================
-   CANAL PERSONAL
+   CANAL
 ========================================================= */
 
 async function setupMyChannel(){
@@ -891,6 +994,12 @@ async function setupMyChannel(){
             event:"signal"
         },
         async ({payload}) => {
+
+            debugLog(
+                "📡 SEÑAL RECIBIDA:",
+                payload?.type
+            );
+
 
             try{
 
@@ -917,7 +1026,7 @@ async function setupMyChannel(){
             myChannel.subscribe(
                 status => {
 
-                    console.log(
+                    debugLog(
                         "NEXUS CHANNEL:",
                         status
                     );
@@ -963,6 +1072,14 @@ async function sendSignal(
     destination,
     payload
 ){
+
+    debugLog(
+        "📤 ENVIANDO:",
+        payload.type,
+        "A:",
+        destination
+    );
+
 
     const channel =
         supabaseClient.channel(
@@ -1099,14 +1216,29 @@ async function startCall(){
     await unlockAudio();
 
 
+    debugLog(
+        "☎️ startCall EJECUTADO"
+    );
+
+
     const target =
         dialInput.value.trim();
+
+
+    debugLog(
+        "📞 DESTINO:",
+        target
+    );
 
 
     if(!/^\d{5}$/.test(target)){
 
         setMessage(
             "Introduce exactamente 5 dígitos."
+        );
+
+        debugLog(
+            "❌ NÚMERO INVÁLIDO"
         );
 
         return;
@@ -1130,6 +1262,11 @@ async function startCall(){
 
     try{
 
+        debugLog(
+            "🔎 BUSCANDO DESTINO..."
+        );
+
+
         const {
             data:user,
             error
@@ -1147,11 +1284,22 @@ async function startCall(){
 
 
         if(error){
+
+            debugLog(
+                "❌ ERROR BUSCANDO:",
+                error.message
+            );
+
             throw error;
+
         }
 
 
         if(!user){
+
+            debugLog(
+                "❌ NÚMERO NO EXISTE"
+            );
 
             setMessage(
                 "El número " +
@@ -1164,6 +1312,14 @@ async function startCall(){
         }
 
 
+        debugLog(
+            "✅ DESTINO ENCONTRADO",
+            user.online
+                ? "ONLINE"
+                : "OFFLINE"
+        );
+
+
         currentRemoteNumber =
             target;
 
@@ -1173,28 +1329,94 @@ async function startCall(){
 
         showCallScreen(
             target,
-            "Solicitando micrófono..."
+            "Preparando llamada..."
         );
 
 
-        localStream =
-            await navigator
-                .mediaDevices
-                .getUserMedia({
+        /*
+         * MICRÓFONO
+         */
 
-                    audio:{
-                        echoCancellation:true,
-                        noiseSuppression:true,
-                        autoGainControl:true
-                    },
+        debugLog(
+            "🎤 PIDIENDO MICRÓFONO..."
+        );
 
-                    video:false
 
-                });
+        try{
+
+            localStream =
+                await navigator
+                    .mediaDevices
+                    .getUserMedia({
+
+                        audio:{
+                            echoCancellation:true,
+                            noiseSuppression:true,
+                            autoGainControl:true
+                        },
+
+                        video:false
+
+                    });
+
+
+            debugLog(
+                "🎤 MICRÓFONO CONSEGUIDO"
+            );
+
+
+            console.log(
+                "LOCAL STREAM:",
+                localStream
+            );
+
+
+            localStream
+                .getTracks()
+                .forEach(
+                    track => {
+
+                        debugLog(
+                            "🎤 TRACK:",
+                            track.kind,
+                            track.label,
+                            track.readyState
+                        );
+
+                    }
+                );
+
+
+        }catch(micError){
+
+            debugLog(
+                "❌ ERROR MICRÓFONO:",
+                micError.name,
+                micError.message
+            );
+
+
+            throw micError;
+
+        }
+
+
+        /*
+         * WEBRTC
+         */
+
+        debugLog(
+            "🔥 CREANDO PEER CONNECTION..."
+        );
 
 
         await createPeerConnection(
             target
+        );
+
+
+        debugLog(
+            "🔥 PEER CONNECTION CREADO"
         );
 
 
@@ -1203,10 +1425,20 @@ async function startCall(){
                 .createOffer();
 
 
+        debugLog(
+            "📝 OFFER CREADA"
+        );
+
+
         await peerConnection
             .setLocalDescription(
                 offer
             );
+
+
+        debugLog(
+            "📡 LOCAL DESCRIPTION LISTA"
+        );
 
 
         await sendSignal(
@@ -1231,19 +1463,43 @@ async function startCall(){
         );
 
 
+        debugLog(
+            "📤 LLAMADA ENVIADA"
+        );
+
+
         callStateEl.textContent =
             "Esperando respuesta...";
 
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            "❌ ERROR STARTCALL:",
+            error
+        );
+
+
+        debugLog(
+            "❌ STARTCALL:",
+            error.name,
+            error.message
+        );
+
 
         closeCall();
 
+
         showError(
-            error.message ||
-            "No se pudo iniciar la llamada."
+            (
+                error.name
+                ? error.name + ": "
+                : ""
+            ) +
+            (
+                error.message ||
+                "No se pudo iniciar la llamada."
+            )
         );
 
     }
@@ -1252,12 +1508,17 @@ async function startCall(){
 
 
 /* =========================================================
-   WEBRTC
+   CREAR PEER CONNECTION
 ========================================================= */
 
 async function createPeerConnection(
     remoteNumber
 ){
+
+    debugLog(
+        "🔥 CREATE PEER CONNECTION EJECUTADO"
+    );
+
 
     if(peerConnection){
 
@@ -1288,12 +1549,23 @@ async function createPeerConnection(
         });
 
 
+    debugLog(
+        "🌐 RTCPeerConnection CREADO"
+    );
+
+
     if(localStream){
 
         localStream
             .getTracks()
             .forEach(
                 track => {
+
+                    debugLog(
+                        "➕ AGREGANDO TRACK:",
+                        track.kind
+                    );
+
 
                     peerConnection.addTrack(
                         track,
@@ -1315,28 +1587,37 @@ async function createPeerConnection(
 
             console.log(
                 "🎧 AUDIO REMOTO:",
-                event.streams
+                event
+            );
+
+
+            debugLog(
+                "🎧 ONTRACK EJECUTADO"
             );
 
 
             const stream =
                 event.streams &&
-                event.streams[0];
-
-
-            if(!stream){
-
-                console.warn(
-                    "No llegó stream remoto."
-                );
-
-                return;
-
-            }
+                event.streams[0]
+                    ? event.streams[0]
+                    : new MediaStream([
+                        event.track
+                    ]);
 
 
             remoteAudio.srcObject =
                 stream;
+
+            remoteAudio.muted =
+                false;
+
+            remoteAudio.volume =
+                1;
+
+
+            debugLog(
+                "🔊 STREAM REMOTO RECIBIDO"
+            );
 
 
             try{
@@ -1344,7 +1625,7 @@ async function createPeerConnection(
                 await remoteAudio.play();
 
 
-                console.log(
+                debugLog(
                     "🔊 AUDIO REPRODUCIÉNDOSE"
                 );
 
@@ -1356,8 +1637,13 @@ async function createPeerConnection(
             }catch(error){
 
                 console.warn(
-                    "Autoplay bloqueado:",
+                    "Autoplay:",
                     error
+                );
+
+
+                debugLog(
+                    "⚠️ AUTOPLAY BLOQUEADO"
                 );
 
 
@@ -1379,6 +1665,11 @@ async function createPeerConnection(
                 event.candidate &&
                 currentCallId
             ){
+
+                debugLog(
+                    "🧊 ICE CANDIDATE"
+                );
+
 
                 try{
 
@@ -1406,7 +1697,7 @@ async function createPeerConnection(
                 }catch(error){
 
                     console.error(
-                        "ICE:",
+                        "ICE SEND:",
                         error
                     );
 
@@ -1418,7 +1709,7 @@ async function createPeerConnection(
 
 
     /*
-     * CONEXIÓN
+     * ESTADO WEBRTC
      */
 
     peerConnection
@@ -1436,6 +1727,12 @@ async function createPeerConnection(
 
 
             console.log(
+                "WEBRTC:",
+                state
+            );
+
+
+            debugLog(
                 "WEBRTC:",
                 state
             );
@@ -1495,19 +1792,34 @@ async function createPeerConnection(
         .oniceconnectionstatechange =
         () => {
 
+            const state =
+                peerConnection
+                    .iceConnectionState;
+
+
             console.log(
                 "ICE STATE:",
-                peerConnection
-                    .iceConnectionState
+                state
+            );
+
+
+            debugLog(
+                "ICE STATE:",
+                state
             );
 
         };
+
+
+    debugLog(
+        "✅ PEER CONNECTION LISTO"
+    );
 
 }
 
 
 /* =========================================================
-   SEÑALES
+   SEÑALES RECIBIDAS
 ========================================================= */
 
 async function handleSignal(
@@ -1538,6 +1850,12 @@ async function handleSignal(
         payload.type ===
         "incoming_call"
     ){
+
+        debugLog(
+            "📞 LLAMADA ENTRANTE DE:",
+            payload.from
+        );
+
 
         if(currentCallId){
             return;
@@ -1582,6 +1900,11 @@ async function handleSignal(
         "answer"
     ){
 
+        debugLog(
+            "📥 ANSWER RECIBIDO"
+        );
+
+
         if(
             !peerConnection ||
             payload.callId !==
@@ -1601,6 +1924,11 @@ async function handleSignal(
             );
 
 
+        debugLog(
+            "✅ REMOTE DESCRIPTION APLICADA"
+        );
+
+
         callStateEl.textContent =
             "Conectando audio...";
 
@@ -1618,6 +1946,11 @@ async function handleSignal(
         payload.type ===
         "ice"
     ){
+
+        debugLog(
+            "🧊 ICE RECIBIDO"
+        );
+
 
         if(
             !peerConnection ||
@@ -1655,13 +1988,18 @@ async function handleSignal(
 
 
     /*
-     * RECHAZO
+     * REJECT
      */
 
     if(
         payload.type ===
         "reject"
     ){
+
+        debugLog(
+            "❌ LLAMADA RECHAZADA"
+        );
+
 
         if(
             payload.callId !==
@@ -1689,13 +2027,18 @@ async function handleSignal(
 
 
     /*
-     * COLGAR
+     * HANGUP
      */
 
     if(
         payload.type ===
         "hangup"
     ){
+
+        debugLog(
+            "☎️ LLAMADA FINALIZADA"
+        );
+
 
         if(
             payload.callId !==
@@ -1725,6 +2068,11 @@ async function acceptIncoming(){
     stopRingtone();
 
 
+    debugLog(
+        "📞 ACEPTANDO LLAMADA"
+    );
+
+
     if(
         !incomingOffer ||
         !incomingCaller
@@ -1744,11 +2092,16 @@ async function acceptIncoming(){
 
     showCallScreen(
         incomingCaller,
-        "Solicitando micrófono..."
+        "Preparando audio..."
     );
 
 
     try{
+
+        debugLog(
+            "🎤 PIDIENDO MICRÓFONO EN RECEPTOR..."
+        );
+
 
         localStream =
             await navigator
@@ -1766,8 +2119,18 @@ async function acceptIncoming(){
                 });
 
 
+        debugLog(
+            "🎤 MICRÓFONO DEL RECEPTOR LISTO"
+        );
+
+
         await createPeerConnection(
             incomingCaller
+        );
+
+
+        debugLog(
+            "🔥 PEER DEL RECEPTOR CREADO"
         );
 
 
@@ -1779,15 +2142,30 @@ async function acceptIncoming(){
             );
 
 
+        debugLog(
+            "📥 OFFER APLICADA"
+        );
+
+
         const answer =
             await peerConnection
                 .createAnswer();
+
+
+        debugLog(
+            "📝 ANSWER CREADA"
+        );
 
 
         await peerConnection
             .setLocalDescription(
                 answer
             );
+
+
+        debugLog(
+            "📡 ANSWER LOCAL LISTA"
+        );
 
 
         await sendSignal(
@@ -1812,6 +2190,11 @@ async function acceptIncoming(){
         );
 
 
+        debugLog(
+            "📤 ANSWER ENVIADA"
+        );
+
+
         callStateEl.textContent =
             "Conectando audio...";
 
@@ -1822,13 +2205,32 @@ async function acceptIncoming(){
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            "❌ ERROR ACEPTANDO:",
+            error
+        );
+
+
+        debugLog(
+            "❌ ACCEPT:",
+            error.name,
+            error.message
+        );
+
 
         closeCall();
 
+
         showError(
-            error.message ||
-            "No se pudo aceptar la llamada."
+            (
+                error.name
+                ? error.name + ": "
+                : ""
+            ) +
+            (
+                error.message ||
+                "No se pudo aceptar."
+            )
         );
 
     }
@@ -1843,6 +2245,11 @@ async function acceptIncoming(){
 async function rejectIncoming(){
 
     stopRingtone();
+
+
+    debugLog(
+        "❌ RECHAZANDO LLAMADA"
+    );
 
 
     if(
@@ -1894,6 +2301,11 @@ async function rejectIncoming(){
 
 async function hangUp(){
 
+    debugLog(
+        "☎️ COLGANDO"
+    );
+
+
     if(
         currentRemoteNumber &&
         currentCallId
@@ -1930,7 +2342,7 @@ async function hangUp(){
 
 
 /* =========================================================
-   CERRAR
+   CERRAR LLAMADA
 ========================================================= */
 
 function closeCall(){
@@ -1989,10 +2401,18 @@ function closeCall(){
     isMuted = false;
 
 
-    document
-        .getElementById("muteBtn")
-        .classList
-        .remove("active");
+    const muteBtn =
+        document.getElementById(
+            "muteBtn"
+        );
+
+
+    if(muteBtn){
+
+        muteBtn.classList
+            .remove("active");
+
+    }
 
 
     const unlock =
@@ -2002,14 +2422,16 @@ function closeCall(){
 
 
     if(unlock){
+
         unlock.remove();
+
     }
 
 }
 
 
 /* =========================================================
-   SILENCIAR
+   MUTE
 ========================================================= */
 
 function toggleMute(){
@@ -2042,6 +2464,13 @@ function toggleMute(){
             "active",
             isMuted
         );
+
+
+    debugLog(
+        isMuted
+            ? "🔇 MICRÓFONO SILENCIADO"
+            : "🎙️ MICRÓFONO ACTIVADO"
+    );
 
 }
 
@@ -2176,7 +2605,7 @@ function stopRingtone(){
 
 
 /* =========================================================
-   ACTIVAR AUDIO
+   DESBLOQUEAR AUDIO REMOTO
 ========================================================= */
 
 function showAudioUnlock(){
@@ -2213,7 +2642,19 @@ function showAudioUnlock(){
 
                 await unlockAudio();
 
+                remoteAudio.muted =
+                    false;
+
+                remoteAudio.volume =
+                    1;
+
+
                 await remoteAudio.play();
+
+
+                debugLog(
+                    "🔊 AUDIO ACTIVADO MANUALMENTE"
+                );
 
 
                 button.remove();
@@ -2225,9 +2666,10 @@ function showAudioUnlock(){
 
             }catch(error){
 
-                console.error(
-                    "Audio:",
-                    error
+                debugLog(
+                    "❌ AUDIO:",
+                    error.name,
+                    error.message
                 );
 
             }
@@ -2380,7 +2822,7 @@ function showError(text){
                 "none";
 
         },
-        6000
+        8000
     );
 
 }
@@ -2432,4 +2874,4 @@ document.addEventListener(
 
 </body>
 </html>
-
+```
