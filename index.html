@@ -1,3644 +1,3322 @@
-```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>NEXUS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PeluchiAbarrotes | Punto de Venta</title>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://unpkg.com/@zxing/browser@0.2.1"></script>
 
 <style>
+:root{
+    --primary:#8b1e24;
+    --primary-dark:#681419;
+    --bg:#f4f4f4;
+    --card:#fff;
+    --text:#222;
+    --muted:#777;
+    --border:#ddd;
+    --green:#198754;
+    --blue:#1769aa;
+    --red:#c62828;
+    --shadow:0 2px 10px rgba(0,0,0,.08);
+}
+
 *{
     box-sizing:border-box;
-    margin:0;
-    padding:0;
 }
 
 body{
-    min-height:100vh;
-    background:
-        radial-gradient(circle at top,#18243d 0%,#080b13 45%,#030408 100%);
-    color:#fff;
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
     font-family:Arial,Helvetica,sans-serif;
-    overflow-x:hidden;
 }
 
-button,input{
-    font:inherit;
-}
+/* HEADER */
 
-button{
-    cursor:pointer;
-}
-
-.app{
-    width:100%;
-    min-height:100vh;
+header{
+    height:64px;
+    background:var(--primary);
+    color:white;
     display:flex;
     align-items:center;
-    justify-content:center;
+    padding:0 22px;
+    font-size:22px;
+    font-weight:bold;
+}
+
+/* NAV */
+
+nav{
+    background:white;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    position:sticky;
+    top:0;
+    z-index:20;
+}
+
+nav button{
+    flex:1;
+    border:0;
+    background:white;
+    padding:16px 8px;
+    font-size:14px;
+    font-weight:bold;
+    color:#444;
+    border-radius:0;
+}
+
+nav button:hover{
+    background:#f5f5f5;
+}
+
+nav button.active{
+    background:var(--primary);
+    color:white;
+}
+
+/* MAIN */
+
+main{
+    max-width:1250px;
+    margin:auto;
     padding:20px;
 }
 
-.phone{
-    width:100%;
-    max-width:430px;
-    min-height:760px;
-    background:rgba(9,13,23,.96);
-    border:1px solid rgba(255,255,255,.09);
-    border-radius:28px;
-    box-shadow:0 25px 80px rgba(0,0,0,.55);
-    overflow:hidden;
-    position:relative;
-}
-
-.top{
-    padding:24px 22px 18px;
-    border-bottom:1px solid rgba(255,255,255,.07);
-    background:rgba(255,255,255,.025);
-}
-
-.logo{
-    font-size:28px;
-    font-weight:800;
-    letter-spacing:4px;
-}
-
-.subtitle{
-    color:#8792a8;
-    margin-top:5px;
-    font-size:13px;
-}
-
-.number-box{
-    margin:20px 22px 12px;
-    padding:17px;
-    background:linear-gradient(135deg,#10192c,#0b1120);
-    border:1px solid rgba(93,154,255,.22);
-    border-radius:18px;
-    text-align:center;
-}
-
-.number-label{
-    color:#7f8ba2;
-    font-size:12px;
-    text-transform:uppercase;
-    letter-spacing:2px;
-}
-
-.my-number{
-    font-size:38px;
-    font-weight:800;
-    letter-spacing:8px;
-    margin-top:7px;
-    color:#72a8ff;
-}
-
-.status{
-    text-align:center;
-    color:#7f8ba2;
-    font-size:12px;
-    min-height:17px;
-    padding:4px 20px 10px;
-}
-
-.screen{
-    padding:18px 22px 26px;
-}
-
-.display{
-    height:70px;
-    background:#050811;
-    border:1px solid rgba(255,255,255,.07);
-    border-radius:18px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:32px;
-    letter-spacing:7px;
-    margin-bottom:15px;
-    overflow:hidden;
-}
-
-.mode-row{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-    margin-bottom:14px;
-}
-
-.mode-btn{
-    padding:12px;
-    border-radius:14px;
-    border:1px solid rgba(255,255,255,.08);
-    background:#101622;
-    color:#aeb8ca;
-}
-
-.mode-btn.active{
-    background:#172c4f;
-    border-color:#438cff;
-    color:#fff;
-}
-
-.keypad{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-}
-
-.key{
-    height:67px;
-    border:0;
-    border-radius:18px;
-    background:#111827;
-    color:#fff;
-    font-size:25px;
-    transition:.12s;
-}
-
-.key:hover{
-    background:#19243a;
-}
-
-.key:active{
-    transform:scale(.95);
-}
-
-.call-buttons{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-    margin-top:13px;
-}
-
-.call{
-    border:0;
-    border-radius:16px;
-    padding:15px 8px;
-    background:#16845c;
-    color:#fff;
-    font-weight:700;
-}
-
-.group{
-    border:0;
-    border-radius:16px;
-    padding:15px 8px;
-    background:#315fa9;
-    color:#fff;
-    font-weight:700;
-}
-
-.clear{
-    margin-top:10px;
-    width:100%;
-    padding:11px;
-    background:#111622;
-    border:1px solid rgba(255,255,255,.08);
-    color:#8792a8;
-    border-radius:14px;
-}
-
-.overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.78);
-    backdrop-filter:blur(10px);
+.section{
     display:none;
-    align-items:center;
-    justify-content:center;
-    padding:18px;
-    z-index:100;
 }
 
-.overlay.show{
-    display:flex;
-}
-
-.card{
-    width:min(440px,100%);
-    background:#0b101c;
-    border:1px solid rgba(255,255,255,.1);
-    border-radius:25px;
-    padding:25px;
-    box-shadow:0 30px 100px rgba(0,0,0,.65);
-}
-
-.card h2{
-    margin-bottom:8px;
-}
-
-.card p{
-    color:#8995aa;
-    line-height:1.5;
-}
-
-.incoming-number{
-    font-size:38px;
-    letter-spacing:7px;
-    color:#71a8ff;
-    font-weight:800;
-    text-align:center;
-    padding:25px 0;
-}
-
-.actions{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-    margin-top:20px;
-}
-
-.accept{
-    background:#16845c;
-    color:#fff;
-    border:0;
-    border-radius:15px;
-    padding:14px;
-    font-weight:700;
-}
-
-.reject{
-    background:#3a1620;
-    color:#ff8298;
-    border:1px solid #682537;
-    border-radius:15px;
-    padding:14px;
-}
-
-.video-overlay{
-    align-items:stretch;
-    padding:0;
-}
-
-.call-screen{
-    width:100%;
-    height:100%;
-    min-height:100vh;
-    background:#03050a;
-    display:flex;
-    flex-direction:column;
-}
-
-.call-head{
-    padding:17px 20px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    background:linear-gradient(to bottom,rgba(0,0,0,.8),transparent);
-    position:absolute;
-    left:0;
-    right:0;
-    top:0;
-    z-index:5;
-}
-
-.call-title{
-    font-weight:700;
-}
-
-.call-state{
-    color:#7e8ba1;
-    font-size:12px;
-    margin-top:3px;
-}
-
-.remote-grid{
-    flex:1;
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:4px;
-    padding:4px;
-    background:#000;
-    min-height:0;
-}
-
-.remote-tile{
-    position:relative;
-    background:#0a0e16;
-    border-radius:10px;
-    overflow:hidden;
-    min-height:150px;
-}
-
-.remote-tile video{
-    width:100%;
-    height:100%;
-    object-fit:cover;
+.section.active{
     display:block;
 }
 
-.remote-tile audio{
-    display:none;
+/* CARDS */
+
+.card{
+    background:var(--card);
+    border-radius:12px;
+    padding:18px;
+    margin-bottom:18px;
+    box-shadow:var(--shadow);
 }
 
-.tile-number{
-    position:absolute;
-    bottom:8px;
-    left:8px;
-    padding:5px 9px;
-    border-radius:9px;
-    background:rgba(0,0,0,.65);
-    font-size:12px;
+.card h2{
+    margin:0 0 16px;
+    font-size:20px;
 }
 
-.local-tile{
-    position:absolute;
-    right:14px;
-    bottom:105px;
-    width:120px;
-    height:165px;
-    border-radius:14px;
-    overflow:hidden;
-    background:#111;
-    border:1px solid rgba(255,255,255,.18);
-    z-index:8;
-}
+/* INPUTS */
 
-.local-tile video{
+input,
+select{
     width:100%;
-    height:100%;
-    object-fit:cover;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:15px;
+    background:white;
+    margin-bottom:10px;
 }
 
-.local-label{
-    position:absolute;
-    bottom:5px;
-    left:6px;
-    font-size:10px;
-    background:rgba(0,0,0,.65);
-    padding:3px 6px;
-    border-radius:5px;
+input:focus,
+select:focus{
+    outline:2px solid #d99b9f;
+    border-color:var(--primary);
 }
 
-.controls{
-    height:90px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:12px;
-    background:#070a11;
+/* BUTTONS */
+
+button{
+    font-family:inherit;
+    cursor:pointer;
 }
 
-.control{
-    width:50px;
-    height:50px;
-    border-radius:50%;
-    border:1px solid rgba(255,255,255,.1);
-    background:#171d2a;
-    color:#fff;
-    font-size:19px;
-}
-
-.control.active{
-    background:#315fa9;
-}
-
-.hangup{
-    background:#b52642;
+.btn{
     border:0;
-    width:58px;
-    height:58px;
+    background:var(--primary);
+    color:white;
+    padding:11px 16px;
+    border-radius:8px;
+    font-weight:bold;
 }
 
-.add-person{
-    background:#315fa9;
+.btn:hover{
+    filter:brightness(.92);
 }
 
-.members-box{
-    margin-top:18px;
-    background:#080d17;
-    border:1px solid rgba(255,255,255,.07);
-    border-radius:15px;
-    padding:13px;
+.btn.green{
+    background:var(--green);
 }
 
-.members-title{
-    color:#8792a8;
+.btn.blue{
+    background:var(--blue);
+}
+
+.btn.red{
+    background:var(--red);
+}
+
+.btn.gray{
+    background:#555;
+}
+
+.actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+}
+
+/* VENTA */
+
+.sale-layout{
+    display:grid;
+    grid-template-columns:1.5fr 1fr;
+    gap:18px;
+}
+
+.product-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+    gap:12px;
+}
+
+.product{
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:15px;
+    background:white;
+}
+
+.product h3{
+    margin:0 0 8px;
+    font-size:17px;
+}
+
+.product-code{
+    color:var(--muted);
     font-size:12px;
     margin-bottom:8px;
 }
 
-.members-list{
+.product-price{
+    font-size:22px;
+    color:var(--primary);
+    font-weight:bold;
+    margin-bottom:5px;
+}
+
+.product-stock{
+    color:#666;
+    margin-bottom:12px;
+}
+
+/* CART */
+
+.cart-empty{
+    padding:30px;
+    text-align:center;
+    color:#777;
+}
+
+.cart-row{
+    display:grid;
+    grid-template-columns:1fr auto auto;
+    gap:10px;
+    align-items:center;
+    padding:12px 0;
+    border-bottom:1px solid #eee;
+}
+
+.cart-name{
+    font-weight:bold;
+}
+
+.cart-price{
+    color:#666;
+}
+
+.qty-controls{
     display:flex;
-    flex-wrap:wrap;
-    gap:6px;
+    align-items:center;
+    gap:5px;
 }
 
-.member{
-    padding:6px 9px;
-    background:#141d2d;
-    border-radius:9px;
-    font-size:12px;
+.qty-controls button{
+    width:30px;
+    height:30px;
+    padding:0;
+    border:0;
+    border-radius:6px;
+    background:#eee;
 }
 
-.invite-list{
-    margin-top:15px;
+.total-box{
+    margin-top:18px;
+    padding-top:15px;
+    border-top:2px solid var(--border);
+    text-align:right;
 }
 
-.invite-input{
+.total-label{
+    color:#666;
+}
+
+.total-value{
+    font-size:30px;
+    font-weight:bold;
+    color:var(--primary);
+}
+
+.payment-box{
+    margin-top:18px;
+}
+
+/* INVENTORY */
+
+.barcode-row{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:8px;
+}
+
+.inventory-table{
     width:100%;
-    padding:14px;
-    background:#070b13;
-    color:#fff;
-    border:1px solid rgba(255,255,255,.1);
-    border-radius:13px;
-    outline:none;
-    letter-spacing:3px;
+    border-collapse:collapse;
+}
+
+.inventory-table th,
+.inventory-table td{
+    padding:11px;
+    border-bottom:1px solid var(--border);
+    text-align:left;
+}
+
+.inventory-table th{
+    background:#f7f7f7;
+}
+
+/* STATS */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+}
+
+.stat{
+    background:white;
+    padding:18px;
+    border-radius:12px;
+    box-shadow:var(--shadow);
+}
+
+.stat-title{
+    color:#777;
+    font-size:14px;
+}
+
+.stat-value{
+    margin-top:7px;
+    font-size:25px;
+    font-weight:bold;
+    color:var(--primary);
+}
+
+/* SALES */
+
+.sale-history{
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:15px;
+    margin-bottom:12px;
+}
+
+.sale-history-head{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.sale-total{
+    font-size:20px;
+    font-weight:bold;
+    color:var(--primary);
+}
+
+/* SCANNER MODAL */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.78);
+    z-index:100;
+    align-items:center;
+    justify-content:center;
+    padding:15px;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.scanner-box{
+    width:min(650px,100%);
+    background:#151515;
+    border-radius:15px;
+    overflow:hidden;
+    color:white;
+}
+
+.scanner-top{
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.scanner-video{
+    position:relative;
+    width:100%;
+    background:#000;
+}
+
+#video{
+    display:block;
+    width:100%;
+    height:auto;
+    max-height:65vh;
+    object-fit:cover;
+    background:#000;
+}
+
+.scan-frame{
+    position:absolute;
+    left:15%;
+    right:15%;
+    top:30%;
+    height:40%;
+    border:2px solid rgba(255,255,255,.8);
+    border-radius:12px;
+}
+
+.scan-frame::after{
+    content:"";
+    position:absolute;
+    left:5%;
+    right:5%;
+    top:50%;
+    height:2px;
+    background:#ff3333;
+    box-shadow:0 0 8px #ff3333;
+}
+
+.scanner-status{
+    text-align:center;
+    padding:13px;
+    font-size:14px;
+}
+
+.scanner-controls{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    padding:12px;
+}
+
+.scanner-controls button{
+    background:#333;
+    color:white;
+    border:0;
+    padding:12px;
+    border-radius:8px;
+}
+
+/* CARD TERMINAL */
+
+.terminal{
+    width:min(420px,100%);
+    background:#111;
+    color:white;
+    border-radius:18px;
+    padding:20px;
     text-align:center;
 }
 
-.small-btn{
-    width:100%;
-    margin-top:10px;
-    padding:13px;
+.terminal-display{
+    background:#061006;
+    border:2px solid #303030;
+    border-radius:10px;
+    padding:20px;
+    min-height:120px;
+}
+
+.terminal-display h2{
+    margin-top:0;
+}
+
+.pin-display{
+    font-size:28px;
+    letter-spacing:8px;
+    min-height:35px;
+    margin:12px 0;
+}
+
+.pin-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+}
+
+.pin-grid button{
     border:0;
-    border-radius:13px;
-    background:#315fa9;
-    color:#fff;
+    border-radius:8px;
+    padding:15px;
+    background:#292929;
+    color:white;
+    font-size:20px;
 }
 
-.hidden{
-    display:none!important;
+.progress{
+    height:10px;
+    background:#333;
+    border-radius:10px;
+    overflow:hidden;
+    margin:15px 0;
 }
 
-@media(max-width:500px){
-    .app{
-        padding:0;
+.progress-bar{
+    height:100%;
+    width:0;
+    background:#27ae60;
+    transition:.2s;
+}
+
+/* EMPTY */
+
+.empty{
+    text-align:center;
+    color:#777;
+    padding:30px;
+}
+
+/* MOBILE */
+
+@media(max-width:850px){
+
+    main{
+        padding:12px;
     }
 
-    .phone{
-        border-radius:0;
-        min-height:100vh;
+    .sale-layout{
+        grid-template-columns:1fr;
     }
 
-    .remote-grid{
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:600px){
+
+    header{
+        height:55px;
+        font-size:19px;
+        padding:0 15px;
+    }
+
+    nav button{
+        font-size:11px;
+        padding:13px 3px;
+    }
+
+    .card{
+        padding:14px;
+    }
+
+    .product-grid{
         grid-template-columns:1fr 1fr;
     }
+
+    .product{
+        padding:11px;
+    }
+
+    .product h3{
+        font-size:14px;
+    }
+
+    .product-price{
+        font-size:19px;
+    }
+
+    .stats{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .barcode-row{
+        grid-template-columns:1fr;
+    }
+
+    .scanner-controls{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .scanner-controls button:last-child{
+        grid-column:1/-1;
+    }
+
+    .cart-row{
+        grid-template-columns:1fr;
+    }
+
 }
 </style>
 </head>
 
 <body>
 
-<div class="app">
-    <main class="phone">
+<header>
+    🛒 PeluchiAbarrotes
+</header>
 
-        <header class="top">
-            <div class="logo">NEXUS</div>
-            <div class="subtitle">Internet Calling Network</div>
-        </header>
+<nav>
+    <button class="active" onclick="showSection('venta',this)">
+        🛒 Venta
+    </button>
 
-        <section class="number-box">
-            <div class="number-label">Tu número NEXUS</div>
-            <div class="my-number" id="myNumber">-----</div>
-        </section>
+    <button onclick="showSection('inventario',this)">
+        📦 Inventario
+    </button>
 
-        <div class="status" id="status">Conectando...</div>
+    <button onclick="showSection('ventas',this)">
+        📋 Ventas
+    </button>
 
-        <section class="screen">
+    <button onclick="showSection('corte',this)">
+        💰 Corte
+    </button>
+</nav>
 
-            <div class="display" id="display">-----</div>
+<main>
 
-            <div class="mode-row">
-                <button
-                    class="mode-btn active"
-                    id="voiceMode"
-                    onclick="window.NEXUS_setMode('voice')">
-                    🎙️ Voz
-                </button>
+<!-- ================= VENTA ================= -->
 
-                <button
-                    class="mode-btn"
-                    id="videoMode"
-                    onclick="window.NEXUS_setMode('video')">
-                    📹 Video
-                </button>
-            </div>
+<section id="venta" class="section active">
 
-            <div class="keypad">
-                <button class="key" onclick="window.NEXUS_pressKey('1')">1</button>
-                <button class="key" onclick="window.NEXUS_pressKey('2')">2</button>
-                <button class="key" onclick="window.NEXUS_pressKey('3')">3</button>
+<div class="sale-layout">
 
-                <button class="key" onclick="window.NEXUS_pressKey('4')">4</button>
-                <button class="key" onclick="window.NEXUS_pressKey('5')">5</button>
-                <button class="key" onclick="window.NEXUS_pressKey('6')">6</button>
+<div>
 
-                <button class="key" onclick="window.NEXUS_pressKey('7')">7</button>
-                <button class="key" onclick="window.NEXUS_pressKey('8')">8</button>
-                <button class="key" onclick="window.NEXUS_pressKey('9')">9</button>
+<div class="card">
 
-                <button class="key" onclick="window.NEXUS_pressKey('*')">*</button>
-                <button class="key" onclick="window.NEXUS_pressKey('0')">0</button>
-                <button class="key" onclick="window.NEXUS_pressKey('#')">#</button>
-            </div>
+    <h2>Venta</h2>
 
-            <div class="call-buttons">
-                <button class="call" onclick="window.NEXUS_startCall()">
-                    📞 LLAMAR
-                </button>
+    <input
+        id="searchSale"
+        placeholder="Buscar producto por nombre o código..."
+        oninput="renderSaleProducts()"
+    >
 
-                <button class="group" onclick="window.NEXUS_openGroupDialer()">
-                    👥 GRUPAL
-                </button>
-            </div>
+    <div class="actions">
 
-            <button class="clear" onclick="window.NEXUS_clearNumber()">
-                BORRAR
-            </button>
+        <button
+            class="btn blue"
+            onclick="openScanner('venta')"
+        >
+            📷 Escanear código
+        </button>
 
-        </section>
-    </main>
-</div>
+        <button
+            class="btn gray"
+            onclick="clearCart()"
+        >
+            🗑 Vaciar carrito
+        </button>
 
-
-<!-- LLAMADA ENTRANTE -->
-<div class="overlay" id="incomingOverlay">
-    <div class="card">
-        <h2 id="incomingTitle">Llamada entrante</h2>
-        <p id="incomingDescription">
-            Alguien está intentando comunicarse contigo.
-        </p>
-
-        <div class="incoming-number" id="incomingNumber">-----</div>
-
-        <div class="actions">
-            <button class="accept" onclick="window.NEXUS_acceptIncoming()">
-                ✓ ACEPTAR
-            </button>
-
-            <button class="reject" onclick="window.NEXUS_rejectIncoming()">
-                ✕ RECHAZAR
-            </button>
-        </div>
     </div>
+
+</div>
+
+<div class="card">
+
+    <h2>Productos</h2>
+
+    <div
+        id="saleProducts"
+        class="product-grid"
+    ></div>
+
+</div>
+
 </div>
 
 
-<!-- DIALER GRUPAL -->
-<div class="overlay" id="groupDialerOverlay">
-    <div class="card">
-        <h2>👥 Llamada grupal</h2>
-        <p>
-            Agrega hasta 3 números además del tuyo.
-        </p>
+<div>
 
-        <div class="invite-list">
-            <input
-                id="groupNumber1"
-                class="invite-input"
-                inputmode="numeric"
-                maxlength="5"
-                placeholder="NÚMERO 1"
-            >
+<div class="card">
 
-            <input
-                id="groupNumber2"
-                class="invite-input"
-                inputmode="numeric"
-                maxlength="5"
-                placeholder="NÚMERO 2"
-                style="margin-top:8px"
-            >
+    <h2>Carrito</h2>
 
-            <input
-                id="groupNumber3"
-                class="invite-input"
-                inputmode="numeric"
-                maxlength="5"
-                placeholder="NÚMERO 3"
-                style="margin-top:8px"
-            >
+    <div id="cartContainer"></div>
+
+    <div class="total-box">
+
+        <div class="total-label">
+            Total
         </div>
 
-        <div class="actions">
-            <button
-                class="accept"
-                onclick="window.NEXUS_startGroupCall()">
-                👥 INVITAR
-            </button>
-
-            <button
-                class="reject"
-                onclick="window.NEXUS_closeGroupDialer()">
-                CANCELAR
-            </button>
-        </div>
-    </div>
-</div>
-
-
-<!-- LLAMADA ACTIVA -->
-<div class="overlay video-overlay" id="callOverlay">
-
-    <div class="call-screen">
-
-        <div class="call-head">
-            <div>
-                <div class="call-title" id="callTitle">
-                    NEXUS
-                </div>
-                <div class="call-state" id="callState">
-                    Conectando...
-                </div>
-            </div>
-
-            <div id="callModeLabel">
-                🎙️
-            </div>
-        </div>
-
-        <div class="remote-grid" id="remoteGrid"></div>
-
-        <div class="local-tile" id="localTile">
-            <video id="localVideo" autoplay muted playsinline></video>
-            <div class="local-label">Tú</div>
-        </div>
-
-        <div class="controls">
-
-            <button
-                class="control"
-                id="muteButton"
-                onclick="window.NEXUS_toggleMute()">
-                🎙️
-            </button>
-
-            <button
-                class="control"
-                onclick="window.NEXUS_toggleSpeaker()">
-                🔊
-            </button>
-
-            <button
-                class="control"
-                id="cameraButton"
-                onclick="window.NEXUS_toggleCamera()">
-                📹
-            </button>
-
-            <button
-                class="control add-person"
-                id="addPersonButton"
-                onclick="window.NEXUS_addPerson()">
-                ＋
-            </button>
-
-            <button
-                class="control hangup"
-                onclick="window.NEXUS_hangup()">
-                ☎
-            </button>
-
+        <div class="total-value">
+            $<span id="cartTotal">0.00</span>
         </div>
 
     </div>
-</div>
 
+    <div class="payment-box">
 
-<!-- AGREGAR PARTICIPANTE -->
-<div class="overlay" id="addPersonOverlay">
-    <div class="card">
-        <h2>Agregar persona</h2>
-        <p>
-            Introduce el número NEXUS de la persona.
-        </p>
-
-        <input
-            id="addPersonInput"
-            class="invite-input"
-            inputmode="numeric"
-            maxlength="5"
-            placeholder="48217"
-            style="margin-top:15px"
+        <select
+            id="paymentMethod"
+            onchange="changePaymentMethod()"
         >
 
-        <div class="actions">
-            <button
-                class="accept"
-                onclick="window.NEXUS_sendGroupInvite()">
-                INVITAR
-            </button>
+            <option value="efectivo">
+                💵 Efectivo
+            </option>
+
+            <option value="tarjeta">
+                💳 Tarjeta
+            </option>
+
+        </select>
+
+        <div id="cashPayment">
+
+            <input
+                id="cashReceived"
+                type="number"
+                min="0"
+                step="0.01"
+                placeholder="Efectivo recibido"
+            >
+
+            <div class="stat">
+
+                <div class="stat-title">
+                    Cambio
+                </div>
+
+                <div class="stat-value">
+                    $<span id="change">0.00</span>
+                </div>
+
+            </div>
+
+            <br>
 
             <button
-                class="reject"
-                onclick="window.NEXUS_closeAddPerson()">
-                CANCELAR
+                class="btn green"
+                onclick="payCash()"
+            >
+                💵 Cobrar efectivo
             </button>
+
         </div>
+
+        <div
+            id="cardPayment"
+            style="display:none"
+        >
+
+            <button
+                class="btn blue"
+                onclick="startCardTerminal()"
+            >
+                💳 Abrir terminal
+            </button>
+
+        </div>
+
     </div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= INVENTARIO ================= -->
+
+<section id="inventario" class="section">
+
+<div class="card">
+
+    <h2>Registrar producto</h2>
+
+    <input
+        id="productName"
+        placeholder="Nombre del producto"
+    >
+
+    <div class="barcode-row">
+
+        <input
+            id="productBarcode"
+            placeholder="Código de barras"
+            inputmode="numeric"
+        >
+
+        <button
+            class="btn blue"
+            onclick="openScanner('inventario')"
+        >
+            📷 Escanear
+        </button>
+
+    </div>
+
+    <input
+        id="productPrice"
+        type="number"
+        min="0"
+        step="0.01"
+        placeholder="Precio"
+    >
+
+    <input
+        id="productStock"
+        type="number"
+        min="0"
+        step="1"
+        placeholder="Cantidad en stock"
+    >
+
+    <button
+        class="btn green"
+        onclick="addProduct()"
+    >
+        ➕ Registrar producto
+    </button>
+
+</div>
+
+
+<div class="card">
+
+    <h2>Inventario</h2>
+
+    <input
+        id="searchInventory"
+        placeholder="Buscar por nombre o código..."
+        oninput="renderInventory()"
+    >
+
+    <div id="inventoryContainer"></div>
+
+</div>
+
+</section>
+
+
+<!-- ================= VENTAS ================= -->
+
+<section id="ventas" class="section">
+
+<div class="card">
+
+    <h2>Historial de ventas</h2>
+
+    <div id="salesContainer"></div>
+
+</div>
+
+</section>
+
+
+<!-- ================= CORTE ================= -->
+
+<section id="corte" class="section">
+
+<div class="card">
+
+    <h2>Corte de caja</h2>
+
+    <div class="stats">
+
+        <div class="stat">
+
+            <div class="stat-title">
+                Ventas
+            </div>
+
+            <div
+                class="stat-value"
+                id="cutSales"
+            >
+                0
+            </div>
+
+        </div>
+
+        <div class="stat">
+
+            <div class="stat-title">
+                Efectivo
+            </div>
+
+            <div class="stat-value">
+                $<span id="cutCash">0.00</span>
+            </div>
+
+        </div>
+
+        <div class="stat">
+
+            <div class="stat-title">
+                Tarjeta
+            </div>
+
+            <div class="stat-value">
+                $<span id="cutCard">0.00</span>
+            </div>
+
+        </div>
+
+        <div class="stat">
+
+            <div class="stat-title">
+                Total
+            </div>
+
+            <div class="stat-value">
+                $<span id="cutTotal">0.00</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <br>
+
+    <button
+        class="btn green"
+        onclick="makeCut()"
+    >
+        💰 Realizar corte
+    </button>
+
+</div>
+
+
+<div class="card">
+
+    <h2>Cortes anteriores</h2>
+
+    <div id="cutsContainer"></div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- ================= SCANNER ================= -->
+
+<div
+    id="scannerModal"
+    class="modal"
+>
+
+<div class="scanner-box">
+
+    <div class="scanner-top">
+
+        <b>📷 Escáner de código de barras</b>
+
+        <button
+            class="btn red"
+            onclick="closeScanner()"
+        >
+            ✕
+        </button>
+
+    </div>
+
+    <div class="scanner-video">
+
+        <video
+            id="video"
+            autoplay
+            muted
+            playsinline
+        ></video>
+
+        <div class="scan-frame"></div>
+
+    </div>
+
+    <div
+        id="scanStatus"
+        class="scanner-status"
+    >
+        Preparando cámara...
+    </div>
+
+    <div class="scanner-controls">
+
+        <button onclick="switchCamera()">
+            🔄 Cambiar cámara
+        </button>
+
+        <button onclick="toggleTorch()">
+            🔦 Linterna
+        </button>
+
+        <button onclick="stopScanner()">
+            ⏹ Detener cámara
+        </button>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<!-- ================= TERMINAL ================= -->
+
+<div
+    id="terminalModal"
+    class="modal"
+>
+
+<div class="terminal">
+
+    <div class="terminal-display">
+
+        <h2 id="terminalTitle">
+            💳 Terminal
+        </h2>
+
+        <p id="terminalText">
+            Inserta o acerca la tarjeta
+        </p>
+
+        <button
+            id="terminalPress"
+            class="btn blue"
+            onclick="cardDetected()"
+        >
+            💳 PULSA AQUÍ
+        </button>
+
+        <div
+            id="pinArea"
+            style="display:none"
+        >
+
+            <p>
+                Introduce NIP
+            </p>
+
+            <div
+                id="pinDisplay"
+                class="pin-display"
+            >
+                ••••
+            </div>
+
+            <div class="pin-grid">
+
+                <button onclick="pinKey('1')">1</button>
+                <button onclick="pinKey('2')">2</button>
+                <button onclick="pinKey('3')">3</button>
+
+                <button onclick="pinKey('4')">4</button>
+                <button onclick="pinKey('5')">5</button>
+                <button onclick="pinKey('6')">6</button>
+
+                <button onclick="pinKey('7')">7</button>
+                <button onclick="pinKey('8')">8</button>
+                <button onclick="pinKey('9')">9</button>
+
+                <button onclick="pinClear()">⌫</button>
+                <button onclick="pinKey('0')">0</button>
+                <button onclick="processCard()">✓</button>
+
+            </div>
+
+        </div>
+
+        <div
+            id="processingArea"
+            style="display:none"
+        >
+
+            <p>
+                Procesando pago...
+            </p>
+
+            <div class="progress">
+
+                <div
+                    id="progressBar"
+                    class="progress-bar"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <br>
+
+    <button
+        class="btn red"
+        onclick="cancelTerminal()"
+    >
+        Cancelar
+    </button>
+
+</div>
+
 </div>
 
 
 <script>
-"use strict";
 
-/* =========================================================
-   CONFIGURACIÓN
-========================================================= */
+/* =========================================
+   DATOS
+========================================= */
 
-const NEXUS_SUPABASE_URL =
-    "https://nrffcctjnesotfveaeky.supabase.co";
+let products =
+    JSON.parse(
+        localStorage.getItem("peluchi_products")
+    ) || [];
 
-const NEXUS_SUPABASE_KEY =
-    "sb_publishable_zI1_i95-Pe1VQT3ru0MurQ_Ysi6eY3S";
+let cart =
+    JSON.parse(
+        localStorage.getItem("peluchi_cart")
+    ) || [];
 
-const NEXUS_client =
-    supabase.createClient(
-        NEXUS_SUPABASE_URL,
-        NEXUS_SUPABASE_KEY,
-        {
-            auth:{
-                persistSession:true,
-                autoRefreshToken:true,
-                detectSessionInUrl:false,
-                storage:window.localStorage
-            }
-        }
+let sales =
+    JSON.parse(
+        localStorage.getItem("peluchi_sales")
+    ) || [];
+
+let cuts =
+    JSON.parse(
+        localStorage.getItem("peluchi_cuts")
+    ) || [];
+
+
+function save(){
+
+    localStorage.setItem(
+        "peluchi_products",
+        JSON.stringify(products)
     );
 
-
-const NEXUS_NUMBER_KEY =
-    "nexus_persistent_number_v1";
-
-
-/* =========================================================
-   ESTADO GENERAL
-========================================================= */
-
-let NEXUS_myNumber = null;
-let NEXUS_session = null;
-
-let NEXUS_signalingChannel = null;
-
-let NEXUS_mode = "voice";
-let NEXUS_currentNumber = "";
-
-let NEXUS_localStream = null;
-
-let NEXUS_peerConnection = null;
-let NEXUS_remoteAudio = null;
-
-let NEXUS_currentCallId = null;
-let NEXUS_incomingCall = null;
-
-let NEXUS_isMuted = false;
-let NEXUS_cameraEnabled = false;
-
-
-/* =========================================================
-   ESTADO GRUPAL
-========================================================= */
-
-let NEXUS_groupCallId = null;
-let NEXUS_groupMembers = [];
-let NEXUS_groupConnections = {};
-let NEXUS_groupStreams = {};
-let NEXUS_groupPendingCandidates = {};
-let NEXUS_groupRemoteDescriptions = {};
-
-let NEXUS_isGroupCall = false;
-
-
-/* =========================================================
-   DOM
-========================================================= */
-
-const NEXUS_display =
-    document.getElementById("display");
-
-const NEXUS_myNumberEl =
-    document.getElementById("myNumber");
-
-const NEXUS_status =
-    document.getElementById("status");
-
-const NEXUS_incomingOverlay =
-    document.getElementById("incomingOverlay");
-
-const NEXUS_groupDialerOverlay =
-    document.getElementById("groupDialerOverlay");
-
-const NEXUS_callOverlay =
-    document.getElementById("callOverlay");
-
-const NEXUS_addPersonOverlay =
-    document.getElementById("addPersonOverlay");
-
-const NEXUS_remoteGrid =
-    document.getElementById("remoteGrid");
-
-const NEXUS_localVideo =
-    document.getElementById("localVideo");
-
-const NEXUS_localTile =
-    document.getElementById("localTile");
-
-const NEXUS_callTitle =
-    document.getElementById("callTitle");
-
-const NEXUS_callState =
-    document.getElementById("callState");
-
-const NEXUS_callModeLabel =
-    document.getElementById("callModeLabel");
-
-const NEXUS_cameraButton =
-    document.getElementById("cameraButton");
-
-const NEXUS_addPersonButton =
-    document.getElementById("addPersonButton");
-
-
-/* =========================================================
-   UTILIDADES
-========================================================= */
-
-function NEXUS_setStatus(text){
-    NEXUS_status.textContent = text;
-}
-
-function NEXUS_randomId(){
-    return (
-        Date.now().toString(36) +
-        Math.random().toString(36).slice(2,10)
+    localStorage.setItem(
+        "peluchi_cart",
+        JSON.stringify(cart)
     );
-}
 
-function NEXUS_validNumber(number){
-    return /^\d{5}$/.test(number);
-}
-
-function NEXUS_uniqueNumbers(numbers){
-    return [...new Set(
-        numbers.filter(
-            n => NEXUS_validNumber(n) &&
-                 n !== NEXUS_myNumber
-        )
-    )];
-}
-
-function NEXUS_updateDisplay(){
-    NEXUS_display.textContent =
-        NEXUS_currentNumber || "-----";
-}
-
-function NEXUS_sleep(ms){
-    return new Promise(resolve => setTimeout(resolve,ms));
-}
-
-
-/* =========================================================
-   KEYPAD
-========================================================= */
-
-window.NEXUS_pressKey = function(key){
-
-    if(NEXUS_currentNumber.length >= 5){
-        return;
-    }
-
-    if(!/^\d$/.test(key)){
-        return;
-    }
-
-    NEXUS_currentNumber += key;
-
-    NEXUS_updateDisplay();
-};
-
-
-window.NEXUS_clearNumber = function(){
-
-    NEXUS_currentNumber =
-        NEXUS_currentNumber.slice(0,-1);
-
-    NEXUS_updateDisplay();
-};
-
-
-window.NEXUS_setMode = function(mode){
-
-    NEXUS_mode = mode;
-
-    document
-        .getElementById("voiceMode")
-        .classList.toggle(
-            "active",
-            mode === "voice"
-        );
-
-    document
-        .getElementById("videoMode")
-        .classList.toggle(
-            "active",
-            mode === "video"
-        );
-};
-
-
-/* =========================================================
-   AUTH + NÚMERO NEXUS
-========================================================= */
-
-async function NEXUS_getSession(){
-
-    const result =
-        await NEXUS_client.auth.getSession();
-
-    if(result.data && result.data.session){
-        NEXUS_session =
-            result.data.session;
-
-        return NEXUS_session;
-    }
-
-    const login =
-        await NEXUS_client.auth.signInAnonymously();
-
-    if(login.error){
-        throw login.error;
-    }
-
-    NEXUS_session =
-        login.data.session;
-
-    return NEXUS_session;
-}
-
-
-function NEXUS_generateNumber(){
-
-    return String(
-        Math.floor(
-            10000 +
-            Math.random() * 90000
-        )
+    localStorage.setItem(
+        "peluchi_sales",
+        JSON.stringify(sales)
     );
-}
 
-
-async function NEXUS_findExistingNumber(){
-
-    if(!NEXUS_session){
-        return null;
-    }
-
-    const result =
-        await NEXUS_client
-            .from("nexus_users")
-            .select("nexus_number")
-            .eq("id",NEXUS_session.user.id)
-            .maybeSingle();
-
-    if(result.error){
-        console.warn(
-            "Error buscando número:",
-            result.error
-        );
-        return null;
-    }
-
-    return result.data
-        ? result.data.nexus_number
-        : null;
-}
-
-
-async function NEXUS_createNumber(){
-
-    for(let attempt=0;attempt<20;attempt++){
-
-        const number =
-            NEXUS_generateNumber();
-
-        const result =
-            await NEXUS_client
-                .from("nexus_users")
-                .insert({
-                    id:NEXUS_session.user.id,
-                    nexus_number:number,
-                    online:true,
-                    last_seen:new Date().toISOString()
-                })
-                .select()
-                .single();
-
-        if(!result.error){
-            return number;
-        }
-    }
-
-    throw new Error(
-        "No se pudo generar un número NEXUS."
+    localStorage.setItem(
+        "peluchi_cuts",
+        JSON.stringify(cuts)
     );
+
 }
 
 
-async function NEXUS_loadNumber(){
+/* =========================================
+   SONIDOS
+========================================= */
+
+let audioCtx=null;
+
+function audio(){
+
+    if(!audioCtx){
+
+        const C =
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+        if(!C)return;
+
+        audioCtx=new C();
+
+    }
+
+    if(audioCtx.state==="suspended"){
+        audioCtx.resume();
+    }
+
+    return audioCtx;
+
+}
+
+
+function tone(
+    frequency,
+    duration=.08,
+    type="square",
+    volume=.04
+){
 
     try{
 
-        await NEXUS_getSession();
+        const ctx=audio();
 
-        let number =
-            await NEXUS_findExistingNumber();
+        if(!ctx)return;
 
-        if(!number){
+        const oscillator=
+            ctx.createOscillator();
 
-            const local =
-                localStorage.getItem(
-                    NEXUS_NUMBER_KEY
-                );
+        const gain=
+            ctx.createGain();
 
-            if(
-                local &&
-                NEXUS_validNumber(local)
-            ){
-                number = local;
+        oscillator.type=type;
+        oscillator.frequency.value=frequency;
 
-                const update =
-                    await NEXUS_client
-                        .from("nexus_users")
-                        .upsert({
-                            id:NEXUS_session.user.id,
-                            nexus_number:number,
-                            online:true,
-                            last_seen:new Date().toISOString()
-                        });
-
-                if(update.error){
-                    console.warn(update.error);
-                }
-            }
-        }
-
-        if(!number){
-            number =
-                await NEXUS_createNumber();
-        }
-
-        NEXUS_myNumber =
-            String(number);
-
-        localStorage.setItem(
-            NEXUS_NUMBER_KEY,
-            NEXUS_myNumber
+        gain.gain.setValueAtTime(
+            volume,
+            ctx.currentTime
         );
 
-        NEXUS_myNumberEl.textContent =
-            NEXUS_myNumber;
-
-        NEXUS_setStatus(
-            "Conectado a NEXUS"
+        gain.gain.exponentialRampToValueAtTime(
+            .001,
+            ctx.currentTime+duration
         );
 
-        await NEXUS_setOnline(true);
+        oscillator.connect(gain);
+        gain.connect(ctx.destination);
 
-        await NEXUS_setupRealtime();
+        oscillator.start();
 
-    }catch(error){
-
-        console.error(error);
-
-        NEXUS_setStatus(
-            "Error de conexión con NEXUS"
+        oscillator.stop(
+            ctx.currentTime+duration
         );
-    }
+
+    }catch(e){}
+
 }
 
 
-async function NEXUS_setOnline(online){
+function buttonSound(){
+    tone(500,.06);
+}
 
-    if(!NEXUS_session || !NEXUS_myNumber){
+function scanSound(){
+
+    tone(1200,.07);
+
+    setTimeout(
+        ()=>tone(1700,.08),
+        70
+    );
+
+}
+
+function errorSound(){
+
+    tone(180,.15,"sawtooth");
+
+    setTimeout(
+        ()=>tone(120,.18,"sawtooth"),
+        150
+    );
+
+}
+
+function cashSound(){
+    tone(650,.04);
+}
+
+function cashApproved(){
+
+    tone(600,.08);
+
+    setTimeout(
+        ()=>tone(900,.12),
+        100
+    );
+
+}
+
+function changeSound(){
+
+    tone(1000,.05);
+
+    setTimeout(
+        ()=>tone(1300,.05),
+        80
+    );
+
+}
+
+function saleSound(){
+
+    tone(800,.07);
+
+    setTimeout(
+        ()=>tone(1100,.1),
+        90
+    );
+
+    setTimeout(
+        ()=>tone(1500,.14),
+        200
+    );
+
+}
+
+function cardSound(){
+
+    tone(700,.08);
+
+    setTimeout(
+        ()=>tone(1000,.08),
+        100
+    );
+
+}
+
+function approvedSound(){
+
+    tone(800,.1);
+
+    setTimeout(
+        ()=>tone(1200,.15),
+        120
+    );
+
+}
+
+function cancelSound(){
+    tone(200,.2,"sawtooth");
+}
+
+function cutSound(){
+
+    tone(500,.1);
+
+    setTimeout(
+        ()=>tone(800,.1),
+        120
+    );
+
+}
+
+function vibrate(ms=60){
+
+    if(navigator.vibrate){
+        navigator.vibrate(ms);
+    }
+
+}
+
+
+/* =========================================
+   NAVEGACIÓN
+========================================= */
+
+function showSection(id,button){
+
+    buttonSound();
+
+    document
+    .querySelectorAll(".section")
+    .forEach(section=>{
+        section.classList.remove("active");
+    });
+
+    document
+    .getElementById(id)
+    .classList.add("active");
+
+    document
+    .querySelectorAll("nav button")
+    .forEach(btn=>{
+        btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    if(id==="venta"){
+        renderSaleProducts();
+        renderCart();
+    }
+
+    if(id==="inventario"){
+        renderInventory();
+    }
+
+    if(id==="ventas"){
+        renderSales();
+    }
+
+    if(id==="corte"){
+        renderCut();
+        renderCuts();
+    }
+
+}
+
+
+/* =========================================
+   INVENTARIO
+========================================= */
+
+function addProduct(){
+
+    buttonSound();
+
+    const name=
+        document
+        .getElementById("productName")
+        .value
+        .trim();
+
+    const barcode=
+        document
+        .getElementById("productBarcode")
+        .value
+        .trim();
+
+    const price=
+        Number(
+            document
+            .getElementById("productPrice")
+            .value
+        );
+
+    const stock=
+        Number(
+            document
+            .getElementById("productStock")
+            .value
+        );
+
+    if(
+        !name ||
+        !barcode ||
+        price<0 ||
+        stock<0
+    ){
+
+        errorSound();
+
+        alert(
+            "Completa correctamente todos los campos."
+        );
+
         return;
-    }
 
-    const result =
-        await NEXUS_client
-            .from("nexus_users")
-            .update({
-                online,
-                last_seen:new Date().toISOString()
-            })
-            .eq("id",NEXUS_session.user.id);
-
-    if(result.error){
-        console.warn(
-            "Estado online:",
-            result.error
-        );
-    }
-}
-
-
-/* =========================================================
-   REALTIME
-========================================================= */
-
-async function NEXUS_setupRealtime(){
-
-    if(NEXUS_signalingChannel){
-        return;
-    }
-
-    NEXUS_signalingChannel =
-        NEXUS_client.channel(
-            "nexus-signaling",
-            {
-                config:{
-                    broadcast:{
-                        self:false
-                    }
-                }
-            }
-        );
-
-
-    NEXUS_signalingChannel.on(
-        "broadcast",
-        {event:"signal"},
-        ({payload}) => {
-
-            NEXUS_handleSignal(
-                payload
-            );
-        }
-    );
-
-
-    const result =
-        await NEXUS_signalingChannel.subscribe();
-
-    console.log(
-        "NEXUS Realtime:",
-        result
-    );
-}
-
-
-async function NEXUS_sendSignal(payload){
-
-    if(!NEXUS_signalingChannel){
-        return false;
-    }
-
-    try{
-
-        await NEXUS_signalingChannel.send({
-            type:"broadcast",
-            event:"signal",
-            payload
-        });
-
-        return true;
-
-    }catch(error){
-
-        console.error(
-            "Signal error:",
-            error
-        );
-
-        return false;
-    }
-}
-
-
-/* =========================================================
-   MEDIA
-========================================================= */
-
-async function NEXUS_getLocalMedia(mode){
-
-    if(NEXUS_localStream){
-        return NEXUS_localStream;
-    }
-
-    NEXUS_localStream =
-        await navigator.mediaDevices.getUserMedia({
-
-            audio:{
-                echoCancellation:true,
-                noiseSuppression:true,
-                autoGainControl:true
-            },
-
-            video:
-                mode === "video"
-                ? {
-                    width:{ideal:1280},
-                    height:{ideal:720},
-                    facingMode:"user"
-                }
-                : false
-        });
-
-    NEXUS_cameraEnabled =
-        mode === "video";
-
-    NEXUS_localVideo.srcObject =
-        NEXUS_localStream;
-
-    NEXUS_localTile.classList.toggle(
-        "hidden",
-        mode !== "video"
-    );
-
-    return NEXUS_localStream;
-}
-
-
-/* =========================================================
-   INDIVIDUAL WEBRTC
-========================================================= */
-
-function NEXUS_createIndividualPC(remoteNumber){
-
-    if(NEXUS_peerConnection){
-        NEXUS_peerConnection.close();
-    }
-
-    NEXUS_peerConnection =
-        new RTCPeerConnection({
-
-            iceServers:[
-                {
-                    urls:
-                        "stun:stun.l.google.com:19302"
-                },
-                {
-                    urls:
-                        "stun:stun1.l.google.com:19302"
-                }
-            ]
-        });
-
-
-    const pc =
-        NEXUS_peerConnection;
-
-
-    pc.onicecandidate = event => {
-
-        if(!event.candidate){
-            return;
-        }
-
-        NEXUS_sendSignal({
-            type:"ice",
-            from:NEXUS_myNumber,
-            to:remoteNumber,
-            callId:NEXUS_currentCallId,
-            candidate:event.candidate
-        });
-    };
-
-
-    pc.ontrack = event => {
-
-        if(!NEXUS_remoteAudio){
-
-            NEXUS_remoteAudio =
-                document.createElement("audio");
-
-            NEXUS_remoteAudio.autoplay = true;
-            NEXUS_remoteAudio.playsInline = true;
-
-            document.body.appendChild(
-                NEXUS_remoteAudio
-            );
-        }
-
-        NEXUS_remoteAudio.srcObject =
-            event.streams[0];
-
-        NEXUS_remoteAudio.play()
-            .catch(()=>{});
-
-
-        if(
-            NEXUS_mode === "video" &&
-            event.track.kind === "video"
-        ){
-
-            let video =
-                document.getElementById(
-                    "individualRemoteVideo"
-                );
-
-            if(!video){
-
-                video =
-                    document.createElement("video");
-
-                video.id =
-                    "individualRemoteVideo";
-
-                video.autoplay = true;
-                video.playsInline = true;
-
-                video.style.cssText =
-                    "position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;";
-
-                NEXUS_remoteGrid.innerHTML =
-                    "";
-
-                NEXUS_remoteGrid.appendChild(
-                    video
-                );
-            }
-
-            video.srcObject =
-                event.streams[0];
-        }
-    };
-
-
-    pc.onconnectionstatechange = () => {
-
-        const state =
-            pc.connectionState;
-
-        NEXUS_callState.textContent =
-            state;
-
-        if(state === "connected"){
-            NEXUS_callState.textContent =
-                "Conectado";
-        }
-
-        if(
-            state === "failed" ||
-            state === "closed"
-        ){
-            NEXUS_callState.textContent =
-                "Conexión terminada";
-        }
-    };
-
-
-    return pc;
-}
-
-
-async function NEXUS_prepareIndividualPC(remoteNumber){
-
-    const stream =
-        await NEXUS_getLocalMedia(
-            NEXUS_mode
-        );
-
-    const pc =
-        NEXUS_createIndividualPC(
-            remoteNumber
-        );
-
-    stream.getTracks().forEach(
-        track => {
-            pc.addTrack(
-                track,
-                stream
-            );
-        }
-    );
-
-    return pc;
-}
-
-
-/* =========================================================
-   LLAMADA INDIVIDUAL
-========================================================= */
-
-window.NEXUS_startCall = async function(){
-
-    if(!NEXUS_validNumber(NEXUS_currentNumber)){
-        NEXUS_setStatus(
-            "Introduce un número NEXUS de 5 dígitos."
-        );
-        return;
     }
 
     if(
-        NEXUS_currentNumber ===
-        NEXUS_myNumber
-    ){
-        NEXUS_setStatus(
-            "No puedes llamarte a ti mismo."
-        );
-        return;
-    }
-
-    const remote =
-        NEXUS_currentNumber;
-
-    NEXUS_currentCallId =
-        NEXUS_randomId();
-
-    NEXUS_isGroupCall =
-        false;
-
-    try{
-
-        await NEXUS_getLocalMedia(
-            NEXUS_mode
-        );
-
-        NEXUS_openCallUI(
-            "Llamando a " + remote,
-            NEXUS_mode
-        );
-
-        NEXUS_callState.textContent =
-            "Esperando respuesta...";
-
-        await NEXUS_sendSignal({
-
-            type:"incoming_call",
-
-            from:NEXUS_myNumber,
-
-            to:remote,
-
-            callId:NEXUS_currentCallId,
-
-            mode:NEXUS_mode
-
-        });
-
-    }catch(error){
-
-        console.error(error);
-
-        NEXUS_closeCallUI();
-
-        NEXUS_setStatus(
-            "No se pudo iniciar la llamada."
-        );
-    }
-};
-
-
-/* =========================================================
-   ACEPTAR / RECHAZAR INDIVIDUAL
-========================================================= */
-
-async function NEXUS_acceptIndividual(){
-
-    const call =
-        NEXUS_incomingCall;
-
-    if(!call){
-        return;
-    }
-
-    NEXUS_currentCallId =
-        call.callId;
-
-    NEXUS_mode =
-        call.mode || "voice";
-
-    NEXUS_isGroupCall =
-        false;
-
-    NEXUS_incomingCall =
-        null;
-
-    NEXUS_incomingOverlay.classList.remove(
-        "show"
-    );
-
-    try{
-
-        await NEXUS_prepareIndividualPC(
-            call.from
-        );
-
-        NEXUS_openCallUI(
-            "Llamada con " + call.from,
-            NEXUS_mode
-        );
-
-        NEXUS_callState.textContent =
-            "Aceptando...";
-
-        await NEXUS_sendSignal({
-
-            type:"call_accept",
-
-            from:NEXUS_myNumber,
-
-            to:call.from,
-
-            callId:call.callId
-
-        });
-
-    }catch(error){
-
-        console.error(error);
-
-        NEXUS_setStatus(
-            "No se pudo aceptar."
-        );
-    }
-}
-
-
-window.NEXUS_acceptIncoming = function(){
-
-    if(
-        NEXUS_incomingCall &&
-        NEXUS_incomingCall.group
+        products.some(
+            p=>String(p.barcode).trim()===barcode
+        )
     ){
 
-        NEXUS_acceptGroupInvite();
+        errorSound();
 
-    }else{
+        alert(
+            "Ese código de barras ya está registrado."
+        );
 
-        NEXUS_acceptIndividual();
-    }
-};
-
-
-window.NEXUS_rejectIncoming = async function(){
-
-    const call =
-        NEXUS_incomingCall;
-
-    if(!call){
         return;
+
     }
 
-    await NEXUS_sendSignal({
+    products.push({
 
-        type:call.group
-            ? "group_reject"
-            : "reject",
+        id:
+            Date.now().toString(),
 
-        from:NEXUS_myNumber,
+        name,
 
-        to:call.from,
+        barcode,
 
-        callId:call.callId,
+        price,
 
-        groupCallId:call.groupCallId
+        stock
 
     });
 
-    NEXUS_incomingCall =
-        null;
+    save();
 
-    NEXUS_incomingOverlay.classList.remove(
-        "show"
-    );
-};
+    document.getElementById("productName").value="";
+    document.getElementById("productBarcode").value="";
+    document.getElementById("productPrice").value="";
+    document.getElementById("productStock").value="";
+
+    saleSound();
+
+    renderInventory();
+    renderSaleProducts();
+
+}
 
 
-/* =========================================================
-   SEÑALIZACIÓN INDIVIDUAL
-========================================================= */
+function renderInventory(){
 
-async function NEXUS_handleIndividualSignal(payload){
+    const container=
+        document.getElementById(
+            "inventoryContainer"
+        );
+
+    const search=
+        document
+        .getElementById("searchInventory")
+        .value
+        .toLowerCase();
+
+    const list=
+        products.filter(p=>
+            p.name
+            .toLowerCase()
+            .includes(search) ||
+
+            String(p.barcode)
+            .includes(search)
+        );
+
+    if(!list.length){
+
+        container.innerHTML=
+            `<div class="empty">
+                No hay productos registrados.
+            </div>`;
+
+        return;
+
+    }
+
+    container.innerHTML=`
+
+    <div style="overflow:auto">
+
+    <table class="inventory-table">
+
+        <thead>
+
+            <tr>
+                <th>Producto</th>
+                <th>Código</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Acciones</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            ${list.map(product=>`
+
+                <tr>
+
+                    <td>
+                        ${escapeHTML(product.name)}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(product.barcode)}
+                    </td>
+
+                    <td>
+                        $${Number(product.price).toFixed(2)}
+                    </td>
+
+                    <td>
+                        ${product.stock}
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="btn red"
+                            onclick="deleteProduct('${product.id}')"
+                        >
+                            🗑
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `).join("")}
+
+        </tbody>
+
+    </table>
+
+    </div>
+
+    `;
+
+}
+
+
+function deleteProduct(id){
+
+    const product=
+        products.find(p=>p.id===id);
+
+    if(!product)return;
 
     if(
-        payload.to !== NEXUS_myNumber
+        !confirm(
+            `¿Eliminar "${product.name}"?`
+        )
     ){
         return;
     }
 
+    products=
+        products.filter(p=>p.id!==id);
 
-    if(
-        payload.type === "incoming_call"
-    ){
+    cart=
+        cart.filter(item=>item.productId!==id);
 
-        NEXUS_incomingCall =
-            payload;
+    save();
 
+    renderInventory();
+    renderSaleProducts();
+    renderCart();
+
+    errorSound();
+
+}
+
+
+/* =========================================
+   PRODUCTOS PARA VENTA
+========================================= */
+
+function renderSaleProducts(){
+
+    const container=
         document.getElementById(
-            "incomingTitle"
-        ).textContent =
-            payload.mode === "video"
-            ? "📹 Videollamada entrante"
-            : "🎙️ Llamada entrante";
+            "saleProducts"
+        );
 
+    const search=
+        document
+        .getElementById("searchSale")
+        .value
+        .toLowerCase();
+
+    const list=
+        products.filter(p=>
+            p.name
+            .toLowerCase()
+            .includes(search) ||
+
+            String(p.barcode)
+            .includes(search)
+        );
+
+    if(!list.length){
+
+        container.innerHTML=
+            `<div class="empty">
+                No hay productos registrados.
+            </div>`;
+
+        return;
+
+    }
+
+    container.innerHTML=
+        list.map(product=>`
+
+        <div class="product">
+
+            <h3>
+                ${escapeHTML(product.name)}
+            </h3>
+
+            <div class="product-code">
+                Código:
+                ${escapeHTML(product.barcode)}
+            </div>
+
+            <div class="product-price">
+                $${Number(product.price).toFixed(2)}
+            </div>
+
+            <div class="product-stock">
+                Stock: ${product.stock}
+            </div>
+
+            <button
+                class="btn"
+                onclick="addToCart('${product.id}')"
+                ${product.stock<=0?"disabled":""}
+            >
+                ➕ Agregar
+            </button>
+
+        </div>
+
+    `).join("");
+
+}
+
+
+/* =========================================
+   CARRITO
+========================================= */
+
+function addToCart(id){
+
+    buttonSound();
+
+    const product=
+        products.find(p=>p.id===id);
+
+    if(!product)return;
+
+    if(product.stock<=0){
+
+        errorSound();
+
+        alert("Producto agotado.");
+
+        return;
+
+    }
+
+    const item=
+        cart.find(x=>x.productId===id);
+
+    if(item){
+
+        if(item.quantity>=product.stock){
+
+            errorSound();
+
+            alert("No hay suficiente stock.");
+
+            return;
+
+        }
+
+        item.quantity++;
+
+    }else{
+
+        cart.push({
+
+            productId:id,
+
+            quantity:1
+
+        });
+
+    }
+
+    save();
+
+    renderCart();
+
+}
+
+
+function changeQuantity(id,amount){
+
+    const item=
+        cart.find(x=>x.productId===id);
+
+    const product=
+        products.find(x=>x.id===id);
+
+    if(!item || !product)return;
+
+    item.quantity+=amount;
+
+    if(item.quantity<=0){
+
+        cart=
+            cart.filter(
+                x=>x.productId!==id
+            );
+
+    }
+
+    if(item.quantity>product.stock){
+
+        item.quantity=product.stock;
+
+        errorSound();
+
+    }
+
+    save();
+
+    renderCart();
+
+}
+
+
+function getCartTotal(){
+
+    return cart.reduce(
+        (total,item)=>{
+
+            const product=
+                products.find(
+                    p=>p.id===item.productId
+                );
+
+            if(!product)return total;
+
+            return total+
+                Number(product.price)*
+                Number(item.quantity);
+
+        },
+        0
+    );
+
+}
+
+
+function renderCart(){
+
+    const container=
         document.getElementById(
-            "incomingDescription"
-        ).textContent =
-            "NEXUS " +
-            payload.from +
-            " quiere comunicarse contigo.";
+            "cartContainer"
+        );
 
-        document.getElementById(
-            "incomingNumber"
-        ).textContent =
-            payload.from;
+    if(!cart.length){
 
-        NEXUS_incomingOverlay.classList.add(
-            "show"
+        container.innerHTML=
+            `<div class="cart-empty">
+                🛒 El carrito está vacío
+            </div>`;
+
+    }else{
+
+        container.innerHTML=
+            cart.map(item=>{
+
+                const product=
+                    products.find(
+                        p=>p.id===item.productId
+                    );
+
+                if(!product)return "";
+
+                const subtotal=
+                    Number(product.price)*
+                    Number(item.quantity);
+
+                return `
+
+                <div class="cart-row">
+
+                    <div>
+
+                        <div class="cart-name">
+                            ${escapeHTML(product.name)}
+                        </div>
+
+                        <div class="cart-price">
+                            $${Number(product.price).toFixed(2)}
+                            cada uno
+                        </div>
+
+                    </div>
+
+                    <div class="qty-controls">
+
+                        <button
+                            onclick="changeQuantity('${product.id}',-1)"
+                        >
+                            −
+                        </button>
+
+                        <b>
+                            ${item.quantity}
+                        </b>
+
+                        <button
+                            onclick="changeQuantity('${product.id}',1)"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+                    <b>
+                        $${subtotal.toFixed(2)}
+                    </b>
+
+                </div>
+
+                `;
+
+            }).join("");
+
+    }
+
+    document
+    .getElementById("cartTotal")
+    .textContent=
+        getCartTotal().toFixed(2);
+
+    calculateChange();
+
+}
+
+
+function clearCart(){
+
+    buttonSound();
+
+    cart=[];
+
+    save();
+
+    renderCart();
+
+    document
+    .getElementById("cashReceived")
+    .value="";
+
+    calculateChange();
+
+}
+
+
+/* =========================================
+   PAGOS
+========================================= */
+
+function changePaymentMethod(){
+
+    buttonSound();
+
+    const method=
+        document
+        .getElementById("paymentMethod")
+        .value;
+
+    document
+    .getElementById("cashPayment")
+    .style.display=
+        method==="efectivo"
+        ? "block"
+        : "none";
+
+    document
+    .getElementById("cardPayment")
+    .style.display=
+        method==="tarjeta"
+        ? "block"
+        : "none";
+
+}
+
+
+function calculateChange(){
+
+    const received=
+        Number(
+            document
+            .getElementById("cashReceived")
+            .value
+        );
+
+    const total=
+        getCartTotal();
+
+    const change=
+        Math.max(
+            0,
+            received-total
+        );
+
+    document
+    .getElementById("change")
+    .textContent=
+        change.toFixed(2);
+
+}
+
+
+document
+.getElementById("cashReceived")
+.addEventListener(
+    "input",
+    ()=>{
+        cashSound();
+        calculateChange();
+    }
+);
+
+
+function payCash(){
+
+    buttonSound();
+
+    if(!cart.length){
+
+        errorSound();
+
+        alert(
+            "El carrito está vacío."
         );
 
         return;
+
     }
 
+    const total=
+        getCartTotal();
 
-    if(
-        payload.callId !==
-        NEXUS_currentCallId
-    ){
-        return;
-    }
+    const received=
+        Number(
+            document
+            .getElementById("cashReceived")
+            .value
+        );
 
+    if(received<total){
 
-    if(payload.type === "call_accept"){
+        errorSound();
+        vibrate(200);
 
-        try{
-
-            NEXUS_callState.textContent =
-                "Creando conexión...";
-
-            await NEXUS_prepareIndividualPC(
-                payload.from
-            );
-
-            const offer =
-                await NEXUS_peerConnection
-                    .createOffer();
-
-            await NEXUS_peerConnection
-                .setLocalDescription(
-                    offer
-                );
-
-            await NEXUS_sendSignal({
-
-                type:"offer",
-
-                from:NEXUS_myNumber,
-
-                to:payload.from,
-
-                callId:payload.callId,
-
-                offer
-
-            });
-
-        }catch(error){
-
-            console.error(error);
-
-            NEXUS_callState.textContent =
-                "Error creando llamada.";
-        }
+        alert(
+            `Faltan $${(
+                total-received
+            ).toFixed(2)}`
+        );
 
         return;
+
     }
 
+    const change=
+        received-total;
 
-    if(payload.type === "offer"){
+    cashApproved();
 
-        try{
-
-            if(!NEXUS_peerConnection){
-
-                await NEXUS_prepareIndividualPC(
-                    payload.from
-                );
-            }
-
-            await NEXUS_peerConnection
-                .setRemoteDescription(
-                    new RTCSessionDescription(
-                        payload.offer
-                    )
-                );
-
-            const answer =
-                await NEXUS_peerConnection
-                    .createAnswer();
-
-            await NEXUS_peerConnection
-                .setLocalDescription(
-                    answer
-                );
-
-            await NEXUS_sendSignal({
-
-                type:"answer",
-
-                from:NEXUS_myNumber,
-
-                to:payload.from,
-
-                callId:payload.callId,
-
-                answer
-
-            });
-
-        }catch(error){
-
-            console.error(error);
-        }
-
-        return;
-    }
-
-
-    if(payload.type === "answer"){
-
-        try{
-
-            if(NEXUS_peerConnection){
-
-                await NEXUS_peerConnection
-                    .setRemoteDescription(
-                        new RTCSessionDescription(
-                            payload.answer
-                        )
-                    );
-            }
-
-        }catch(error){
-
-            console.error(error);
-        }
-
-        return;
-    }
-
-
-    if(payload.type === "ice"){
-
-        try{
-
-            if(NEXUS_peerConnection){
-
-                await NEXUS_peerConnection
-                    .addIceCandidate(
-                        new RTCIceCandidate(
-                            payload.candidate
-                        )
-                    );
-            }
-
-        }catch(error){
-
-            console.warn(
-                "ICE individual:",
-                error
-            );
-        }
-
-        return;
-    }
-
-
-    if(payload.type === "reject"){
-
-        NEXUS_callState.textContent =
-            "Llamada rechazada.";
+    if(change>0){
 
         setTimeout(
-            NEXUS_closeCallUI,
-            1000
+            changeSound,
+            200
         );
 
-        return;
     }
 
-
-    if(payload.type === "hangup"){
-
-        NEXUS_closeCallUI();
-
-        return;
-    }
-}
-
-
-/* =========================================================
-   GRUPAL: DIALER
-========================================================= */
-
-window.NEXUS_openGroupDialer = function(){
-
-    document
-        .getElementById("groupNumber1")
-        .value = "";
-
-    document
-        .getElementById("groupNumber2")
-        .value = "";
-
-    document
-        .getElementById("groupNumber3")
-        .value = "";
-
-    NEXUS_groupDialerOverlay.classList.add(
-        "show"
-    );
-};
-
-
-window.NEXUS_closeGroupDialer = function(){
-
-    NEXUS_groupDialerOverlay.classList.remove(
-        "show"
-    );
-};
-
-
-/* =========================================================
-   GRUPAL: CREAR LLAMADA
-========================================================= */
-
-window.NEXUS_startGroupCall = async function(){
-
-    const numbers =
-        NEXUS_uniqueNumbers([
-
-            document.getElementById(
-                "groupNumber1"
-            ).value.trim(),
-
-            document.getElementById(
-                "groupNumber2"
-            ).value.trim(),
-
-            document.getElementById(
-                "groupNumber3"
-            ).value.trim()
-
-        ]);
-
-
-    if(numbers.length === 0){
-
-        NEXUS_setStatus(
-            "Introduce al menos un número."
-        );
-
-        return;
-    }
-
-
-    NEXUS_groupCallId =
-        NEXUS_randomId();
-
-    NEXUS_isGroupCall =
-        true;
-
-    NEXUS_groupMembers =
-        [
-            NEXUS_myNumber,
-            ...numbers
-        ];
-
-
-    try{
-
-        await NEXUS_getLocalMedia(
-            NEXUS_mode
-        );
-
-        NEXUS_groupDialerOverlay.classList.remove(
-            "show"
-        );
-
-        NEXUS_openCallUI(
-            "👥 Llamada grupal",
-            NEXUS_mode
-        );
-
-        NEXUS_callState.textContent =
-            "Invitando participantes...";
-
-        for(const number of numbers){
-
-            await NEXUS_sendSignal({
-
-                type:"group_invite",
-
-                from:NEXUS_myNumber,
-
-                to:number,
-
-                callId:
-                    NEXUS_groupCallId,
-
-                groupCallId:
-                    NEXUS_groupCallId,
-
-                mode:NEXUS_mode,
-
-                members:NEXUS_groupMembers
-
-            });
-
-            await NEXUS_sleep(100);
-        }
-
-        NEXUS_renderMembers();
-
-    }catch(error){
-
-        console.error(error);
-
-        NEXUS_closeCallUI();
-
-        NEXUS_setStatus(
-            "No se pudo crear la llamada grupal."
-        );
-    }
-};
-
-
-/* =========================================================
-   GRUPAL: INVITACIÓN ENTRANTE
-========================================================= */
-
-function NEXUS_showGroupInvite(payload){
-
-    NEXUS_incomingCall =
-        payload;
-
-    document.getElementById(
-        "incomingTitle"
-    ).textContent =
-        payload.mode === "video"
-        ? "👥📹 Videollamada grupal"
-        : "👥🎙️ Llamada grupal";
-
-    document.getElementById(
-        "incomingDescription"
-    ).textContent =
-        "NEXUS " +
-        payload.from +
-        " te está invitando a una llamada grupal.";
-
-    document.getElementById(
-        "incomingNumber"
-    ).textContent =
-        payload.from;
-
-    NEXUS_incomingOverlay.classList.add(
-        "show"
-    );
-}
-
-
-async function NEXUS_acceptGroupInvite(){
-
-    const invite =
-        NEXUS_incomingCall;
-
-    if(!invite){
-        return;
-    }
-
-    NEXUS_incomingCall =
-        null;
-
-    NEXUS_groupCallId =
-        invite.groupCallId ||
-        invite.callId;
-
-    NEXUS_mode =
-        invite.mode || "voice";
-
-    NEXUS_isGroupCall =
-        true;
-
-    NEXUS_groupMembers =
-        NEXUS_uniqueNumbers(
-            invite.members || []
-        );
-
-
-    if(
-        !NEXUS_groupMembers.includes(
-            NEXUS_myNumber
-        )
-    ){
-        NEXUS_groupMembers.push(
-            NEXUS_myNumber
-        );
-    }
-
-
-    NEXUS_incomingOverlay.classList.remove(
-        "show"
-    );
-
-
-    try{
-
-        await NEXUS_getLocalMedia(
-            NEXUS_mode
-        );
-
-        NEXUS_openCallUI(
-            "👥 Llamada grupal",
-            NEXUS_mode
-        );
-
-        NEXUS_callState.textContent =
-            "Uniéndote...";
-
-        await NEXUS_sendSignal({
-
-            type:"group_accept",
-
-            from:NEXUS_myNumber,
-
-            to:invite.from,
-
-            callId:
-                invite.callId,
-
-            groupCallId:
-                NEXUS_groupCallId,
-
-            mode:NEXUS_mode
-
-        });
-
-
-        await NEXUS_sendSignal({
-
-            type:"group_joined",
-
-            from:NEXUS_myNumber,
-
-            to:null,
-
-            groupCallId:
-                NEXUS_groupCallId,
-
-            members:
-                NEXUS_groupMembers
-
-        });
-
-
-        NEXUS_renderMembers();
-
-    }catch(error){
-
-        console.error(error);
-
-        NEXUS_closeCallUI();
-
-        NEXUS_setStatus(
-            "No se pudo entrar a la llamada."
-        );
-    }
-}
-
-
-/* =========================================================
-   GRUPAL: PEER CONNECTION
-========================================================= */
-
-function NEXUS_createGroupPC(remoteNumber){
-
-    if(
-        NEXUS_groupConnections[
-            remoteNumber
-        ]
-    ){
-        return NEXUS_groupConnections[
-            remoteNumber
-        ];
-    }
-
-
-    const pc =
-        new RTCPeerConnection({
-
-            iceServers:[
-                {
-                    urls:
-                        "stun:stun.l.google.com:19302"
-                },
-                {
-                    urls:
-                        "stun:stun1.l.google.com:19302"
-                }
-            ]
-
-        });
-
-
-    NEXUS_groupConnections[
-        remoteNumber
-    ] = pc;
-
-
-    NEXUS_groupPendingCandidates[
-        remoteNumber
-    ] = [];
-
-
-    NEXUS_groupRemoteDescriptions[
-        remoteNumber
-    ] = false;
-
-
-    pc.onicecandidate =
-        event => {
-
-            if(!event.candidate){
-                return;
-            }
-
-            NEXUS_sendSignal({
-
-                type:"group_ice",
-
-                from:NEXUS_myNumber,
-
-                to:remoteNumber,
-
-                groupCallId:
-                    NEXUS_groupCallId,
-
-                candidate:
-                    event.candidate
-
-            });
-        };
-
-
-    pc.ontrack =
-        event => {
-
-            const stream =
-                event.streams[0];
-
-            NEXUS_groupStreams[
-                remoteNumber
-            ] = stream;
-
-            NEXUS_renderRemoteParticipant(
-                remoteNumber,
-                stream
+    setTimeout(
+        ()=>{
+            completeSale(
+                "Efectivo",
+                received,
+                change
             );
-        };
+        },
+        400
+    );
 
-
-    pc.onconnectionstatechange =
-        () => {
-
-            const state =
-                pc.connectionState;
-
-            console.log(
-                "Grupo",
-                remoteNumber,
-                state
-            );
-
-            if(
-                state === "connected"
-            ){
-                NEXUS_callState.textContent =
-                    "Llamada grupal conectada";
-            }
-
-            if(
-                state === "failed" ||
-                state === "closed"
-            ){
-
-                NEXUS_removeRemoteParticipant(
-                    remoteNumber
-                );
-            }
-        };
-
-
-    if(NEXUS_localStream){
-
-        NEXUS_localStream
-            .getTracks()
-            .forEach(track => {
-
-                pc.addTrack(
-                    track,
-                    NEXUS_localStream
-                );
-
-            });
-    }
-
-
-    return pc;
 }
 
 
-/* =========================================================
-   GRUPAL: CREAR OFFER
-========================================================= */
+/* =========================================
+   TERMINAL TARJETA
+========================================= */
 
-async function NEXUS_groupCreateOffer(
-    remoteNumber
+let terminalPin="";
+let processing=false;
+
+
+function startCardTerminal(){
+
+    buttonSound();
+
+    if(!cart.length){
+
+        errorSound();
+
+        alert(
+            "El carrito está vacío."
+        );
+
+        return;
+
+    }
+
+    terminalPin="";
+    processing=false;
+
+    document
+    .getElementById("terminalModal")
+    .classList.add("show");
+
+    document
+    .getElementById("terminalTitle")
+    .textContent="💳 Terminal";
+
+    document
+    .getElementById("terminalText")
+    .textContent=
+        `Cobro: $${getCartTotal().toFixed(2)}`;
+
+    document
+    .getElementById("terminalPress")
+    .style.display="inline-block";
+
+    document
+    .getElementById("pinArea")
+    .style.display="none";
+
+    document
+    .getElementById("processingArea")
+    .style.display="none";
+
+}
+
+
+function cardDetected(){
+
+    cardSound();
+    vibrate(100);
+
+    document
+    .getElementById("terminalPress")
+    .style.display="none";
+
+    document
+    .getElementById("terminalText")
+    .textContent=
+        "Tarjeta detectada. Introduce el NIP.";
+
+    document
+    .getElementById("pinArea")
+    .style.display="block";
+
+    terminalPin="";
+
+    updatePin();
+
+}
+
+
+function pinKey(key){
+
+    if(terminalPin.length>=4)return;
+
+    terminalPin+=key;
+
+    tone(600,.05);
+
+    vibrate(30);
+
+    updatePin();
+
+}
+
+
+function pinClear(){
+
+    terminalPin=
+        terminalPin.slice(0,-1);
+
+    tone(500,.05);
+
+    updatePin();
+
+}
+
+
+function updatePin(){
+
+    document
+    .getElementById("pinDisplay")
+    .textContent=
+        terminalPin
+        ? "•".repeat(terminalPin.length)
+        : "••••";
+
+}
+
+
+function processCard(){
+
+    if(processing)return;
+
+    if(terminalPin.length!==4){
+
+        errorSound();
+
+        alert(
+            "El NIP debe tener 4 dígitos."
+        );
+
+        return;
+
+    }
+
+    processing=true;
+
+    document
+    .getElementById("pinArea")
+    .style.display="none";
+
+    document
+    .getElementById("processingArea")
+    .style.display="block";
+
+    let progress=0;
+
+    const bar=
+        document
+        .getElementById("progressBar");
+
+    const interval=
+        setInterval(()=>{
+
+            progress+=10;
+
+            bar.style.width=
+                progress+"%";
+
+            tone(300,.04,"triangle",.02);
+
+            if(progress>=100){
+
+                clearInterval(interval);
+
+                setTimeout(()=>{
+
+                    approvedSound();
+                    vibrate(150);
+
+                    document
+                    .getElementById("terminalTitle")
+                    .textContent=
+                        "✅ PAGO APROBADO";
+
+                    document
+                    .getElementById("terminalText")
+                    .textContent=
+                        "Transacción autorizada.";
+
+                    setTimeout(()=>{
+
+                        closeTerminal();
+
+                        completeSale(
+                            "Tarjeta",
+                            0,
+                            0
+                        );
+
+                    },800);
+
+                },300);
+
+            }
+
+        },120);
+
+}
+
+
+function cancelTerminal(){
+
+    cancelSound();
+
+    document
+    .getElementById("terminalModal")
+    .classList.remove("show");
+
+}
+
+
+/* =========================================
+   COMPLETAR VENTA
+========================================= */
+
+function completeSale(
+    payment,
+    received,
+    change
 ){
 
-    const pc =
-        NEXUS_createGroupPC(
-            remoteNumber
-        );
+    const total=
+        getCartTotal();
 
+    if(!cart.length)return;
 
-    const offer =
-        await pc.createOffer();
+    const items=
+        cart.map(item=>{
 
+            const product=
+                products.find(
+                    p=>p.id===item.productId
+                );
 
-    await pc.setLocalDescription(
-        offer
-    );
+            return {
 
+                productId:product.id,
 
-    await NEXUS_sendSignal({
+                name:product.name,
 
-        type:"group_offer",
+                barcode:product.barcode,
 
-        from:NEXUS_myNumber,
+                price:product.price,
 
-        to:remoteNumber,
+                quantity:item.quantity,
 
-        groupCallId:
-            NEXUS_groupCallId,
+                subtotal:
+                    Number(product.price)*
+                    Number(item.quantity)
 
-        offer
+            };
+
+        });
+
+    cart.forEach(item=>{
+
+        const product=
+            products.find(
+                p=>p.id===item.productId
+            );
+
+        if(product){
+
+            product.stock-=item.quantity;
+
+            if(product.stock<0){
+                product.stock=0;
+            }
+
+        }
 
     });
+
+    const sale={
+
+        id:
+            Date.now().toString(),
+
+        date:
+            new Date().toLocaleString("es-MX"),
+
+        items,
+
+        total,
+
+        payment,
+
+        received,
+
+        change
+
+    };
+
+    sales.unshift(sale);
+
+    cart=[];
+
+    save();
+
+    saleSound();
+    vibrate(200);
+
+    renderCart();
+    renderSaleProducts();
+    renderInventory();
+    renderSales();
+    renderCut();
+
+    document
+    .getElementById("cashReceived")
+    .value="";
+
+    alert(
+        `Venta completada\n\n`+
+        `Total: $${total.toFixed(2)}\n`+
+        `Pago: ${payment}`+
+        (
+            payment==="Efectivo"
+            ? `\nCambio: $${change.toFixed(2)}`
+            : ""
+        )
+    );
+
+    printTicket(sale);
+
 }
 
 
-/* =========================================================
-   GRUPAL: CREAR CONEXIONES
-========================================================= */
+/* =========================================
+   TICKET
+========================================= */
 
-async function NEXUS_updateGroupConnections(){
+function printTicket(sale){
 
-    if(!NEXUS_groupCallId){
-        return;
-    }
+    const ticket=`
 
+    <html>
 
-    const members =
-        NEXUS_uniqueNumbers(
-            NEXUS_groupMembers
-        );
+    <head>
 
+        <title>
+            Ticket PeluchiAbarrotes
+        </title>
 
-    for(const remote of members){
+        <style>
 
-        if(
-            remote ===
-            NEXUS_myNumber
-        ){
-            continue;
-        }
-
-
-        NEXUS_createGroupPC(
-            remote
-        );
-    }
-
-
-    /*
-      Para evitar colisiones de ofertas:
-
-      el número NEXUS menor inicia
-      la conexión con el mayor.
-    */
-
-    for(const remote of members){
-
-        if(
-            remote ===
-            NEXUS_myNumber
-        ){
-            continue;
-        }
-
-
-        if(
-            NEXUS_myNumber <
-            remote
-        ){
-
-            const pc =
-                NEXUS_groupConnections[
-                    remote
-                ];
-
-            if(
-                pc &&
-                pc.signalingState ===
-                "stable"
-            ){
-
-                try{
-
-                    await NEXUS_groupCreateOffer(
-                        remote
-                    );
-
-                }catch(error){
-
-                    console.warn(
-                        "Offer grupal:",
-                        error
-                    );
-                }
+            body{
+                font-family:monospace;
+                width:280px;
+                margin:auto;
             }
+
+            h2{
+                text-align:center;
+            }
+
+            hr{
+                border:0;
+                border-top:1px dashed #000;
+            }
+
+        </style>
+
+    </head>
+
+    <body>
+
+        <h2>
+            PeluchiAbarrotes
+        </h2>
+
+        <p>
+            ${sale.date}
+        </p>
+
+        <hr>
+
+        ${sale.items.map(item=>`
+
+            <div>
+                ${escapeHTML(item.name)}
+            </div>
+
+            <div>
+                ${item.quantity} x
+                $${Number(item.price).toFixed(2)}
+                =
+                $${Number(item.subtotal).toFixed(2)}
+            </div>
+
+        `).join("")}
+
+        <hr>
+
+        <h3>
+            TOTAL:
+            $${Number(sale.total).toFixed(2)}
+        </h3>
+
+        <p>
+            Pago: ${sale.payment}
+        </p>
+
+        ${
+            sale.payment==="Efectivo"
+            ? `
+                <p>
+                    Recibido:
+                    $${Number(sale.received).toFixed(2)}
+                </p>
+
+                <p>
+                    Cambio:
+                    $${Number(sale.change).toFixed(2)}
+                </p>
+            `
+            : ""
         }
-    }
+
+        <hr>
+
+        <center>
+            Gracias por su compra
+        </center>
+
+    </body>
+
+    </html>
+
+    `;
+
+    const win=
+        window.open(
+            "",
+            "_blank",
+            "width=400,height=600"
+        );
+
+    if(!win)return;
+
+    win.document.write(ticket);
+    win.document.close();
+
+    setTimeout(
+        ()=>win.print(),
+        400
+    );
+
 }
 
 
-/* =========================================================
-   GRUPAL: MIEMBROS
-========================================================= */
+/* =========================================
+   HISTORIAL
+========================================= */
 
-function NEXUS_updateGroupMembers(
-    members
-){
+function renderSales(){
 
-    const clean =
-        NEXUS_uniqueNumbers(
-            members || []
+    const container=
+        document.getElementById(
+            "salesContainer"
         );
 
+    if(!sales.length){
+
+        container.innerHTML=
+            `<div class="empty">
+                Todavía no hay ventas.
+            </div>`;
+
+        return;
+
+    }
+
+    container.innerHTML=
+        sales.map(sale=>`
+
+        <div class="sale-history">
+
+            <div class="sale-history-head">
+
+                <div>
+
+                    <b>
+                        Venta #${sale.id.slice(-6)}
+                    </b>
+
+                    <div>
+                        ${sale.date}
+                    </div>
+
+                </div>
+
+                <div class="sale-total">
+                    $${Number(sale.total).toFixed(2)}
+                </div>
+
+            </div>
+
+            <p>
+                Método:
+                <b>${sale.payment}</b>
+            </p>
+
+            <details>
+
+                <summary>
+                    Ver productos
+                </summary>
+
+                <ul>
+
+                    ${sale.items.map(item=>`
+
+                        <li>
+                            ${escapeHTML(item.name)}
+                            × ${item.quantity}
+                            =
+                            $${Number(item.subtotal).toFixed(2)}
+                        </li>
+
+                    `).join("")}
+
+                </ul>
+
+            </details>
+
+        </div>
+
+    `).join("");
+
+}
+
+
+/* =========================================
+   CORTE
+========================================= */
+
+function renderCut(){
+
+    const cash=
+        sales
+        .filter(
+            sale=>sale.payment==="Efectivo"
+        )
+        .reduce(
+            (sum,sale)=>
+                sum+Number(sale.total),
+            0
+        );
+
+    const card=
+        sales
+        .filter(
+            sale=>sale.payment==="Tarjeta"
+        )
+        .reduce(
+            (sum,sale)=>
+                sum+Number(sale.total),
+            0
+        );
+
+    const total=
+        cash+card;
+
+    document
+    .getElementById("cutSales")
+    .textContent=
+        sales.length;
+
+    document
+    .getElementById("cutCash")
+    .textContent=
+        cash.toFixed(2);
+
+    document
+    .getElementById("cutCard")
+    .textContent=
+        card.toFixed(2);
+
+    document
+    .getElementById("cutTotal")
+    .textContent=
+        total.toFixed(2);
+
+}
+
+
+function makeCut(){
+
+    buttonSound();
+
+    if(!sales.length){
+
+        errorSound();
+
+        alert(
+            "No hay ventas para realizar un corte."
+        );
+
+        return;
+
+    }
+
+    const cash=
+        sales
+        .filter(
+            sale=>sale.payment==="Efectivo"
+        )
+        .reduce(
+            (sum,sale)=>
+                sum+Number(sale.total),
+            0
+        );
+
+    const card=
+        sales
+        .filter(
+            sale=>sale.payment==="Tarjeta"
+        )
+        .reduce(
+            (sum,sale)=>
+                sum+Number(sale.total),
+            0
+        );
+
+    const total=
+        cash+card;
+
+    cuts.unshift({
+
+        id:
+            Date.now().toString(),
+
+        date:
+            new Date().toLocaleString("es-MX"),
+
+        sales:
+            sales.length,
+
+        cash,
+
+        card,
+
+        total
+
+    });
+
+    sales=[];
+
+    save();
+
+    cutSound();
+    vibrate(150);
+
+    renderSales();
+    renderCut();
+    renderCuts();
+
+    alert(
+        "Corte realizado correctamente."
+    );
+
+}
+
+
+function renderCuts(){
+
+    const container=
+        document.getElementById(
+            "cutsContainer"
+        );
+
+    if(!cuts.length){
+
+        container.innerHTML=
+            `<div class="empty">
+                No hay cortes anteriores.
+            </div>`;
+
+        return;
+
+    }
+
+    container.innerHTML=
+        cuts.map(cut=>`
+
+        <div class="sale-history">
+
+            <b>
+                Corte #${cut.id.slice(-6)}
+            </b>
+
+            <p>
+                ${cut.date}
+            </p>
+
+            <p>
+                Ventas: ${cut.sales}
+            </p>
+
+            <p>
+                Efectivo:
+                $${Number(cut.cash).toFixed(2)}
+            </p>
+
+            <p>
+                Tarjeta:
+                $${Number(cut.card).toFixed(2)}
+            </p>
+
+            <p class="sale-total">
+                Total:
+                $${Number(cut.total).toFixed(2)}
+            </p>
+
+        </div>
+
+    `).join("");
+
+}
+
+
+/* =========================================
+   ESCÁNER
+========================================= */
+
+let codeReader=null;
+let scannerMode=null;
+let scannerDevices=[];
+let scannerIndex=0;
+let scannerDeviceId=null;
+let scannerStream=null;
+
+let lastScanned="";
+let lastScanTime=0;
+
+let torchOn=false;
+
+
+async function openScanner(mode){
+
+    scannerMode=mode;
+
+    buttonSound();
+    vibrate(50);
+
+    document
+    .getElementById("scannerModal")
+    .classList.add("show");
+
+    const status=
+        document.getElementById(
+            "scanStatus"
+        );
+
+    status.textContent=
+        "Solicitando acceso a la cámara...";
+
+    try{
+
+        /*
+        Para que esto funcione desde un celular,
+        el sitio debe estar en HTTPS o en un
+        contexto considerado seguro por el navegador.
+        */
+
+        scannerStream=
+            await navigator.mediaDevices
+            .getUserMedia({
+
+                video:{
+                    facingMode:{
+                        ideal:"environment"
+                    },
+
+                    width:{
+                        ideal:1920
+                    },
+
+                    height:{
+                        ideal:1080
+                    }
+
+                },
+
+                audio:false
+
+            });
+
+        const video=
+            document.getElementById("video");
+
+        video.srcObject=
+            scannerStream;
+
+        await video.play();
+
+        scannerDevices=
+            await ZXingBrowser
+            .BrowserCodeReader
+            .listVideoInputDevices();
+
+        if(!scannerDevices.length){
+
+            throw new Error(
+                "No hay cámaras disponibles."
+            );
+
+        }
+
+        scannerIndex=
+            findRearCamera(
+                scannerDevices
+            );
+
+        scannerDeviceId=
+            scannerDevices[
+                scannerIndex
+            ].deviceId;
+
+        status.textContent=
+            "Apunta al código de barras...";
+
+        await startScanner();
+
+        setupTorch();
+
+    }catch(error){
+
+        console.error(error);
+
+        errorSound();
+
+        status.innerHTML=`
+
+            ❌ <b>No se pudo acceder a la cámara.</b>
+
+            <br><br>
+
+            Si estás usando un celular y abriste
+            una dirección como:
+
+            <br><br>
+
+            <code>
+            http://192.168.x.x:8000
+            </code>
+
+            <br><br>
+
+            el navegador puede bloquear la cámara
+            porque la página no utiliza HTTPS.
+
+        `;
+
+    }
+
+}
+
+
+function findRearCamera(devices){
+
+    const index=
+        devices.findIndex(
+            device=>
+                /back|rear|environment|trasera|posterior/i
+                .test(device.label)
+        );
+
+    return index>=0
+        ? index
+        : 0;
+
+}
+
+
+async function startScanner(){
+
+    if(codeReader){
+
+        try{
+            codeReader.reset();
+        }catch(e){}
+
+    }
 
     if(
-        !clean.includes(
-            NEXUS_myNumber
-        )
+        ZXingBrowser
+        .BrowserMultiFormatOneDReader
     ){
-        clean.push(
-            NEXUS_myNumber
-        );
-    }
 
-
-    NEXUS_groupMembers =
-        clean.slice(0,4);
-
-
-    NEXUS_renderMembers();
-
-    NEXUS_updateGroupConnections();
-}
-
-
-function NEXUS_renderMembers(){
-
-    let existing =
-        document.getElementById(
-            "groupMembersBox"
-        );
-
-
-    if(!existing){
-
-        existing =
-            document.createElement("div");
-
-        existing.id =
-            "groupMembersBox";
-
-        existing.className =
-            "members-box";
-
-        NEXUS_callTitle
-            .parentElement
-            .appendChild(existing);
-    }
-
-
-    existing.innerHTML = `
-        <div class="members-title">
-            PARTICIPANTES
-        </div>
-
-        <div class="members-list">
-            ${
-                NEXUS_groupMembers
-                    .map(
-                        number =>
-                            `<span class="member">${
-                                number === NEXUS_myNumber
-                                ? "Tú · " + number
-                                : number
-                            }</span>`
-                    )
-                    .join("")
-            }
-        </div>
-    `;
-}
-
-
-/* =========================================================
-   GRUPAL: VIDEO REMOTO
-========================================================= */
-
-function NEXUS_renderRemoteParticipant(
-    number,
-    stream
-){
-
-    let tile =
-        document.getElementById(
-            "groupTile_" + number
-        );
-
-
-    if(!tile){
-
-        tile =
-            document.createElement("div");
-
-        tile.id =
-            "groupTile_" + number;
-
-        tile.className =
-            "remote-tile";
-
-
-        const video =
-            document.createElement("video");
-
-        video.autoplay = true;
-        video.playsInline = true;
-
-        video.srcObject =
-            stream;
-
-
-        const audio =
-            document.createElement("audio");
-
-        audio.autoplay = true;
-        audio.srcObject =
-            stream;
-
-
-        const label =
-            document.createElement("div");
-
-        label.className =
-            "tile-number";
-
-        label.textContent =
-            number;
-
-
-        tile.appendChild(video);
-        tile.appendChild(audio);
-        tile.appendChild(label);
-
-        NEXUS_remoteGrid.appendChild(
-            tile
-        );
-
-        audio.play()
-            .catch(()=>{});
-
-        video.play()
-            .catch(()=>{});
+        codeReader=
+            new ZXingBrowser
+            .BrowserMultiFormatOneDReader();
 
     }else{
 
-        const video =
-            tile.querySelector("video");
+        codeReader=
+            new ZXingBrowser
+            .BrowserMultiFormatReader();
 
-        const audio =
-            tile.querySelector("audio");
-
-        if(video){
-            video.srcObject =
-                stream;
-        }
-
-        if(audio){
-            audio.srcObject =
-                stream;
-            audio.play().catch(()=>{});
-        }
     }
+
+    codeReader.decodeFromVideoDevice(
+
+        scannerDeviceId,
+
+        document.getElementById("video"),
+
+        (result,error)=>{
+
+            if(!result)return;
+
+            const code=
+                result
+                .getText()
+                .trim();
+
+            if(!code)return;
+
+            handleScannedCode(code);
+
+        }
+
+    );
+
 }
 
 
-function NEXUS_removeRemoteParticipant(
-    number
-){
+function handleScannedCode(code){
 
-    const tile =
-        document.getElementById(
-            "groupTile_" + number
-        );
+    const now=
+        Date.now();
 
-    if(tile){
-        tile.remove();
+    if(
+        code===lastScanned &&
+        now-lastScanTime<1800
+    ){
+        return;
     }
 
-    delete NEXUS_groupStreams[
-        number
-    ];
+    lastScanned=code;
+    lastScanTime=now;
+
+    scanSound();
+    vibrate(80);
+
+    if(scannerMode==="inventario"){
+
+        document
+        .getElementById("productBarcode")
+        .value=code;
+
+        document
+        .getElementById("scanStatus")
+        .textContent=
+            "Código detectado: "+code;
+
+        setTimeout(
+            closeScanner,
+            500
+        );
+
+        return;
+
+    }
+
+    if(scannerMode==="venta"){
+
+        const product=
+            products.find(
+                product=>
+                    String(product.barcode)
+                    .trim()===code
+            );
+
+        if(!product){
+
+            errorSound();
+            vibrate(180);
+
+            document
+            .getElementById("scanStatus")
+            .textContent=
+                "❌ Producto no registrado";
+
+            return;
+
+        }
+
+        if(product.stock<=0){
+
+            errorSound();
+
+            document
+            .getElementById("scanStatus")
+            .textContent=
+                "❌ Producto agotado";
+
+            return;
+
+        }
+
+        addToCart(product.id);
+
+        document
+        .getElementById("scanStatus")
+        .textContent=
+            "✅ "+product.name+
+            " agregado al carrito";
+
+    }
+
 }
 
 
-/* =========================================================
-   GRUPAL: SEÑALIZACIÓN
-========================================================= */
+/* =========================================
+   CAMBIAR CÁMARA
+========================================= */
 
-async function NEXUS_handleGroupSignal(
-    payload
-){
+async function switchCamera(){
 
-    if(
-        payload.groupCallId &&
-        payload.groupCallId !==
-        NEXUS_groupCallId
-    ){
-        return;
-    }
+    buttonSound();
 
+    if(scannerDevices.length<2){
 
-    if(
-        payload.type ===
-        "group_invite"
-    ){
-
-        NEXUS_showGroupInvite(
-            payload
+        alert(
+            "No hay otra cámara disponible."
         );
 
         return;
+
     }
 
+    scannerIndex++;
 
     if(
-        payload.type ===
-        "group_accept"
+        scannerIndex>=scannerDevices.length
     ){
-
-        if(
-            !NEXUS_groupMembers.includes(
-                payload.from
-            )
-        ){
-
-            if(
-                NEXUS_groupMembers.length <
-                4
-            ){
-
-                NEXUS_groupMembers.push(
-                    payload.from
-                );
-            }
-        }
-
-
-        NEXUS_updateGroupMembers(
-            NEXUS_groupMembers
-        );
-
-
-        /*
-          Compartimos la lista actualizada
-          con todos los participantes.
-        */
-
-        for(
-            const member of
-            NEXUS_groupMembers
-        ){
-
-            if(
-                member ===
-                NEXUS_myNumber
-            ){
-                continue;
-            }
-
-            await NEXUS_sendSignal({
-
-                type:"group_members",
-
-                from:NEXUS_myNumber,
-
-                to:member,
-
-                groupCallId:
-                    NEXUS_groupCallId,
-
-                members:
-                    NEXUS_groupMembers
-
-            });
-        }
-
-        return;
+        scannerIndex=0;
     }
 
+    scannerDeviceId=
+        scannerDevices[
+            scannerIndex
+        ].deviceId;
 
-    if(
-        payload.type ===
-        "group_joined"
-    ){
+    stopCurrentStream();
 
-        NEXUS_updateGroupMembers(
-            payload.members
-        );
+    try{
 
-        return;
-    }
+        scannerStream=
+            await navigator.mediaDevices
+            .getUserMedia({
 
+                video:{
+                    deviceId:{
+                        exact:scannerDeviceId
+                    },
 
-    if(
-        payload.type ===
-        "group_members"
-    ){
+                    width:{
+                        ideal:1920
+                    },
 
-        NEXUS_updateGroupMembers(
-            payload.members
-        );
+                    height:{
+                        ideal:1080
+                    }
 
-        return;
-    }
+                },
 
-
-    if(
-        payload.type ===
-        "group_offer"
-    ){
-
-        try{
-
-            const remote =
-                payload.from;
-
-            const pc =
-                NEXUS_createGroupPC(
-                    remote
-                );
-
-
-            await pc.setRemoteDescription(
-                new RTCSessionDescription(
-                    payload.offer
-                )
-            );
-
-
-            NEXUS_groupRemoteDescriptions[
-                remote
-            ] = true;
-
-
-            const pending =
-                NEXUS_groupPendingCandidates[
-                    remote
-                ] || [];
-
-
-            for(
-                const candidate of
-                pending
-            ){
-
-                await pc.addIceCandidate(
-                    new RTCIceCandidate(
-                        candidate
-                    )
-                );
-            }
-
-
-            NEXUS_groupPendingCandidates[
-                remote
-            ] = [];
-
-
-            const answer =
-                await pc.createAnswer();
-
-
-            await pc.setLocalDescription(
-                answer
-            );
-
-
-            await NEXUS_sendSignal({
-
-                type:"group_answer",
-
-                from:NEXUS_myNumber,
-
-                to:remote,
-
-                groupCallId:
-                    NEXUS_groupCallId,
-
-                answer
+                audio:false
 
             });
 
-        }catch(error){
+        const video=
+            document.getElementById("video");
 
-            console.error(
-                "Group offer:",
-                error
-            );
-        }
+        video.srcObject=
+            scannerStream;
 
+        await video.play();
+
+        await startScanner();
+
+        setupTorch();
+
+    }catch(error){
+
+        console.error(error);
+
+        errorSound();
+
+    }
+
+}
+
+
+/* =========================================
+   LINTERNA
+========================================= */
+
+function setupTorch(){
+
+    const video=
+        document.getElementById("video");
+
+    if(
+        !video.srcObject ||
+        !video.srcObject.getVideoTracks().length
+    ){
         return;
     }
 
+    const track=
+        video.srcObject
+        .getVideoTracks()[0];
 
     if(
-        payload.type ===
-        "group_answer"
+        !track.getCapabilities ||
+        !track.getCapabilities().torch
     ){
-
-        try{
-
-            const remote =
-                payload.from;
-
-            const pc =
-                NEXUS_groupConnections[
-                    remote
-                ];
-
-
-            if(!pc){
-                return;
-            }
-
-
-            await pc.setRemoteDescription(
-                new RTCSessionDescription(
-                    payload.answer
-                )
-            );
-
-
-            NEXUS_groupRemoteDescriptions[
-                remote
-            ] = true;
-
-
-            const pending =
-                NEXUS_groupPendingCandidates[
-                    remote
-                ] || [];
-
-
-            for(
-                const candidate of
-                pending
-            ){
-
-                await pc.addIceCandidate(
-                    new RTCIceCandidate(
-                        candidate
-                    )
-                );
-            }
-
-
-            NEXUS_groupPendingCandidates[
-                remote
-            ] = [];
-
-        }catch(error){
-
-            console.error(
-                "Group answer:",
-                error
-            );
-        }
-
         return;
     }
 
+}
+
+
+async function toggleTorch(){
+
+    const video=
+        document.getElementById("video");
 
     if(
-        payload.type ===
-        "group_ice"
+        !video.srcObject ||
+        !video.srcObject.getVideoTracks().length
     ){
+        return;
+    }
 
-        const remote =
-            payload.from;
+    const track=
+        video.srcObject
+        .getVideoTracks()[0];
 
-        const pc =
-            NEXUS_groupConnections[
-                remote
-            ];
+    try{
 
+        const capabilities=
+            track.getCapabilities();
 
-        if(
-            !pc ||
-            !NEXUS_groupRemoteDescriptions[
-                remote
-            ]
-        ){
+        if(!capabilities.torch){
 
-            if(
-                !NEXUS_groupPendingCandidates[
-                    remote
-                ]
-            ){
-
-                NEXUS_groupPendingCandidates[
-                    remote
-                ] = [];
-            }
-
-
-            NEXUS_groupPendingCandidates[
-                remote
-            ].push(
-                payload.candidate
+            alert(
+                "Este celular no permite controlar la linterna desde el navegador."
             );
 
             return;
+
         }
 
+        torchOn=!torchOn;
 
-        try{
+        await track.applyConstraints({
 
-            await pc.addIceCandidate(
-                new RTCIceCandidate(
-                    payload.candidate
-                )
-            );
+            advanced:[
+                {
+                    torch:torchOn
+                }
+            ]
 
-        }catch(error){
+        });
 
-            console.warn(
-                "Group ICE:",
-                error
-            );
-        }
-
-        return;
-    }
-
-
-    if(
-        payload.type ===
-        "group_leave"
-    ){
-
-        NEXUS_removeGroupPeer(
-            payload.from
-        );
-
-        return;
-    }
-}
-
-
-/* =========================================================
-   SEÑAL PRINCIPAL
-========================================================= */
-
-async function NEXUS_handleSignal(
-    payload
-){
-
-    if(!payload){
-        return;
-    }
-
-
-    if(
-        payload.to &&
-        payload.to !==
-        NEXUS_myNumber
-    ){
-        return;
-    }
-
-
-    if(
-        payload.type.startsWith(
-            "group_"
-        )
-    ){
-
-        await NEXUS_handleGroupSignal(
-            payload
-        );
-
-        return;
-    }
-
-
-    await NEXUS_handleIndividualSignal(
-        payload
-    );
-}
-
-
-/* =========================================================
-   AGREGAR PERSONA DURANTE LLAMADA
-========================================================= */
-
-window.NEXUS_addPerson = function(){
-
-    if(!NEXUS_isGroupCall){
-        return;
-    }
-
-    NEXUS_addPersonOverlay.classList.add(
-        "show"
-    );
-
-    document.getElementById(
-        "addPersonInput"
-    ).value = "";
-};
-
-
-window.NEXUS_closeAddPerson = function(){
-
-    NEXUS_addPersonOverlay.classList.remove(
-        "show"
-    );
-};
-
-
-window.NEXUS_sendGroupInvite = async function(){
-
-    const input =
-        document.getElementById(
-            "addPersonInput"
-        );
-
-    const number =
-        input.value.trim();
-
-
-    if(!NEXUS_validNumber(number)){
-
-        alert(
-            "El número debe tener 5 dígitos."
-        );
-
-        return;
-    }
-
-
-    if(
-        number ===
-        NEXUS_myNumber
-    ){
-
-        alert(
-            "Ese eres tú."
-        );
-
-        return;
-    }
-
-
-    if(
-        NEXUS_groupMembers.includes(
-            number
-        )
-    ){
-
-        alert(
-            "Esa persona ya está en la llamada."
-        );
-
-        return;
-    }
-
-
-    if(
-        NEXUS_groupMembers.length >= 4
-    ){
-
-        alert(
-            "NEXUS permite hasta 4 participantes en esta versión."
-        );
-
-        return;
-    }
-
-
-    NEXUS_groupMembers.push(
-        number
-    );
-
-
-    await NEXUS_sendSignal({
-
-        type:"group_invite",
-
-        from:NEXUS_myNumber,
-
-        to:number,
-
-        callId:
-            NEXUS_groupCallId,
-
-        groupCallId:
-            NEXUS_groupCallId,
-
-        mode:NEXUS_mode,
-
-        members:
-            NEXUS_groupMembers
-
-    });
-
-
-    NEXUS_renderMembers();
-
-    NEXUS_closeAddPerson();
-};
-
-
-/* =========================================================
-   QUITAR PARTICIPANTE
-========================================================= */
-
-function NEXUS_removeGroupPeer(
-    number
-){
-
-    const pc =
-        NEXUS_groupConnections[
-            number
-        ];
-
-    if(pc){
-        pc.close();
-    }
-
-
-    delete NEXUS_groupConnections[
-        number
-    ];
-
-    delete NEXUS_groupStreams[
-        number
-    ];
-
-    delete NEXUS_groupPendingCandidates[
-        number
-    ];
-
-    delete NEXUS_groupRemoteDescriptions[
-        number
-    ];
-
-
-    NEXUS_removeRemoteParticipant(
-        number
-    );
-
-
-    NEXUS_groupMembers =
-        NEXUS_groupMembers.filter(
-            member =>
-                member !== number
-        );
-
-
-    NEXUS_renderMembers();
-}
-
-
-/* =========================================================
-   AUDIO / VIDEO
-========================================================= */
-
-window.NEXUS_toggleMute = function(){
-
-    if(!NEXUS_localStream){
-        return;
-    }
-
-    const tracks =
-        NEXUS_localStream.getAudioTracks();
-
-    if(!tracks.length){
-        return;
-    }
-
-    NEXUS_isMuted =
-        !NEXUS_isMuted;
-
-    tracks.forEach(
-        track => {
-            track.enabled =
-                !NEXUS_isMuted;
-        }
-    );
-
-
-    document.getElementById(
-        "muteButton"
-    ).textContent =
-        NEXUS_isMuted
-        ? "🔇"
-        : "🎙️";
-};
-
-
-window.NEXUS_toggleSpeaker = function(){
-
-    if(
-        NEXUS_remoteAudio &&
-        "setSinkId" in NEXUS_remoteAudio
-    ){
-
-        /*
-          El navegador puede permitir
-          seleccionar salida de audio.
-          Aquí mantenemos el control visual.
-        */
-
-        NEXUS_remoteAudio.muted =
-            !NEXUS_remoteAudio.muted;
-    }
-};
-
-
-window.NEXUS_toggleCamera = async function(){
-
-    if(!NEXUS_localStream){
-        return;
-    }
-
-
-    let tracks =
-        NEXUS_localStream.getVideoTracks();
-
-
-    if(tracks.length){
-
-        const enabled =
-            tracks[0].enabled;
-
-        tracks.forEach(
-            track => {
-                track.enabled =
-                    !enabled;
-            }
-        );
-
-        NEXUS_cameraEnabled =
-            !enabled;
-
-        NEXUS_cameraButton.textContent =
-            NEXUS_cameraEnabled
-            ? "📹"
-            : "🚫";
-
-        return;
-    }
-
-
-    /*
-      Si empezó como llamada de voz,
-      podemos activar cámara.
-    */
-
-    try{
-
-        const cameraStream =
-            await navigator.mediaDevices
-                .getUserMedia({
-
-                    video:{
-                        width:{ideal:1280},
-                        height:{ideal:720},
-                        facingMode:"user"
-                    },
-
-                    audio:false
-
-                });
-
-
-        const videoTrack =
-            cameraStream.getVideoTracks()[0];
-
-
-        NEXUS_localStream.addTrack(
-            videoTrack
-        );
-
-
-        NEXUS_localVideo.srcObject =
-            NEXUS_localStream;
-
-
-        NEXUS_localTile.classList.remove(
-            "hidden"
-        );
-
-
-        NEXUS_cameraEnabled =
-            true;
-
-
-        NEXUS_cameraButton.textContent =
-            "📹";
-
-
-        /*
-          En llamada grupal agregamos
-          el track a cada conexión.
-        */
-
-        if(NEXUS_isGroupCall){
-
-            for(
-                const remote in
-                NEXUS_groupConnections
-            ){
-
-                const pc =
-                    NEXUS_groupConnections[
-                        remote
-                    ];
-
-                pc.addTrack(
-                    videoTrack,
-                    NEXUS_localStream
-                );
-            }
-
-        }else if(NEXUS_peerConnection){
-
-            pc.addTrack(
-                videoTrack,
-                NEXUS_localStream
-            );
-        }
+        buttonSound();
 
     }catch(error){
 
         console.error(error);
 
-        alert(
-            "No se pudo activar la cámara."
-        );
+        errorSound();
+
     }
-};
 
-
-/* =========================================================
-   UI DE LLAMADA
-========================================================= */
-
-function NEXUS_openCallUI(
-    title,
-    mode
-){
-
-    NEXUS_callTitle.textContent =
-        title;
-
-    NEXUS_callModeLabel.textContent =
-        mode === "video"
-        ? "📹"
-        : "🎙️";
-
-
-    NEXUS_callOverlay.classList.add(
-        "show"
-    );
-
-
-    NEXUS_localTile.classList.toggle(
-        "hidden",
-        mode !== "video"
-    );
-
-
-    NEXUS_cameraButton.classList.toggle(
-        "hidden",
-        false
-    );
-
-
-    if(!NEXUS_isGroupCall){
-
-        NEXUS_addPersonButton.classList.add(
-            "hidden"
-        );
-
-    }else{
-
-        NEXUS_addPersonButton.classList.remove(
-            "hidden"
-        );
-    }
 }
 
 
-function NEXUS_closeCallUI(){
+/* =========================================
+   DETENER ESCÁNER
+========================================= */
 
-    NEXUS_callOverlay.classList.remove(
-        "show"
-    );
+function stopCurrentStream(){
 
-    NEXUS_remoteGrid.innerHTML =
-        "";
+    if(scannerStream){
 
-    const oldIndividual =
-        document.getElementById(
-            "individualRemoteVideo"
+        scannerStream
+        .getTracks()
+        .forEach(
+            track=>track.stop()
         );
 
-    if(oldIndividual){
-        oldIndividual.remove();
+        scannerStream=null;
+
     }
 
+    const video=
+        document.getElementById("video");
 
-    if(NEXUS_remoteAudio){
-
-        try{
-            NEXUS_remoteAudio.pause();
-        }catch(e){}
-
-        NEXUS_remoteAudio.remove();
-
-        NEXUS_remoteAudio =
-            null;
+    if(video){
+        video.srcObject=null;
     }
 
-
-    if(NEXUS_peerConnection){
-
-        try{
-            NEXUS_peerConnection.close();
-        }catch(e){}
-
-        NEXUS_peerConnection =
-            null;
-    }
-
-
-    for(
-        const number in
-        NEXUS_groupConnections
-    ){
-
-        try{
-            NEXUS_groupConnections[
-                number
-            ].close();
-        }catch(e){}
-    }
-
-
-    NEXUS_groupConnections = {};
-    NEXUS_groupStreams = {};
-    NEXUS_groupPendingCandidates = {};
-    NEXUS_groupRemoteDescriptions = {};
-
-    NEXUS_groupMembers = [];
-
-    NEXUS_groupCallId = null;
-
-    NEXUS_currentCallId = null;
-
-    NEXUS_isGroupCall = false;
-
-
-    if(NEXUS_localStream){
-
-        NEXUS_localStream
-            .getTracks()
-            .forEach(
-                track => track.stop()
-            );
-
-        NEXUS_localStream =
-            null;
-    }
-
-
-    NEXUS_localVideo.srcObject =
-        null;
-
-    NEXUS_localTile.classList.add(
-        "hidden"
-    );
-
-    NEXUS_setStatus(
-        "Conectado a NEXUS"
-    );
 }
 
 
-/* =========================================================
-   COLGAR
-========================================================= */
+function stopScanner(){
 
-window.NEXUS_hangup = async function(){
+    buttonSound();
 
-    if(NEXUS_isGroupCall){
+    if(codeReader){
 
-        for(
-            const member of
-            NEXUS_groupMembers
-        ){
+        try{
+            codeReader.reset();
+        }catch(e){}
 
-            if(
-                member ===
-                NEXUS_myNumber
-            ){
-                continue;
-            }
-
-            await NEXUS_sendSignal({
-
-                type:"group_leave",
-
-                from:NEXUS_myNumber,
-
-                to:member,
-
-                groupCallId:
-                    NEXUS_groupCallId
-
-            });
-        }
-
-    }else{
-
-        /*
-          En individual sabemos con quién
-          estamos conectados.
-        */
-
-        let remote =
-            null;
-
-        if(
-            NEXUS_incomingCall
-        ){
-            remote =
-                NEXUS_incomingCall.from;
-        }
-
-
-        if(
-            NEXUS_currentNumber &&
-            NEXUS_currentNumber !==
-            NEXUS_myNumber
-        ){
-            remote =
-                NEXUS_currentNumber;
-        }
-
-
-        if(remote){
-
-            await NEXUS_sendSignal({
-
-                type:"hangup",
-
-                from:NEXUS_myNumber,
-
-                to:remote,
-
-                callId:
-                    NEXUS_currentCallId
-
-            });
-        }
     }
 
+    stopCurrentStream();
 
-    NEXUS_closeCallUI();
-};
+    torchOn=false;
 
-
-/* =========================================================
-   AGREGAR PARTICIPANTES DESDE LA LISTA
-========================================================= */
-
-setInterval(
-    () => {
-
-        if(
-            NEXUS_isGroupCall &&
-            NEXUS_groupMembers.length
-        ){
-
-            NEXUS_renderMembers();
-        }
-
-    },
-    5000
-);
+}
 
 
-/* =========================================================
-   EVENTOS DE SESIÓN
-========================================================= */
+function closeScanner(){
 
-NEXUS_client.auth.onAuthStateChange(
-    async (event,session) => {
+    stopScanner();
 
-        if(session){
-            NEXUS_session =
-                session;
-        }
-    }
-);
+    document
+    .getElementById("scannerModal")
+    .classList.remove("show");
+
+    scannerMode=null;
+
+}
 
 
-/* =========================================================
-   AL CERRAR / CAMBIAR PÁGINA
-========================================================= */
+/* =========================================
+   UTILIDAD
+========================================= */
 
-window.addEventListener(
-    "beforeunload",
-    () => {
+function escapeHTML(text){
 
-        if(NEXUS_groupCallId){
+    return String(text)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
 
-            for(
-                const member of
-                NEXUS_groupMembers
-            ){
-
-                if(
-                    member !==
-                    NEXUS_myNumber
-                ){
-
-                    NEXUS_sendSignal({
-
-                        type:"group_leave",
-
-                        from:NEXUS_myNumber,
-
-                        to:member,
-
-                        groupCallId:
-                            NEXUS_groupCallId
-
-                    });
-                }
-            }
-        }
+}
 
 
-        if(NEXUS_session){
-
-            NEXUS_client
-                .from("nexus_users")
-                .update({
-                    online:false,
-                    last_seen:
-                        new Date().toISOString()
-                })
-                .eq(
-                    "id",
-                    NEXUS_session.user.id
-                );
-        }
-    }
-);
-
-
-/* =========================================================
+/* =========================================
    INICIO
-========================================================= */
+========================================= */
 
-NEXUS_loadNumber();
+renderSaleProducts();
+renderCart();
+renderInventory();
+renderSales();
+renderCut();
+renderCuts();
 
 </script>
 
 </body>
 </html>
-```
