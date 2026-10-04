@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111111">
+
 <title>PeluchiAbarrotes POS</title>
 
 <script src="https://unpkg.com/@zxing/browser@0.2.1"></script>
@@ -15,11 +17,13 @@
 body{
     margin:0;
     font-family:Arial,Helvetica,sans-serif;
-    background:#111;
-    color:white;
+    background:#101010;
+    color:#fff;
 }
 
-button,input,select{
+button,
+input,
+select{
     font:inherit;
 }
 
@@ -28,24 +32,24 @@ button{
 }
 
 header{
-    background:#171717;
-    border-bottom:1px solid #333;
-    padding:15px;
     position:sticky;
     top:0;
     z-index:20;
+    background:#171717;
+    border-bottom:1px solid #333;
+    padding:14px;
 }
 
 .header-inner{
     max-width:1200px;
     margin:auto;
     display:flex;
-    justify-content:space-between;
     align-items:center;
+    justify-content:space-between;
 }
 
 .logo{
-    font-size:22px;
+    font-size:21px;
     font-weight:bold;
 }
 
@@ -53,23 +57,27 @@ header{
     color:#f5c542;
 }
 
+#clock{
+    color:#aaa;
+}
+
 main{
     max-width:1200px;
     margin:auto;
-    padding:20px;
+    padding:18px;
 }
 
 .tabs{
     display:flex;
     gap:8px;
     flex-wrap:wrap;
-    margin-bottom:20px;
+    margin-bottom:18px;
 }
 
 .tab{
+    border:1px solid #3a3a3a;
     background:#222;
-    color:white;
-    border:1px solid #333;
+    color:#fff;
     border-radius:8px;
     padding:11px 15px;
 }
@@ -116,26 +124,34 @@ label{
     font-size:14px;
 }
 
-input,select{
+input,
+select{
     width:100%;
     padding:11px;
-    background:#0e0e0e;
     border:1px solid #444;
-    color:white;
     border-radius:7px;
     outline:none;
+    background:#0d0d0d;
+    color:white;
 }
 
 input:focus{
     border-color:#f5c542;
 }
 
+.actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:12px;
+}
+
 .btn{
-    background:#333;
-    color:white;
     border:0;
     border-radius:8px;
     padding:11px 15px;
+    background:#333;
+    color:#fff;
     font-weight:bold;
 }
 
@@ -145,15 +161,15 @@ input:focus{
 }
 
 .btn-success{
-    background:#258b4a;
+    background:#238747;
 }
 
 .btn-danger{
-    background:#b83232;
+    background:#b93434;
 }
 
 .btn-blue{
-    background:#2765a5;
+    background:#2865a5;
 }
 
 .btn-small{
@@ -161,29 +177,22 @@ input:focus{
     font-size:13px;
 }
 
-.actions{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    margin-top:12px;
-}
-
 .sale-layout{
     display:grid;
-    grid-template-columns:1.4fr .8fr;
+    grid-template-columns:1.35fr .75fr;
     gap:18px;
 }
 
 .product-result{
     display:flex;
-    justify-content:space-between;
     align-items:center;
+    justify-content:space-between;
     gap:10px;
     background:#222;
     border:1px solid #333;
-    padding:12px;
     border-radius:8px;
-    margin-bottom:8px;
+    padding:12px;
+    margin-top:8px;
 }
 
 .product-info strong{
@@ -200,13 +209,13 @@ input:focus{
     gap:10px;
     align-items:center;
     border-bottom:1px solid #333;
-    padding:10px 0;
+    padding:11px 0;
 }
 
 .qty{
     display:flex;
     align-items:center;
-    gap:5px;
+    gap:6px;
 }
 
 .qty button{
@@ -215,7 +224,7 @@ input:focus{
     border:0;
     border-radius:6px;
     background:#333;
-    color:white;
+    color:#fff;
 }
 
 .total{
@@ -232,11 +241,11 @@ input:focus{
 
 .payment-method{
     flex:1;
-    padding:12px;
     border:1px solid #444;
-    background:#222;
-    color:white;
     border-radius:8px;
+    background:#222;
+    color:#fff;
+    padding:12px;
 }
 
 .payment-method.active{
@@ -251,8 +260,8 @@ input:focus{
 
 .products-table th,
 .products-table td{
-    text-align:left;
     padding:10px;
+    text-align:left;
     border-bottom:1px solid #333;
 }
 
@@ -261,8 +270,8 @@ input:focus{
 }
 
 .empty{
-    padding:25px;
     text-align:center;
+    padding:25px;
     color:#888;
 }
 
@@ -297,17 +306,17 @@ input:focus{
     margin-top:5px;
 }
 
-/* MODAL */
+/* MODALES */
 
 .modal{
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,.85);
+    z-index:100;
     display:none;
     justify-content:center;
     align-items:center;
     padding:15px;
-    z-index:100;
+    background:rgba(0,0,0,.88);
 }
 
 .modal.show{
@@ -331,32 +340,34 @@ input:focus{
 }
 
 .close{
-    background:#333;
-    color:white;
     border:0;
     border-radius:7px;
     padding:8px 12px;
+    background:#333;
+    color:white;
 }
+
+/* SCANNER */
 
 .scanner-wrap{
     position:relative;
-    margin-top:12px;
     overflow:hidden;
+    margin-top:12px;
     border-radius:10px;
     background:#000;
 }
 
-video{
-    width:100%;
+#video{
     display:block;
-    background:#000;
+    width:100%;
     min-height:280px;
     object-fit:cover;
+    background:#000;
 }
 
 .scan-overlay{
     position:absolute;
-    inset:15% 8%;
+    inset:18% 8%;
     border:2px solid #f5c542;
     border-radius:10px;
     pointer-events:none;
@@ -365,9 +376,9 @@ video{
 .scan-overlay::after{
     content:"";
     position:absolute;
+    top:50%;
     left:5%;
     right:5%;
-    top:50%;
     height:2px;
     background:#f5c542;
     box-shadow:0 0 12px #f5c542;
@@ -375,6 +386,7 @@ video{
 
 .scanner-status{
     text-align:center;
+    min-height:48px;
     padding:12px;
     color:#bbb;
 }
@@ -384,20 +396,22 @@ video{
     font-weight:bold;
 }
 
+/* TERMINAL */
+
 .terminal{
     text-align:center;
 }
 
 .terminal-screen{
-    background:#07130b;
-    border:2px solid #2b8b4b;
-    border-radius:10px;
-    padding:25px;
     min-height:180px;
     display:flex;
     flex-direction:column;
     justify-content:center;
     gap:10px;
+    padding:25px;
+    background:#07130b;
+    border:2px solid #2b8b4b;
+    border-radius:10px;
 }
 
 .terminal-icon{
@@ -406,6 +420,7 @@ video{
 
 .pin-display{
     min-height:35px;
+    margin-top:10px;
     font-size:25px;
     letter-spacing:8px;
 }
@@ -420,24 +435,24 @@ video{
 .keypad button{
     height:55px;
     border:1px solid #444;
+    border-radius:8px;
     background:#292929;
     color:white;
-    border-radius:8px;
     font-size:20px;
 }
 
 .progress{
     height:8px;
+    overflow:hidden;
     background:#333;
     border-radius:10px;
-    overflow:hidden;
 }
 
 .progress-bar{
-    height:100%;
     width:0;
+    height:100%;
     background:#f5c542;
-    transition:width:.2s;
+    transition:width:.15s;
 }
 
 @media(max-width:800px){
@@ -469,7 +484,7 @@ video{
         flex-direction:column;
     }
 
-    video{
+    #video{
         min-height:240px;
     }
 }
@@ -491,6 +506,7 @@ Peluchi<span>Abarrotes</span> POS
 </div>
 
 </header>
+
 
 <main>
 
@@ -515,7 +531,9 @@ Peluchi<span>Abarrotes</span> POS
 </div>
 
 
-<!-- VENTA -->
+<!-- =========================
+     VENTA
+========================= -->
 
 <section id="venta" class="section active">
 
@@ -543,9 +561,13 @@ onclick="focusSearch()">
 
 </div>
 
-<div class="field" style="margin-top:12px">
+<div
+class="field"
+style="margin-top:12px">
 
-<label>Buscar producto o código</label>
+<label>
+Buscar producto o código
+</label>
 
 <input
 id="saleSearch"
@@ -566,10 +588,11 @@ oninput="renderSaleSearch()">
 <div id="cart"></div>
 
 <div class="total">
-Total: $<span id="cartTotal">0.00</span>
+Total:
+$<span id="cartTotal">0.00</span>
 </div>
 
-<h3 style="margin-top:20px">
+<h3>
 Forma de pago
 </h3>
 
@@ -597,7 +620,9 @@ style="margin-top:12px">
 
 <div class="field">
 
-<label>Efectivo recibido</label>
+<label>
+Efectivo recibido
+</label>
 
 <input
 id="cashReceived"
@@ -641,7 +666,7 @@ Productos:
 </div>
 
 <div style="margin-top:8px">
-Subtotal:
+Total:
 <strong>
 $<span id="summaryTotal">0.00</span>
 </strong>
@@ -654,7 +679,9 @@ $<span id="summaryTotal">0.00</span>
 </section>
 
 
-<!-- INVENTARIO -->
+<!-- =========================
+     INVENTARIO
+========================= -->
 
 <section id="inventario" class="section">
 
@@ -666,7 +693,9 @@ $<span id="summaryTotal">0.00</span>
 
 <div class="field">
 
-<label>Nombre</label>
+<label>
+Nombre
+</label>
 
 <input
 id="productName"
@@ -674,9 +703,12 @@ placeholder="Ej. Coca-Cola 600ml">
 
 </div>
 
+
 <div class="field">
 
-<label>Código de barras</label>
+<label>
+Código de barras
+</label>
 
 <div style="display:flex;gap:7px">
 
@@ -694,9 +726,12 @@ onclick="openScanner('inventory')">
 
 </div>
 
+
 <div class="field">
 
-<label>Precio</label>
+<label>
+Precio
+</label>
 
 <input
 id="productPrice"
@@ -707,9 +742,12 @@ placeholder="0.00">
 
 </div>
 
+
 <div class="field">
 
-<label>Stock</label>
+<label>
+Stock
+</label>
 
 <input
 id="productStock"
@@ -721,6 +759,7 @@ placeholder="0">
 </div>
 
 </div>
+
 
 <div class="actions">
 
@@ -745,7 +784,9 @@ Limpiar
 
 <div class="field">
 
-<label>Buscar</label>
+<label>
+Buscar
+</label>
 
 <input
 id="inventorySearch"
@@ -754,21 +795,27 @@ oninput="renderInventory()">
 
 </div>
 
-<div id="inventoryContainer"
-style="margin-top:12px"></div>
+<div
+id="inventoryContainer"
+style="margin-top:12px">
+</div>
 
 </div>
 
 </section>
 
 
-<!-- VENTAS -->
+<!-- =========================
+     VENTAS
+========================= -->
 
 <section id="ventas" class="section">
 
 <div class="card">
 
-<h2>Historial de ventas</h2>
+<h2>
+Historial de ventas
+</h2>
 
 <div id="salesHistory"></div>
 
@@ -777,43 +824,73 @@ style="margin-top:12px"></div>
 </section>
 
 
-<!-- CORTE -->
+<!-- =========================
+     CORTE
+========================= -->
 
 <section id="corte" class="section">
 
 <div class="card">
 
-<h2>Corte de caja</h2>
+<h2>
+Corte de caja
+</h2>
 
 <div class="stats">
 
 <div class="stat">
-<small>Ventas</small>
-<strong id="cutSales">0</strong>
+
+<small>
+Ventas
+</small>
+
+<strong id="cutSales">
+0
+</strong>
+
 </div>
 
+
 <div class="stat">
-<small>Efectivo</small>
+
+<small>
+Efectivo
+</small>
+
 <strong>
 $<span id="cutCash">0.00</span>
 </strong>
+
 </div>
 
+
 <div class="stat">
-<small>Tarjeta</small>
+
+<small>
+Tarjeta
+</small>
+
 <strong>
 $<span id="cutCard">0.00</span>
 </strong>
+
 </div>
 
+
 <div class="stat">
-<small>Total</small>
+
+<small>
+Total
+</small>
+
 <strong>
 $<span id="cutTotal">0.00</span>
 </strong>
+
 </div>
 
 </div>
+
 
 <div class="actions">
 
@@ -827,9 +904,12 @@ onclick="makeCut()">
 
 </div>
 
+
 <div class="card">
 
-<h3>Cortes anteriores</h3>
+<h3>
+Cortes anteriores
+</h3>
 
 <div id="cutsHistory"></div>
 
@@ -840,7 +920,9 @@ onclick="makeCut()">
 </main>
 
 
-<!-- SCANNER -->
+<!-- =========================
+     MODAL ESCÁNER
+========================= -->
 
 <div
 class="modal"
@@ -850,7 +932,9 @@ id="scannerModal">
 
 <div class="modal-header">
 
-<h2>📷 Escáner de código</h2>
+<h2>
+📷 Escáner
+</h2>
 
 <button
 class="close"
@@ -859,6 +943,7 @@ onclick="stopScanner()">
 </button>
 
 </div>
+
 
 <div class="scanner-wrap">
 
@@ -873,13 +958,13 @@ playsinline>
 
 </div>
 
+
 <div
 id="scannerStatus"
 class="scanner-status">
-
-Iniciando cámara...
-
+Preparando cámara...
 </div>
+
 
 <div class="actions">
 
@@ -908,7 +993,9 @@ Cerrar
 </div>
 
 
-<!-- TERMINAL -->
+<!-- =========================
+     TERMINAL TARJETA
+========================= -->
 
 <div
 class="modal"
@@ -918,7 +1005,9 @@ id="terminalModal">
 
 <div class="modal-header">
 
-<h2>💳 Terminal</h2>
+<h2>
+💳 Terminal
+</h2>
 
 <button
 class="close"
@@ -927,6 +1016,7 @@ onclick="cancelTerminal()">
 </button>
 
 </div>
+
 
 <div class="terminal-screen">
 
@@ -943,6 +1033,7 @@ Inserta o acerca la tarjeta
 <div id="terminalAmount"></div>
 
 </div>
+
 
 <div
 id="terminalControls"
@@ -964,38 +1055,49 @@ onclick="cardDetected()">
 
 <script>
 
-/* =========================
+/* =========================================================
    DATOS
-========================= */
+========================================================= */
 
 let products =
 JSON.parse(
-localStorage.getItem("peluchi_products") || "[]"
+localStorage.getItem(
+"peluchi_products"
+) || "[]"
 );
 
 let cart =
 JSON.parse(
-localStorage.getItem("peluchi_cart") || "[]"
+localStorage.getItem(
+"peluchi_cart"
+) || "[]"
 );
 
 let sales =
 JSON.parse(
-localStorage.getItem("peluchi_sales") || "[]"
+localStorage.getItem(
+"peluchi_sales"
+) || "[]"
 );
 
 let cuts =
 JSON.parse(
-localStorage.getItem("peluchi_cuts") || "[]"
+localStorage.getItem(
+"peluchi_cuts"
+) || "[]"
 );
 
-let paymentMethod = "cash";
 
-let editingProductId = null;
+let paymentMethod =
+"cash";
+
+let editingProductId =
+null;
 
 
-/* =========================
-   GUARDAR
-========================= */
+/* =========================================================
+   LOCAL STORAGE
+========================================================= */
 
 function saveData(){
 
@@ -1022,11 +1124,13 @@ JSON.stringify(cuts)
 }
 
 
-/* =========================
+/* =========================================================
    SONIDOS
-========================= */
+========================================================= */
 
-let audioContext = null;
+let audioContext =
+null;
+
 
 function getAudio(){
 
@@ -1040,7 +1144,10 @@ window.webkitAudioContext
 
 }
 
-if(audioContext.state === "suspended"){
+if(
+audioContext.state ===
+"suspended"
+){
 
 audioContext.resume();
 
@@ -1050,6 +1157,7 @@ return audioContext;
 
 }
 
+
 function beep(
 frequency=600,
 duration=.08,
@@ -1057,17 +1165,19 @@ type="square",
 volume=.05
 ){
 
-const ctx = getAudio();
+const ctx =
+getAudio();
 
-const osc =
+const oscillator =
 ctx.createOscillator();
 
 const gain =
 ctx.createGain();
 
-osc.type = type;
+oscillator.type =
+type;
 
-osc.frequency.value =
+oscillator.frequency.value =
 frequency;
 
 gain.gain.setValueAtTime(
@@ -1077,26 +1187,37 @@ ctx.currentTime
 
 gain.gain.exponentialRampToValueAtTime(
 .001,
-ctx.currentTime + duration
+ctx.currentTime +
+duration
 );
 
-osc.connect(gain);
+oscillator.connect(gain);
 
 gain.connect(
 ctx.destination
 );
 
-osc.start();
+oscillator.start();
 
-osc.stop(
-ctx.currentTime + duration
+oscillator.stop(
+ctx.currentTime +
+duration
 );
 
 }
 
+
 function soundButton(){
-beep(520,.06,"square",.04);
+
+beep(
+520,
+.06,
+"square",
+.04
+);
+
 }
+
 
 function soundScan(){
 
@@ -1108,16 +1229,19 @@ beep(
 );
 
 setTimeout(
-()=>beep(
+()=>{
+beep(
 1400,
 .08,
 "square",
 .05
-),
+);
+},
 60
 );
 
 }
+
 
 function soundError(){
 
@@ -1129,16 +1253,19 @@ beep(
 );
 
 setTimeout(
-()=>beep(
+()=>{
+beep(
 120,
 .18,
 "sawtooth",
 .06
-),
+);
+},
 130
 );
 
 }
+
 
 function soundCash(){
 
@@ -1150,16 +1277,19 @@ beep(
 );
 
 setTimeout(
-()=>beep(
+()=>{
+beep(
 750,
 .06,
 "square",
 .05
-),
+);
+},
 70
 );
 
 }
+
 
 function soundChange(){
 
@@ -1171,26 +1301,31 @@ beep(
 );
 
 setTimeout(
-()=>beep(
+()=>{
+beep(
 1000,
 .05,
 "square",
 .04
-),
+);
+},
 70
 );
 
 setTimeout(
-()=>beep(
+()=>{
+beep(
 1250,
 .08,
 "square",
 .04
-),
+);
+},
 140
 );
 
 }
+
 
 function soundSale(){
 
@@ -1202,26 +1337,31 @@ beep(
 );
 
 setTimeout(
-()=>beep(
+()=>{
+beep(
 900,
 .08,
 "triangle",
 .05
-),
+);
+},
 90
 );
 
 setTimeout(
-()=>beep(
+()=>{
+beep(
 1200,
 .12,
 "triangle",
 .06
-),
+);
+},
 180
 );
 
 }
+
 
 function soundCard(){
 
@@ -1233,20 +1373,31 @@ beep(
 );
 
 setTimeout(
-()=>beep(
+()=>{
+beep(
 650,
 .07,
 "square",
 .05
-),
+);
+},
 80
 );
 
 }
 
+
 function soundPin(){
-beep(900,.05,"square",.04);
+
+beep(
+900,
+.05,
+"square",
+.04
+);
+
 }
+
 
 function soundProcessing(){
 
@@ -1258,16 +1409,19 @@ beep(
 );
 
 setTimeout(
-()=>beep(
+()=>{
+beep(
 600,
 .08,
 "triangle",
 .035
-),
+);
+},
 120
 );
 
 }
+
 
 function soundApproved(){
 
@@ -1279,35 +1433,43 @@ beep(
 );
 
 setTimeout(
-()=>beep(
+()=>{
+beep(
 900,
 .08,
 "square",
 .05
-),
+);
+},
 100
 );
 
 setTimeout(
-()=>beep(
+()=>{
+beep(
 1300,
 .16,
 "square",
 .06
-),
+);
+},
 200
 );
 
 }
 
+
 function soundCancel(){
+
 beep(
 250,
 .15,
 "sawtooth",
 .06
 );
+
 }
+
 
 function soundDelete(){
 
@@ -1319,36 +1481,44 @@ beep(
 );
 
 setTimeout(
-()=>beep(
+()=>{
+beep(
 160,
 .12,
 "square",
 .05
-),
+);
+},
 100
 );
 
 }
 
 
-/* =========================
+/* =========================================================
    VIBRACIÓN
-========================= */
+========================================================= */
 
-function vibrate(pattern=30){
+function vibrate(
+pattern=30
+){
 
 if(
 navigator.vibrate
 ){
-navigator.vibrate(pattern);
-}
+
+navigator.vibrate(
+pattern
+);
 
 }
 
+}
 
-/* =========================
+
+/* =========================================================
    RELOJ
-========================= */
+========================================================= */
 
 function updateClock(){
 
@@ -1373,13 +1543,14 @@ updateClock,
 updateClock();
 
 
-/* =========================
+/* =========================================================
    PESTAÑAS
-========================= */
+========================================================= */
 
 document
 .querySelectorAll(".tab")
-.forEach(button=>{
+.forEach(
+button=>{
 
 button.addEventListener(
 "click",
@@ -1390,43 +1561,58 @@ soundButton();
 document
 .querySelectorAll(".tab")
 .forEach(
-x=>x.classList.remove("active")
+x =>
+x.classList.remove(
+"active"
+)
 );
 
 document
 .querySelectorAll(".section")
 .forEach(
-x=>x.classList.remove("active")
+x =>
+x.classList.remove(
+"active"
+)
 );
 
-button.classList.add("active");
+button.classList.add(
+"active"
+);
 
 document
 .getElementById(
 button.dataset.tab
 )
-.classList.add("active");
+.classList.add(
+"active"
+);
 
 renderAll();
 
 }
 );
 
-});
+}
+);
 
 
-/* =========================
+/* =========================================================
    INVENTARIO
-========================= */
+========================================================= */
 
 function saveProduct(){
 
 soundButton();
 
+
 const name =
 document.getElementById(
 "productName"
-).value.trim();
+)
+.value
+.trim();
+
 
 const barcode =
 normalizeBarcode(
@@ -1435,12 +1621,14 @@ document.getElementById(
 ).value
 );
 
+
 const price =
 Number(
 document.getElementById(
 "productPrice"
 ).value
 );
+
 
 const stock =
 Number(
@@ -1462,6 +1650,7 @@ return;
 
 }
 
+
 if(!barcode){
 
 soundError();
@@ -1473,6 +1662,7 @@ alert(
 return;
 
 }
+
 
 if(
 !Number.isFinite(price) ||
@@ -1488,6 +1678,7 @@ alert(
 return;
 
 }
+
 
 if(
 !Number.isFinite(stock) ||
@@ -1508,9 +1699,12 @@ return;
 const duplicate =
 products.find(
 p =>
-normalizeBarcode(p.barcode) === barcode &&
+normalizeBarcode(
+p.barcode
+) === barcode &&
 p.id !== editingProductId
 );
+
 
 if(duplicate){
 
@@ -1530,7 +1724,9 @@ if(editingProductId){
 
 const product =
 products.find(
-p=>p.id === editingProductId
+p =>
+p.id ===
+editingProductId
 );
 
 if(product){
@@ -1560,9 +1756,16 @@ id:
 Date.now() +
 Math.random(),
 
+name:
 name,
+
+barcode:
 barcode,
+
+price:
 price,
+
+stock:
 stock
 
 });
@@ -1589,13 +1792,17 @@ function editProduct(id){
 
 const product =
 products.find(
-p=>String(p.id) === String(id)
+p =>
+String(p.id) ===
+String(id)
 );
 
 if(!product)return;
 
+
 editingProductId =
 product.id;
+
 
 document.getElementById(
 "productName"
@@ -1617,6 +1824,7 @@ document.getElementById(
 ).value =
 product.stock;
 
+
 window.scrollTo({
 top:0,
 behavior:"smooth"
@@ -1631,15 +1839,19 @@ function deleteProduct(id){
 
 const product =
 products.find(
-p=>String(p.id) === String(id)
+p =>
+String(p.id) ===
+String(id)
 );
 
 if(!product)return;
+
 
 const confirmed =
 confirm(
 `¿Eliminar "${product.name}" del inventario?`
 );
+
 
 if(!confirmed){
 
@@ -1649,10 +1861,14 @@ return;
 
 }
 
+
 products =
 products.filter(
-p=>String(p.id) !== String(id)
+p =>
+String(p.id) !==
+String(id)
 );
+
 
 cart =
 cart.filter(
@@ -1660,6 +1876,7 @@ item =>
 String(item.productId) !==
 String(id)
 );
+
 
 saveData();
 
@@ -1705,6 +1922,7 @@ document.getElementById(
 "inventoryContainer"
 );
 
+
 const search =
 document.getElementById(
 "inventorySearch"
@@ -1713,6 +1931,7 @@ document.getElementById(
 .toLowerCase()
 .trim();
 
+
 const filtered =
 products.filter(
 p =>
@@ -1720,7 +1939,9 @@ p.name
 .toLowerCase()
 .includes(search)
 ||
-normalizeBarcode(p.barcode)
+normalizeBarcode(
+p.barcode
+)
 .toLowerCase()
 .includes(search)
 );
@@ -1747,11 +1968,27 @@ container.innerHTML =
 <thead>
 
 <tr>
-<th>Producto</th>
-<th>Código</th>
-<th>Precio</th>
-<th>Stock</th>
-<th>Acciones</th>
+
+<th>
+Producto
+</th>
+
+<th>
+Código
+</th>
+
+<th>
+Precio
+</th>
+
+<th>
+Stock
+</th>
+
+<th>
+Acciones
+</th>
+
 </tr>
 
 </thead>
@@ -1759,8 +1996,9 @@ container.innerHTML =
 <tbody>
 
 ${
-filtered.map(
-p=>
+filtered
+.map(
+p =>
 `
 
 <tr>
@@ -1804,7 +2042,8 @@ Eliminar
 </tr>
 
 `
-).join("")
+)
+.join("")
 }
 
 </tbody>
@@ -1815,9 +2054,9 @@ Eliminar
 }
 
 
-/* =========================
+/* =========================================================
    VENTA
-========================= */
+========================================================= */
 
 function focusSearch(){
 
@@ -1835,22 +2074,24 @@ document
 function renderSaleSearch(){
 
 const query =
-document
-.getElementById(
+document.getElementById(
 "saleSearch"
 )
 .value
 .toLowerCase()
 .trim();
 
+
 const container =
 document.getElementById(
 "saleResults"
 );
 
+
 if(!query){
 
-container.innerHTML = "";
+container.innerHTML =
+"";
 
 return;
 
@@ -1887,8 +2128,9 @@ return;
 
 
 container.innerHTML =
-found.map(
-p=>
+found
+.map(
+p =>
 `
 
 <div class="product-result">
@@ -1900,9 +2142,11 @@ ${escapeHTML(p.name)}
 </strong>
 
 <small>
-Código: ${escapeHTML(p.barcode)}
+Código:
+${escapeHTML(p.barcode)}
 |
-Stock: ${p.stock}
+Stock:
+${p.stock}
 |
 $${Number(p.price).toFixed(2)}
 </small>
@@ -1918,7 +2162,8 @@ Agregar
 </div>
 
 `
-).join("");
+)
+.join("");
 
 }
 
@@ -1927,12 +2172,17 @@ function addToCart(id){
 
 const product =
 products.find(
-p=>String(p.id) === String(id)
+p =>
+String(p.id) ===
+String(id)
 );
 
 if(!product)return;
 
-if(product.stock <= 0){
+
+if(
+Number(product.stock) <= 0
+){
 
 soundError();
 
@@ -1957,7 +2207,7 @@ if(item){
 
 if(
 item.quantity >=
-product.stock
+Number(product.stock)
 ){
 
 soundError();
@@ -1979,11 +2229,13 @@ cart.push({
 productId:
 product.id,
 
-quantity:1
+quantity:
+1
 
 });
 
 }
+
 
 saveData();
 
@@ -2026,6 +2278,7 @@ String(x.productId) ===
 String(id)
 );
 
+
 const product =
 products.find(
 x =>
@@ -2033,12 +2286,17 @@ String(x.id) ===
 String(id)
 );
 
+
 if(!item || !product)return;
+
 
 item.quantity +=
 amount;
 
-if(item.quantity <= 0){
+
+if(
+item.quantity <= 0
+){
 
 removeFromCart(id);
 
@@ -2046,13 +2304,14 @@ return;
 
 }
 
+
 if(
 item.quantity >
-product.stock
+Number(product.stock)
 ){
 
 item.quantity =
-product.stock;
+Number(product.stock);
 
 soundError();
 
@@ -2063,6 +2322,7 @@ alert(
 return;
 
 }
+
 
 saveData();
 
@@ -2085,7 +2345,11 @@ String(p.id) ===
 String(item.productId)
 );
 
-if(!product)return total;
+if(!product){
+
+return total;
+
+}
 
 return total +
 Number(product.price) *
@@ -2105,6 +2369,7 @@ document.getElementById(
 "cart"
 );
 
+
 if(!cart.length){
 
 container.innerHTML =
@@ -2117,7 +2382,8 @@ El carrito está vacío.
 }else{
 
 container.innerHTML =
-cart.map(
+cart
+.map(
 item=>{
 
 const product =
@@ -2127,7 +2393,11 @@ String(p.id) ===
 String(item.productId)
 );
 
-if(!product)return "";
+if(!product){
+
+return "";
+
+}
 
 return `
 
@@ -2148,6 +2418,7 @@ c/u
 
 </div>
 
+
 <div class="qty">
 
 <button
@@ -2166,12 +2437,16 @@ onclick="changeQuantity('${product.id}',1)">
 
 </div>
 
+
 <strong>
+
 $${(
 Number(product.price) *
 Number(item.quantity)
 ).toFixed(2)}
+
 </strong>
+
 
 <button
 class="btn btn-danger btn-small"
@@ -2184,7 +2459,8 @@ onclick="removeFromCart('${product.id}')">
 `;
 
 }
-).join("");
+)
+.join("");
 
 }
 
@@ -2192,44 +2468,52 @@ onclick="removeFromCart('${product.id}')">
 const total =
 getCartTotal();
 
+
 const items =
 cart.reduce(
-(sum,item)=>
+(sum,item) =>
 sum +
 Number(item.quantity),
 0
 );
+
 
 document.getElementById(
 "cartTotal"
 ).textContent =
 total.toFixed(2);
 
+
 document.getElementById(
 "summaryTotal"
 ).textContent =
 total.toFixed(2);
+
 
 document.getElementById(
 "summaryItems"
 ).textContent =
 items;
 
+
 updateChange();
 
 }
 
 
-/* =========================
+/* =========================================================
    PAGO
-========================= */
+========================================================= */
 
-function setPayment(method){
+function setPayment(
+method
+){
 
 paymentMethod =
 method;
 
 soundButton();
+
 
 document.getElementById(
 "cashMethod"
@@ -2239,6 +2523,7 @@ document.getElementById(
 method === "cash"
 );
 
+
 document.getElementById(
 "cardMethod"
 )
@@ -2246,6 +2531,7 @@ document.getElementById(
 "active",
 method === "card"
 );
+
 
 document.getElementById(
 "cashPayment"
@@ -2267,16 +2553,21 @@ document.getElementById(
 ).value
 ) || 0;
 
+
 const total =
 getCartTotal();
 
+
 const change =
-received - total;
+received -
+total;
+
 
 const text =
 document.getElementById(
 "changeText"
 );
+
 
 text.textContent =
 "Cambio: $" +
@@ -2284,6 +2575,7 @@ Math.max(
 change,
 0
 ).toFixed(2);
+
 
 text.style.color =
 change >= 0 &&
@@ -2298,6 +2590,7 @@ function finishSale(){
 
 soundButton();
 
+
 if(!cart.length){
 
 soundError();
@@ -2309,6 +2602,7 @@ alert(
 return;
 
 }
+
 
 if(
 paymentMethod === "cash"
@@ -2330,6 +2624,7 @@ function finishCash(){
 const total =
 getCartTotal();
 
+
 const received =
 Number(
 document.getElementById(
@@ -2338,7 +2633,9 @@ document.getElementById(
 ) || 0;
 
 
-if(received < total){
+if(
+received < total
+){
 
 soundError();
 
@@ -2356,11 +2653,16 @@ return;
 
 
 const change =
-received - total;
+received -
+total;
+
 
 soundCash();
 
-if(change > 0){
+
+if(
+change > 0
+){
 
 setTimeout(
 soundChange,
@@ -2369,35 +2671,42 @@ soundChange,
 
 }
 
+
 setTimeout(
-() =>
+()=>{
 completeSale(
 "Efectivo",
 received,
 change
-),
+);
+},
 500
 );
 
 }
 
 
-/* =========================
+/* =========================================================
    TERMINAL
-========================= */
+========================================================= */
 
-let terminalPin = "";
+let terminalPin =
+"";
+
 
 function openTerminal(){
 
 const total =
 getCartTotal();
 
+
 document
 .getElementById(
 "terminalModal"
 )
-.classList.add("show");
+.classList
+.add("show");
+
 
 document.getElementById(
 "terminalAmount"
@@ -2405,27 +2714,35 @@ document.getElementById(
 "Total: $" +
 total.toFixed(2);
 
+
 document.getElementById(
 "terminalIcon"
 ).textContent =
 "💳";
+
 
 document.getElementById(
 "terminalMessage"
 ).textContent =
 "Inserta o acerca la tarjeta";
 
+
 document.getElementById(
 "terminalControls"
 ).innerHTML =
 `
+
 <button
 class="btn btn-primary"
 style="width:100%"
 onclick="cardDetected()">
+
 💳 PULSA AQUÍ
+
 </button>
+
 `;
+
 
 soundCard();
 
@@ -2436,15 +2753,18 @@ function cardDetected(){
 
 soundCard();
 
+
 document.getElementById(
 "terminalIcon"
 ).textContent =
 "🔐";
 
+
 document.getElementById(
 "terminalMessage"
 ).textContent =
 "Introduce tu NIP";
+
 
 renderPinPad();
 
@@ -2453,7 +2773,9 @@ renderPinPad();
 
 function renderPinPad(){
 
-terminalPin = "";
+terminalPin =
+"";
+
 
 document.getElementById(
 "terminalControls"
@@ -2465,44 +2787,89 @@ class="pin-display"
 id="pinDisplay">
 </div>
 
+
 <div class="keypad">
 
-<button onclick="pinPress('1')">1</button>
-<button onclick="pinPress('2')">2</button>
-<button onclick="pinPress('3')">3</button>
+<button onclick="pinPress('1')">
+1
+</button>
 
-<button onclick="pinPress('4')">4</button>
-<button onclick="pinPress('5')">5</button>
-<button onclick="pinPress('6')">6</button>
+<button onclick="pinPress('2')">
+2
+</button>
 
-<button onclick="pinPress('7')">7</button>
-<button onclick="pinPress('8')">8</button>
-<button onclick="pinPress('9')">9</button>
+<button onclick="pinPress('3')">
+3
+</button>
 
-<button onclick="pinClear()">⌫</button>
-<button onclick="pinPress('0')">0</button>
-<button onclick="pinConfirm()">✓</button>
+<button onclick="pinPress('4')">
+4
+</button>
+
+<button onclick="pinPress('5')">
+5
+</button>
+
+<button onclick="pinPress('6')">
+6
+</button>
+
+<button onclick="pinPress('7')">
+7
+</button>
+
+<button onclick="pinPress('8')">
+8
+</button>
+
+<button onclick="pinPress('9')">
+9
+</button>
+
+<button onclick="pinClear()">
+⌫
+</button>
+
+<button onclick="pinPress('0')">
+0
+</button>
+
+<button onclick="pinConfirm()">
+✓
+</button>
 
 </div>
+
 
 <button
 class="btn btn-danger"
 style="width:100%;margin-top:10px"
 onclick="cancelTerminal()">
+
 Cancelar
+
 </button>
+
 `;
+
 
 updatePinDisplay();
 
 }
 
 
-function pinPress(number){
+function pinPress(
+number
+){
 
 if(
 terminalPin.length >= 4
-)return;
+){
+
+return;
+
+}
+
 
 terminalPin +=
 number;
@@ -2559,6 +2926,7 @@ return;
 
 }
 
+
 processCard();
 
 }
@@ -2571,15 +2939,18 @@ document.getElementById(
 ).textContent =
 "⏳";
 
+
 document.getElementById(
 "terminalMessage"
 ).textContent =
 "Procesando pago...";
 
+
 document.getElementById(
 "terminalControls"
 ).innerHTML =
 `
+
 <div class="progress">
 
 <div
@@ -2588,24 +2959,42 @@ id="progressBar">
 </div>
 
 </div>
+
 `;
+
 
 soundProcessing();
 
-let progress = 0;
+
+let progress =
+0;
+
 
 const timer =
 setInterval(
 ()=>{
 
-progress += 10;
+progress +=
+10;
 
+
+const bar =
 document.getElementById(
 "progressBar"
-).style.width =
+);
+
+
+if(bar){
+
+bar.style.width =
 progress + "%";
 
-if(progress >= 100){
+}
+
+
+if(
+progress >= 100
+){
 
 clearInterval(timer);
 
@@ -2624,27 +3013,35 @@ function approveCard(){
 
 soundApproved();
 
+
 document.getElementById(
 "terminalIcon"
 ).textContent =
 "✅";
+
 
 document.getElementById(
 "terminalMessage"
 ).textContent =
 "Pago aprobado";
 
+
 document.getElementById(
 "terminalControls"
 ).innerHTML =
 `
+
 <button
 class="btn btn-success"
 style="width:100%"
 onclick="finishCardSale()">
+
 ✓ Continuar
+
 </button>
+
 `;
+
 
 vibrate(
 [50,80,100]
@@ -2668,17 +3065,20 @@ function cancelTerminal(){
 
 soundCancel();
 
-document.getElementById(
+
+document
+.getElementById(
 "terminalModal"
 )
-.classList.remove("show");
+.classList
+.remove("show");
 
 }
 
 
-/* =========================
+/* =========================================================
    COMPLETAR VENTA
-========================= */
+========================================================= */
 
 function completeSale(
 payment,
@@ -2686,7 +3086,12 @@ received,
 change
 ){
 
-if(!cart.length)return;
+if(!cart.length){
+
+return;
+
+}
+
 
 const total =
 getCartTotal();
@@ -2760,14 +3165,19 @@ Math.random(),
 date:
 new Date().toISOString(),
 
+items:
 items,
 
+total:
 total,
 
+payment:
 payment,
 
+received:
 received,
 
+change:
 change
 
 };
@@ -2777,18 +3187,26 @@ sales.unshift(
 sale
 );
 
-cart = [];
+cart =
+[];
+
 
 document.getElementById(
 "cashReceived"
-).value = "";
+).value =
+"";
+
 
 saveData();
 
-document.getElementById(
+
+document
+.getElementById(
 "terminalModal"
 )
-.classList.remove("show");
+.classList
+.remove("show");
+
 
 renderAll();
 
@@ -2798,59 +3216,79 @@ vibrate(
 [50,80,50,80,150]
 );
 
-printTicket(sale);
+printTicket(
+sale
+);
 
 }
 
 
-/* =========================
+/* =========================================================
    TICKET
-========================= */
+========================================================= */
 
-function printTicket(sale){
+function printTicket(
+sale
+){
 
 const itemsHTML =
-sale.items.map(
+sale.items
+.map(
 item =>
 `
 <div>
 ${escapeHTML(item.name)}
- x${item.quantity}
- =
+x${item.quantity}
+=
 $${(
 Number(item.price) *
 Number(item.quantity)
 ).toFixed(2)}
 </div>
 `
-).join("");
+)
+.join("");
 
 
 const cashInfo =
-sale.payment === "Efectivo"
+sale.payment ===
+"Efectivo"
+
 ?
+
 `
+
 <div>
 Recibido:
-$${Number(sale.received).toFixed(2)}
+$${Number(
+sale.received
+).toFixed(2)}
 </div>
 
 <div>
 Cambio:
-$${Number(sale.change).toFixed(2)}
+$${Number(
+sale.change
+).toFixed(2)}
 </div>
+
 `
+
 :
+
 "";
 
 
 const ticket =
 `
+
 <html>
 
 <head>
 
-<title>Ticket</title>
+<title>
+Ticket PeluchiAbarrotes
+</title>
 
 <style>
 
@@ -2877,9 +3315,13 @@ margin:10px 0;
 
 <div class="center">
 
-<h2>PeluchiAbarrotes</h2>
+<h2>
+PeluchiAbarrotes
+</h2>
 
-<div>Ticket de venta</div>
+<div>
+Ticket de venta
+</div>
 
 </div>
 
@@ -2891,7 +3333,9 @@ ${itemsHTML}
 
 <strong>
 TOTAL:
-$${Number(sale.total).toFixed(2)}
+$${Number(
+sale.total
+).toFixed(2)}
 </strong>
 
 <div>
@@ -2907,15 +3351,20 @@ ${cashInfo}
 Gracias por su compra
 </div>
 
+
 <script>
-window.onload=function(){
+
+window.onload =
+function(){
 window.print();
 };
+
 <\/script>
 
 </body>
 
 </html>
+
 `;
 
 
@@ -2925,6 +3374,7 @@ window.open(
 "_blank",
 "width=400,height=600"
 );
+
 
 if(!win){
 
@@ -2936,6 +3386,7 @@ return;
 
 }
 
+
 win.document.write(
 ticket
 );
@@ -2945,9 +3396,9 @@ win.document.close();
 }
 
 
-/* =========================
+/* =========================================================
    HISTORIAL
-========================= */
+========================================================= */
 
 function renderSales(){
 
@@ -2956,13 +3407,16 @@ document.getElementById(
 "salesHistory"
 );
 
+
 if(!sales.length){
 
 container.innerHTML =
 `
+
 <div class="empty">
 Todavía no hay ventas.
 </div>
+
 `;
 
 return;
@@ -2971,102 +3425,149 @@ return;
 
 
 container.innerHTML =
-sales.map(
-sale=>
+sales
+.map(
+sale =>
 `
 
 <div class="history-item">
 
 <strong>
-Venta #${String(sale.id).slice(-6)}
+Venta #${String(
+sale.id
+).slice(-6)}
 </strong>
 
 <div style="color:#999">
+
 ${new Date(
 sale.date
-).toLocaleString("es-MX")}
+).toLocaleString(
+"es-MX"
+)}
+
 </div>
+
 
 <div style="margin-top:8px">
 
 ${
-sale.items.map(
+sale.items
+.map(
 item =>
-`${escapeHTML(item.name)}
+`${escapeHTML(
+item.name
+)}
 x${item.quantity}`
-).join("<br>")
+)
+.join("<br>")
 }
 
 </div>
 
+
 <div style="margin-top:8px">
-Pago: ${sale.payment}
+
+Pago:
+${sale.payment}
+
 </div>
+
 
 <strong
 style="display:block;margin-top:8px">
+
 Total:
-$${Number(sale.total).toFixed(2)}
+$${Number(
+sale.total
+).toFixed(2)}
+
 </strong>
+
 
 <button
 class="btn btn-small"
 style="margin-top:8px"
 onclick='printExistingSale(${JSON.stringify(sale)})'>
+
 🖨️ Imprimir
+
 </button>
 
 </div>
 
 `
-).join("");
+)
+.join("");
 
 }
 
 
-function printExistingSale(sale){
+function printExistingSale(
+sale
+){
 
-printTicket(sale);
+printTicket(
+sale
+);
 
 }
 
 
-/* =========================
+/* =========================================================
    CORTE
-========================= */
+========================================================= */
 
 function calculateCut(){
 
-let cash = 0;
-let card = 0;
+let cash =
+0;
+
+let card =
+0;
+
 
 sales.forEach(
 sale=>{
 
 if(
-sale.payment === "Efectivo"
+sale.payment ===
+"Efectivo"
 ){
+
 cash +=
-Number(sale.total);
+Number(
+sale.total
+);
+
 }
 
+
 if(
-sale.payment === "Tarjeta"
+sale.payment ===
+"Tarjeta"
 ){
+
 card +=
-Number(sale.total);
+Number(
+sale.total
+);
+
 }
 
 }
 );
+
 
 return {
 
 sales:
 sales.length,
 
+cash:
 cash,
 
+card:
 card,
 
 total:
@@ -3082,20 +3583,24 @@ function renderCut(){
 const data =
 calculateCut();
 
+
 document.getElementById(
 "cutSales"
 ).textContent =
 data.sales;
+
 
 document.getElementById(
 "cutCash"
 ).textContent =
 data.cash.toFixed(2);
 
+
 document.getElementById(
 "cutCard"
 ).textContent =
 data.card.toFixed(2);
+
 
 document.getElementById(
 "cutTotal"
@@ -3108,13 +3613,16 @@ document.getElementById(
 "cutsHistory"
 );
 
+
 if(!cuts.length){
 
 history.innerHTML =
 `
+
 <div class="empty">
 No hay cortes anteriores.
 </div>
+
 `;
 
 return;
@@ -3123,7 +3631,8 @@ return;
 
 
 history.innerHTML =
-cuts.map(
+cuts
+.map(
 cut =>
 `
 
@@ -3136,7 +3645,9 @@ Corte
 <div>
 ${new Date(
 cut.date
-).toLocaleString("es-MX")}
+).toLocaleString(
+"es-MX"
+)}
 </div>
 
 <div>
@@ -3146,22 +3657,30 @@ ${cut.sales}
 
 <div>
 Efectivo:
-$${Number(cut.cash).toFixed(2)}
+$${Number(
+cut.cash
+).toFixed(2)}
 </div>
 
 <div>
 Tarjeta:
-$${Number(cut.card).toFixed(2)}
+$${Number(
+cut.card
+).toFixed(2)}
 </div>
 
 <strong>
 Total:
-$${Number(cut.total).toFixed(2)}
+$${Number(
+cut.total
+).toFixed(2)}
 </strong>
 
 </div>
+
 `
-).join("");
+)
+.join("");
 
 }
 
@@ -3170,6 +3689,7 @@ function makeCut(){
 
 const data =
 calculateCut();
+
 
 if(!data.sales){
 
@@ -3196,6 +3716,7 @@ data.card.toFixed(2) +
 "\nTotal: $" +
 data.total.toFixed(2)
 );
+
 
 if(!confirmed){
 
@@ -3228,6 +3749,7 @@ data.total
 
 });
 
+
 saveData();
 
 soundApproved();
@@ -3242,101 +3764,104 @@ alert(
 
 
 /* =========================================================
-   ESCÁNER NUEVO
-   ZXING CONTROLA DIRECTAMENTE LA CÁMARA
+   ESCÁNER
 ========================================================= */
 
-let codeReader = null;
+let codeReader =
+null;
 
-let scannerControls = null;
+let scannerControls =
+null;
 
-let scannerMode = null;
+let scannerMode =
+null;
 
-let scannerDevices = [];
+let scannerDevices =
+[];
 
-let scannerIndex = 0;
+let scannerIndex =
+0;
 
-let scannerDeviceId = null;
+let scannerDeviceId =
+null;
 
-let lastScanned = "";
+let lastScanned =
+"";
 
-let lastScanTime = 0;
+let lastScanTime =
+0;
 
-let torchOn = false;
+let torchOn =
+false;
 
 
 /*
-   Abrir escáner.
-
-   IMPORTANTE:
-   Ya NO usamos getUserMedia aquí.
-   ZXing abre y controla la cámara.
+   ABRIR ESCÁNER
 */
 
-async function openScanner(mode){
+async function openScanner(
+mode
+){
 
 scannerMode =
 mode;
 
-document
-.getElementById(
+
+const modal =
+document.getElementById(
 "scannerModal"
-)
-.classList.add("show");
+);
 
+
+const status =
 document.getElementById(
 "scannerStatus"
-).textContent =
-"Preparando cámara...";
+);
 
 
-if(
-!window.isSecureContext
-){
-
-soundError();
-
-document.getElementById(
-"scannerStatus"
-).textContent =
-"Esta página necesita HTTPS. GitHub Pages funciona con HTTPS.";
-
-return;
-
-}
+modal.classList.add(
+"show"
+);
 
 
-if(
-!window.ZXingBrowser
-){
-
-soundError();
-
-document.getElementById(
-"scannerStatus"
-).textContent =
-"No se pudo cargar ZXing.";
-
-return;
-
-}
+status.textContent =
+"Solicitando acceso a la cámara...";
 
 
 try{
 
+if(
+!navigator.mediaDevices ||
+!navigator.mediaDevices.getUserMedia
+){
+
+throw new Error(
+"Este navegador no permite acceder a la cámara."
+);
+
+}
+
+
 /*
-   Pedimos permiso solamente para que
-   el navegador revele las cámaras.
+   Pedir permiso.
 */
 
-const tempStream =
+const stream =
 await navigator.mediaDevices
 .getUserMedia({
-video:true,
+
+video:{
+facingMode:{
+ideal:"environment"
+}
+},
+
 audio:false
+
 });
 
-tempStream
+
+stream
 .getTracks()
 .forEach(
 track =>
@@ -3344,16 +3869,31 @@ track.stop()
 );
 
 
+/*
+   Obtener cámaras
+   SIN usar listVideoInputDevices.
+*/
+
+const devices =
+await navigator
+.mediaDevices
+.enumerateDevices();
+
+
 scannerDevices =
-await ZXingBrowser
-.BrowserCodeReader
-.listVideoInputDevices();
+devices.filter(
+device =>
+device.kind ===
+"videoinput"
+);
 
 
-if(!scannerDevices.length){
+if(
+!scannerDevices.length
+){
 
 throw new Error(
-"No hay cámaras disponibles."
+"No se encontró ninguna cámara."
 );
 
 }
@@ -3363,51 +3903,60 @@ throw new Error(
    Buscar cámara trasera.
 */
 
-const rear =
-scannerDevices.find(
+let rearIndex =
+scannerDevices.findIndex(
 device =>
-/back|rear|environment/i
-.test(device.label)
+/back|rear|environment|trasera/i
+.test(
+device.label
+)
 );
 
 
-if(rear){
+if(
+rearIndex < 0
+){
 
-scannerDeviceId =
-rear.deviceId;
-
-scannerIndex =
-scannerDevices.indexOf(
-rear
-);
-
-}else{
-
-scannerDeviceId =
-scannerDevices[0].deviceId;
-
-scannerIndex = 0;
+rearIndex =
+0;
 
 }
 
 
-await startBarcodeReader();
+scannerIndex =
+rearIndex;
+
+
+scannerDeviceId =
+scannerDevices[
+scannerIndex
+].deviceId;
+
+
+status.textContent =
+"Iniciando lector...";
+
+
+await startScanner();
 
 
 }catch(error){
 
 console.error(
-"Scanner:",
+"Error cámara:",
 error
 );
 
-soundError();
 
-document.getElementById(
-"scannerStatus"
-).textContent =
-"No se pudo iniciar el escáner: " +
-(error.message || error);
+status.textContent =
+"❌ " +
+(
+error.message ||
+"No se pudo iniciar la cámara."
+);
+
+
+soundError();
 
 }
 
@@ -3415,17 +3964,21 @@ document.getElementById(
 
 
 /*
-   Lector dedicado para códigos 1D.
+   INICIAR ZXING
 */
 
-async function startBarcodeReader(){
+async function startScanner(){
 
 try{
 
-if(scannerControls){
+if(
+scannerControls
+){
 
 try{
+
 scannerControls.stop();
+
 }catch(e){}
 
 scannerControls =
@@ -3434,10 +3987,14 @@ null;
 }
 
 
-if(codeReader){
+if(
+codeReader
+){
 
 try{
+
 codeReader.reset();
+
 }catch(e){}
 
 codeReader =
@@ -3447,47 +4004,18 @@ null;
 
 
 /*
-   Reader especializado en códigos
-   de barras 1D.
-*/
-
-if(
-ZXingBrowser
-.BrowserMultiFormatOneDReader
-){
-
-codeReader =
-new ZXingBrowser
-.BrowserMultiFormatOneDReader(
-150
-);
-
-}else{
-
-/*
-   Fallback por si el CDN entrega
-   una variante diferente.
+   Reader compatible.
 */
 
 codeReader =
 new ZXingBrowser
-.BrowserMultiFormatReader(
-150
-);
-
-}
+.BrowserMultiFormatReader();
 
 
 const video =
 document.getElementById(
 "video"
 );
-
-
-document.getElementById(
-"scannerStatus"
-).textContent =
-"Apunta al código de barras...";
 
 
 /*
@@ -3497,64 +4025,53 @@ document.getElementById(
 scannerControls =
 await codeReader
 .decodeFromVideoDevice(
-scannerDeviceId,
-video,
-(result,error,controls)=>{
 
-/*
-   Si encontró código.
-*/
+scannerDeviceId,
+
+video,
+
+(result,error)=>{
 
 if(result){
 
-const text =
+const code =
 result.getText();
 
 handleScannedCode(
-text
-);
-
-}
-
-
-/*
-   Los NotFoundException son normales
-   mientras la cámara está buscando.
-*/
-
-if(
-error &&
-!(
-error instanceof
-ZXingBrowser
-.NotFoundException
-)
-){
-
-console.debug(
-"ZXing:",
-error
+code
 );
 
 }
 
 }
 );
+
+
+document.getElementById(
+"scannerStatus"
+).textContent =
+"📷 Apunta al código de barras";
 
 
 }catch(error){
 
 console.error(
+"ZXing:",
 error
 );
 
-soundError();
 
 document.getElementById(
 "scannerStatus"
 ).textContent =
-"Error iniciando lector: " +
-(error.message || error);
+"❌ Error del lector: " +
+(
+error.message ||
+error
+);
+
+
+soundError();
 
 }
 
@@ -3562,15 +4079,18 @@ document.getElementById(
 
 
 /*
-   Procesar código detectado.
+   PROCESAR CÓDIGO
 */
 
-function handleScannedCode(rawCode){
+function handleScannedCode(
+rawCode
+){
 
 const code =
 normalizeBarcode(
 rawCode
 );
+
 
 if(!code){
 
@@ -3584,7 +4104,7 @@ Date.now();
 
 
 /*
-   Evitar lecturas duplicadas.
+   Evitar lecturas repetidas.
 */
 
 if(
@@ -3610,24 +4130,28 @@ soundScan();
 vibrate(50);
 
 
-/*
-   Mostrar lo que REALMENTE
-   detectó la cámara.
-*/
-
+const status =
 document.getElementById(
 "scannerStatus"
-).innerHTML =
+);
+
+
+status.innerHTML =
 `
+
 <span class="detected">
-✓ Detectado: ${escapeHTML(code)}
+
+✓ Detectado:
+${escapeHTML(code)}
+
 </span>
+
 `;
 
 
-/* =========================
+/*
    INVENTARIO
-========================= */
+*/
 
 if(
 scannerMode ===
@@ -3639,6 +4163,7 @@ document.getElementById(
 ).value =
 code;
 
+
 setTimeout(
 ()=>{
 stopScanner();
@@ -3646,14 +4171,15 @@ stopScanner();
 500
 );
 
+
 return;
 
 }
 
 
-/* =========================
+/*
    VENTA
-========================= */
+*/
 
 if(
 scannerMode ===
@@ -3665,7 +4191,8 @@ products.find(
 p =>
 normalizeBarcode(
 p.barcode
-) === code
+) ===
+code
 );
 
 
@@ -3673,14 +4200,22 @@ if(!product){
 
 soundError();
 
-document.getElementById(
-"scannerStatus"
-).innerHTML =
+
+status.innerHTML =
 `
+
 <span style="color:#ff6b6b">
-✕ Código detectado, pero no está registrado:
+
+❌ Código detectado,
+pero no está registrado.
+
+<br>
+
+Código:
 ${escapeHTML(code)}
+
 </span>
+
 `;
 
 return;
@@ -3689,19 +4224,24 @@ return;
 
 
 if(
-Number(product.stock) <= 0
+Number(product.stock) <=
+0
 ){
 
 soundError();
 
-document.getElementById(
-"scannerStatus"
-).innerHTML =
+
+status.innerHTML =
 `
+
 <span style="color:#ff6b6b">
-✕ ${escapeHTML(product.name)}
+
+❌
+${escapeHTML(product.name)}
 está agotado.
+
 </span>
+
 `;
 
 return;
@@ -3712,8 +4252,12 @@ return;
 const item =
 cart.find(
 x =>
-String(x.productId) ===
-String(product.id)
+String(
+x.productId
+) ===
+String(
+product.id
+)
 );
 
 
@@ -3721,24 +4265,30 @@ if(item){
 
 if(
 item.quantity >=
-Number(product.stock)
+Number(
+product.stock
+)
 ){
 
 soundError();
 
-document.getElementById(
-"scannerStatus"
-).innerHTML =
+
+status.innerHTML =
 `
+
 <span style="color:#ff6b6b">
-✕ No queda más stock de
+
+❌ No queda más stock de
 ${escapeHTML(product.name)}
+
 </span>
+
 `;
 
 return;
 
 }
+
 
 item.quantity++;
 
@@ -3749,7 +4299,8 @@ cart.push({
 productId:
 product.id,
 
-quantity:1
+quantity:
+1
 
 });
 
@@ -3760,41 +4311,50 @@ saveData();
 
 renderAll();
 
-document.getElementById(
-"scannerStatus"
-).innerHTML =
+soundScan();
+
+vibrate(80);
+
+
+status.innerHTML =
 `
+
 <span class="detected">
-✓ ${escapeHTML(product.name)}
-agregado al carrito
+
+✓
+${escapeHTML(product.name)}
+agregado
+
+<br>
+
+Código:
+${escapeHTML(code)}
+
 </span>
+
 `;
 
-
-/*
-   NO cerramos el escáner.
-   Puede seguir escaneando.
-*/
-
 }
 
 }
 
 
 /*
-   Cambiar cámara.
+   CAMBIAR CÁMARA
 */
 
 async function switchCamera(){
 
 soundButton();
 
+
 if(
-scannerDevices.length < 2
+scannerDevices.length <
+2
 ){
 
 alert(
-"Solo se encontró una cámara."
+"Solo se detectó una cámara."
 );
 
 return;
@@ -3803,8 +4363,12 @@ return;
 
 
 scannerIndex =
-(scannerIndex + 1) %
+(
+scannerIndex + 1
+)
+%
 scannerDevices.length;
+
 
 scannerDeviceId =
 scannerDevices[
@@ -3812,41 +4376,92 @@ scannerIndex
 ].deviceId;
 
 
-await startBarcodeReader();
+await startScanner();
 
 }
 
 
 /*
-   Linterna.
+   LINTERNA
 */
 
 async function toggleTorch(){
 
 soundButton();
 
+
 try{
 
-if(
-!scannerControls ||
-!scannerControls.switchTorch
-){
+const video =
+document.getElementById(
+"video"
+);
+
+
+const stream =
+video.srcObject;
+
+
+if(!stream){
 
 alert(
-"Esta cámara/navegador no permite controlar la linterna desde aquí."
+"La cámara todavía no está lista."
 );
 
 return;
 
 }
 
+
+const tracks =
+stream.getVideoTracks();
+
+
+if(!tracks.length){
+
+alert(
+"No se encontró la cámara."
+);
+
+return;
+
+}
+
+
+const track =
+tracks[0];
+
+
+const capabilities =
+track.getCapabilities();
+
+
+if(!capabilities.torch){
+
+alert(
+"Esta cámara no permite controlar la linterna desde el navegador."
+);
+
+return;
+
+}
+
+
 torchOn =
 !torchOn;
 
-await scannerControls
-.switchTorch(
+
+await track.applyConstraints({
+
+advanced:[
+{
+torch:
 torchOn
-);
+}
+]
+
+});
+
 
 }catch(error){
 
@@ -3862,14 +4477,16 @@ soundError();
 
 
 /*
-   Cerrar completamente.
+   CERRAR ESCÁNER
 */
 
 function stopScanner(){
 
 try{
 
-if(scannerControls){
+if(
+scannerControls
+){
 
 scannerControls.stop();
 
@@ -3883,7 +4500,9 @@ null;
 
 try{
 
-if(codeReader){
+if(
+codeReader
+){
 
 codeReader.reset();
 
@@ -3900,9 +4519,25 @@ document.getElementById(
 "video"
 );
 
+
 if(video){
 
 video.pause();
+
+
+if(
+video.srcObject
+){
+
+video.srcObject
+.getTracks()
+.forEach(
+track =>
+track.stop()
+);
+
+}
+
 
 video.srcObject =
 null;
@@ -3914,7 +4549,10 @@ document
 .getElementById(
 "scannerModal"
 )
-.classList.remove("show");
+.classList
+.remove(
+"show"
+);
 
 
 scannerMode =
@@ -3941,9 +4579,9 @@ false;
 }
 
 
-/* =========================
+/* =========================================================
    UTILIDADES
-========================= */
+========================================================= */
 
 function normalizeBarcode(
 code
@@ -3965,23 +4603,30 @@ function escapeHTML(
 value
 ){
 
-return String(value)
+return String(
+value
+)
+
 .replace(
 /&/g,
 "&amp;"
 )
+
 .replace(
 /</g,
 "&lt;"
 )
+
 .replace(
 />/g,
 "&gt;"
 )
+
 .replace(
 /"/g,
 "&quot;"
 )
+
 .replace(
 /'/g,
 "&#039;"
@@ -3990,9 +4635,9 @@ return String(value)
 }
 
 
-/* =========================
-   RENDER
-========================= */
+/* =========================================================
+   RENDER GENERAL
+========================================================= */
 
 function renderAll(){
 
@@ -4009,9 +4654,9 @@ renderCut();
 }
 
 
-/* =========================
+/* =========================================================
    INICIO
-========================= */
+========================================================= */
 
 renderAll();
 
