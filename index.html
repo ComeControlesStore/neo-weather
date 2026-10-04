@@ -3,86 +3,80 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PeluchiAbarrotes | Punto de Venta</title>
+<title>PeluchiAbarrotes POS</title>
 
 <script src="https://unpkg.com/@zxing/browser@0.2.1"></script>
 
 <style>
-:root{
-    --primary:#8b1e24;
-    --primary-dark:#681419;
-    --bg:#f4f4f4;
-    --card:#fff;
-    --text:#222;
-    --muted:#777;
-    --border:#ddd;
-    --green:#198754;
-    --blue:#1769aa;
-    --red:#c62828;
-    --shadow:0 2px 10px rgba(0,0,0,.08);
-}
-
 *{
     box-sizing:border-box;
 }
 
 body{
     margin:0;
-    background:var(--bg);
-    color:var(--text);
     font-family:Arial,Helvetica,sans-serif;
+    background:#111;
+    color:white;
 }
 
-/* HEADER */
+button,input,select{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
 
 header{
-    height:64px;
-    background:var(--primary);
-    color:white;
-    display:flex;
-    align-items:center;
-    padding:0 22px;
-    font-size:22px;
-    font-weight:bold;
-}
-
-/* NAV */
-
-nav{
-    background:white;
-    border-bottom:1px solid var(--border);
-    display:flex;
+    background:#171717;
+    border-bottom:1px solid #333;
+    padding:15px;
     position:sticky;
     top:0;
     z-index:20;
 }
 
-nav button{
-    flex:1;
-    border:0;
-    background:white;
-    padding:16px 8px;
-    font-size:14px;
+.header-inner{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:22px;
     font-weight:bold;
-    color:#444;
-    border-radius:0;
 }
 
-nav button:hover{
-    background:#f5f5f5;
+.logo span{
+    color:#f5c542;
 }
-
-nav button.active{
-    background:var(--primary);
-    color:white;
-}
-
-/* MAIN */
 
 main{
-    max-width:1250px;
+    max-width:1200px;
     margin:auto;
     padding:20px;
+}
+
+.tabs{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+}
+
+.tab{
+    background:#222;
+    color:white;
+    border:1px solid #333;
+    border-radius:8px;
+    padding:11px 15px;
+}
+
+.tab.active{
+    background:#f5c542;
+    color:#111;
 }
 
 .section{
@@ -93,212 +87,192 @@ main{
     display:block;
 }
 
-/* CARDS */
-
 .card{
-    background:var(--card);
+    background:#191919;
+    border:1px solid #303030;
     border-radius:12px;
     padding:18px;
     margin-bottom:18px;
-    box-shadow:var(--shadow);
 }
 
-.card h2{
-    margin:0 0 16px;
-    font-size:20px;
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
 }
 
-/* INPUTS */
+.field{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
 
-input,
-select{
+.field.full{
+    grid-column:1/-1;
+}
+
+label{
+    color:#aaa;
+    font-size:14px;
+}
+
+input,select{
     width:100%;
-    padding:12px;
-    border:1px solid #ccc;
-    border-radius:8px;
-    font-size:15px;
-    background:white;
-    margin-bottom:10px;
+    padding:11px;
+    background:#0e0e0e;
+    border:1px solid #444;
+    color:white;
+    border-radius:7px;
+    outline:none;
 }
 
-input:focus,
-select:focus{
-    outline:2px solid #d99b9f;
-    border-color:var(--primary);
-}
-
-/* BUTTONS */
-
-button{
-    font-family:inherit;
-    cursor:pointer;
+input:focus{
+    border-color:#f5c542;
 }
 
 .btn{
-    border:0;
-    background:var(--primary);
+    background:#333;
     color:white;
-    padding:11px 16px;
+    border:0;
     border-radius:8px;
+    padding:11px 15px;
     font-weight:bold;
 }
 
-.btn:hover{
-    filter:brightness(.92);
+.btn-primary{
+    background:#f5c542;
+    color:#111;
 }
 
-.btn.green{
-    background:var(--green);
+.btn-success{
+    background:#258b4a;
 }
 
-.btn.blue{
-    background:var(--blue);
+.btn-danger{
+    background:#b83232;
 }
 
-.btn.red{
-    background:var(--red);
+.btn-blue{
+    background:#2765a5;
 }
 
-.btn.gray{
-    background:#555;
+.btn-small{
+    padding:7px 10px;
+    font-size:13px;
 }
 
 .actions{
     display:flex;
     flex-wrap:wrap;
     gap:8px;
+    margin-top:12px;
 }
-
-/* VENTA */
 
 .sale-layout{
     display:grid;
-    grid-template-columns:1.5fr 1fr;
+    grid-template-columns:1.4fr .8fr;
     gap:18px;
 }
 
-.product-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-    gap:12px;
-}
-
-.product{
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:15px;
-    background:white;
-}
-
-.product h3{
-    margin:0 0 8px;
-    font-size:17px;
-}
-
-.product-code{
-    color:var(--muted);
-    font-size:12px;
+.product-result{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    background:#222;
+    border:1px solid #333;
+    padding:12px;
+    border-radius:8px;
     margin-bottom:8px;
 }
 
-.product-price{
-    font-size:22px;
-    color:var(--primary);
-    font-weight:bold;
-    margin-bottom:5px;
+.product-info strong{
+    display:block;
 }
 
-.product-stock{
-    color:#666;
-    margin-bottom:12px;
+.product-info small{
+    color:#999;
 }
 
-/* CART */
-
-.cart-empty{
-    padding:30px;
-    text-align:center;
-    color:#777;
-}
-
-.cart-row{
+.cart-item{
     display:grid;
-    grid-template-columns:1fr auto auto;
+    grid-template-columns:1fr auto auto auto;
     gap:10px;
     align-items:center;
-    padding:12px 0;
-    border-bottom:1px solid #eee;
+    border-bottom:1px solid #333;
+    padding:10px 0;
 }
 
-.cart-name{
-    font-weight:bold;
-}
-
-.cart-price{
-    color:#666;
-}
-
-.qty-controls{
+.qty{
     display:flex;
     align-items:center;
     gap:5px;
 }
 
-.qty-controls button{
+.qty button{
     width:30px;
     height:30px;
-    padding:0;
     border:0;
     border-radius:6px;
-    background:#eee;
+    background:#333;
+    color:white;
 }
 
-.total-box{
-    margin-top:18px;
-    padding-top:15px;
-    border-top:2px solid var(--border);
+.total{
     text-align:right;
-}
-
-.total-label{
-    color:#666;
-}
-
-.total-value{
-    font-size:30px;
+    font-size:27px;
     font-weight:bold;
-    color:var(--primary);
+    margin-top:15px;
 }
 
-.payment-box{
-    margin-top:18px;
-}
-
-/* INVENTORY */
-
-.barcode-row{
-    display:grid;
-    grid-template-columns:1fr auto;
+.payment-methods{
+    display:flex;
     gap:8px;
 }
 
-.inventory-table{
+.payment-method{
+    flex:1;
+    padding:12px;
+    border:1px solid #444;
+    background:#222;
+    color:white;
+    border-radius:8px;
+}
+
+.payment-method.active{
+    background:#f5c542;
+    color:#111;
+}
+
+.products-table{
     width:100%;
     border-collapse:collapse;
 }
 
-.inventory-table th,
-.inventory-table td{
-    padding:11px;
-    border-bottom:1px solid var(--border);
+.products-table th,
+.products-table td{
     text-align:left;
+    padding:10px;
+    border-bottom:1px solid #333;
 }
 
-.inventory-table th{
-    background:#f7f7f7;
+.products-table th{
+    color:#aaa;
 }
 
-/* STATS */
+.empty{
+    padding:25px;
+    text-align:center;
+    color:#888;
+}
+
+.history-item{
+    background:#222;
+    border:1px solid #333;
+    border-radius:8px;
+    padding:13px;
+    margin-bottom:8px;
+}
 
 .stats{
     display:grid;
@@ -307,273 +281,197 @@ button{
 }
 
 .stat{
-    background:white;
-    padding:18px;
-    border-radius:12px;
-    box-shadow:var(--shadow);
-}
-
-.stat-title{
-    color:#777;
-    font-size:14px;
-}
-
-.stat-value{
-    margin-top:7px;
-    font-size:25px;
-    font-weight:bold;
-    color:var(--primary);
-}
-
-/* SALES */
-
-.sale-history{
-    border:1px solid var(--border);
+    background:#222;
+    border:1px solid #333;
     border-radius:10px;
-    padding:15px;
-    margin-bottom:12px;
+    padding:18px;
 }
 
-.sale-history-head{
-    display:flex;
-    justify-content:space-between;
-    gap:10px;
+.stat small{
+    color:#999;
 }
 
-.sale-total{
-    font-size:20px;
-    font-weight:bold;
-    color:var(--primary);
+.stat strong{
+    display:block;
+    font-size:24px;
+    margin-top:5px;
 }
 
-/* SCANNER MODAL */
+/* MODAL */
 
 .modal{
-    display:none;
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,.78);
-    z-index:100;
-    align-items:center;
+    background:rgba(0,0,0,.85);
+    display:none;
     justify-content:center;
+    align-items:center;
     padding:15px;
+    z-index:100;
 }
 
 .modal.show{
     display:flex;
 }
 
-.scanner-box{
+.modal-box{
     width:min(650px,100%);
-    background:#151515;
-    border-radius:15px;
-    overflow:hidden;
-    color:white;
+    max-height:95vh;
+    overflow:auto;
+    background:#181818;
+    border:1px solid #444;
+    border-radius:14px;
+    padding:18px;
 }
 
-.scanner-top{
-    padding:15px;
+.modal-header{
     display:flex;
     justify-content:space-between;
     align-items:center;
 }
 
-.scanner-video{
+.close{
+    background:#333;
+    color:white;
+    border:0;
+    border-radius:7px;
+    padding:8px 12px;
+}
+
+.scanner-wrap{
     position:relative;
-    width:100%;
+    margin-top:12px;
+    overflow:hidden;
+    border-radius:10px;
     background:#000;
 }
 
-#video{
+video{
+    width:100%;
     display:block;
-    width:100%;
-    height:auto;
-    max-height:65vh;
-    object-fit:cover;
     background:#000;
+    min-height:280px;
+    object-fit:cover;
 }
 
-.scan-frame{
+.scan-overlay{
     position:absolute;
-    left:15%;
-    right:15%;
-    top:30%;
-    height:40%;
-    border:2px solid rgba(255,255,255,.8);
-    border-radius:12px;
+    inset:15% 8%;
+    border:2px solid #f5c542;
+    border-radius:10px;
+    pointer-events:none;
 }
 
-.scan-frame::after{
+.scan-overlay::after{
     content:"";
     position:absolute;
     left:5%;
     right:5%;
     top:50%;
     height:2px;
-    background:#ff3333;
-    box-shadow:0 0 8px #ff3333;
+    background:#f5c542;
+    box-shadow:0 0 12px #f5c542;
 }
 
 .scanner-status{
     text-align:center;
-    padding:13px;
-    font-size:14px;
-}
-
-.scanner-controls{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:8px;
     padding:12px;
+    color:#bbb;
 }
 
-.scanner-controls button{
-    background:#333;
-    color:white;
-    border:0;
-    padding:12px;
-    border-radius:8px;
+.detected{
+    color:#55df88;
+    font-weight:bold;
 }
-
-/* CARD TERMINAL */
 
 .terminal{
-    width:min(420px,100%);
-    background:#111;
-    color:white;
-    border-radius:18px;
-    padding:20px;
     text-align:center;
 }
 
-.terminal-display{
-    background:#061006;
-    border:2px solid #303030;
+.terminal-screen{
+    background:#07130b;
+    border:2px solid #2b8b4b;
     border-radius:10px;
-    padding:20px;
-    min-height:120px;
+    padding:25px;
+    min-height:180px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:10px;
 }
 
-.terminal-display h2{
-    margin-top:0;
+.terminal-icon{
+    font-size:45px;
 }
 
 .pin-display{
-    font-size:28px;
-    letter-spacing:8px;
     min-height:35px;
-    margin:12px 0;
+    font-size:25px;
+    letter-spacing:8px;
 }
 
-.pin-grid{
+.keypad{
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:8px;
+    margin-top:15px;
 }
 
-.pin-grid button{
-    border:0;
-    border-radius:8px;
-    padding:15px;
+.keypad button{
+    height:55px;
+    border:1px solid #444;
     background:#292929;
     color:white;
+    border-radius:8px;
     font-size:20px;
 }
 
 .progress{
-    height:10px;
+    height:8px;
     background:#333;
     border-radius:10px;
     overflow:hidden;
-    margin:15px 0;
 }
 
 .progress-bar{
     height:100%;
     width:0;
-    background:#27ae60;
-    transition:.2s;
+    background:#f5c542;
+    transition:width:.2s;
 }
 
-/* EMPTY */
-
-.empty{
-    text-align:center;
-    color:#777;
-    padding:30px;
-}
-
-/* MOBILE */
-
-@media(max-width:850px){
-
-    main{
-        padding:12px;
-    }
+@media(max-width:800px){
 
     .sale-layout{
+        grid-template-columns:1fr;
+    }
+
+    .grid{
         grid-template-columns:1fr;
     }
 
     .stats{
         grid-template-columns:repeat(2,1fr);
     }
-
 }
 
-@media(max-width:600px){
+@media(max-width:550px){
 
-    header{
-        height:55px;
-        font-size:19px;
-        padding:0 15px;
+    main{
+        padding:10px;
     }
 
-    nav button{
-        font-size:11px;
-        padding:13px 3px;
+    .cart-item{
+        grid-template-columns:1fr auto;
     }
 
-    .card{
-        padding:14px;
+    .payment-methods{
+        flex-direction:column;
     }
 
-    .product-grid{
-        grid-template-columns:1fr 1fr;
+    video{
+        min-height:240px;
     }
-
-    .product{
-        padding:11px;
-    }
-
-    .product h3{
-        font-size:14px;
-    }
-
-    .product-price{
-        font-size:19px;
-    }
-
-    .stats{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .barcode-row{
-        grid-template-columns:1fr;
-    }
-
-    .scanner-controls{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .scanner-controls button:last-child{
-        grid-column:1/-1;
-    }
-
-    .cart-row{
-        grid-template-columns:1fr;
-    }
-
 }
 </style>
 </head>
@@ -581,30 +479,43 @@ button{
 <body>
 
 <header>
-    🛒 PeluchiAbarrotes
+
+<div class="header-inner">
+
+<div class="logo">
+Peluchi<span>Abarrotes</span> POS
+</div>
+
+<div id="clock"></div>
+
+</div>
+
 </header>
-
-<nav>
-    <button class="active" onclick="showSection('venta',this)">
-        🛒 Venta
-    </button>
-
-    <button onclick="showSection('inventario',this)">
-        📦 Inventario
-    </button>
-
-    <button onclick="showSection('ventas',this)">
-        📋 Ventas
-    </button>
-
-    <button onclick="showSection('corte',this)">
-        💰 Corte
-    </button>
-</nav>
 
 <main>
 
-<!-- ================= VENTA ================= -->
+<div class="tabs">
+
+<button class="tab active" data-tab="venta">
+🛒 Venta
+</button>
+
+<button class="tab" data-tab="inventario">
+📦 Inventario
+</button>
+
+<button class="tab" data-tab="ventas">
+🧾 Ventas
+</button>
+
+<button class="tab" data-tab="corte">
+💰 Corte
+</button>
+
+</div>
+
+
+<!-- VENTA -->
 
 <section id="venta" class="section active">
 
@@ -614,134 +525,126 @@ button{
 
 <div class="card">
 
-    <h2>Venta</h2>
+<h2>Venta</h2>
 
-    <input
-        id="searchSale"
-        placeholder="Buscar producto por nombre o código..."
-        oninput="renderSaleProducts()"
-    >
+<div class="actions">
 
-    <div class="actions">
+<button
+class="btn btn-primary"
+onclick="openScanner('sale')">
+📷 Escanear producto
+</button>
 
-        <button
-            class="btn blue"
-            onclick="openScanner('venta')"
-        >
-            📷 Escanear código
-        </button>
-
-        <button
-            class="btn gray"
-            onclick="clearCart()"
-        >
-            🗑 Vaciar carrito
-        </button>
-
-    </div>
+<button
+class="btn"
+onclick="focusSearch()">
+🔎 Buscar
+</button>
 
 </div>
+
+<div class="field" style="margin-top:12px">
+
+<label>Buscar producto o código</label>
+
+<input
+id="saleSearch"
+placeholder="Nombre o código"
+oninput="renderSaleSearch()">
+
+</div>
+
+<div id="saleResults"></div>
+
+</div>
+
 
 <div class="card">
 
-    <h2>Productos</h2>
+<h3>Carrito</h3>
 
-    <div
-        id="saleProducts"
-        class="product-grid"
-    ></div>
+<div id="cart"></div>
+
+<div class="total">
+Total: $<span id="cartTotal">0.00</span>
+</div>
+
+<h3 style="margin-top:20px">
+Forma de pago
+</h3>
+
+<div class="payment-methods">
+
+<button
+id="cashMethod"
+class="payment-method active"
+onclick="setPayment('cash')">
+💵 Efectivo
+</button>
+
+<button
+id="cardMethod"
+class="payment-method"
+onclick="setPayment('card')">
+💳 Tarjeta
+</button>
+
+</div>
+
+<div
+id="cashPayment"
+style="margin-top:12px">
+
+<div class="field">
+
+<label>Efectivo recibido</label>
+
+<input
+id="cashReceived"
+type="number"
+min="0"
+step="0.01"
+placeholder="0.00"
+oninput="updateChange()">
+
+</div>
+
+<div
+id="changeText"
+style="margin-top:10px;color:#aaa">
+Cambio: $0.00
+</div>
+
+</div>
+
+<button
+class="btn btn-success"
+style="width:100%;margin-top:15px"
+onclick="finishSale()">
+
+💵 Cobrar venta
+
+</button>
 
 </div>
 
 </div>
 
+
+<div class="card">
+
+<h3>Resumen</h3>
 
 <div>
+Productos:
+<strong id="summaryItems">0</strong>
+</div>
 
-<div class="card">
-
-    <h2>Carrito</h2>
-
-    <div id="cartContainer"></div>
-
-    <div class="total-box">
-
-        <div class="total-label">
-            Total
-        </div>
-
-        <div class="total-value">
-            $<span id="cartTotal">0.00</span>
-        </div>
-
-    </div>
-
-    <div class="payment-box">
-
-        <select
-            id="paymentMethod"
-            onchange="changePaymentMethod()"
-        >
-
-            <option value="efectivo">
-                💵 Efectivo
-            </option>
-
-            <option value="tarjeta">
-                💳 Tarjeta
-            </option>
-
-        </select>
-
-        <div id="cashPayment">
-
-            <input
-                id="cashReceived"
-                type="number"
-                min="0"
-                step="0.01"
-                placeholder="Efectivo recibido"
-            >
-
-            <div class="stat">
-
-                <div class="stat-title">
-                    Cambio
-                </div>
-
-                <div class="stat-value">
-                    $<span id="change">0.00</span>
-                </div>
-
-            </div>
-
-            <br>
-
-            <button
-                class="btn green"
-                onclick="payCash()"
-            >
-                💵 Cobrar efectivo
-            </button>
-
-        </div>
-
-        <div
-            id="cardPayment"
-            style="display:none"
-        >
-
-            <button
-                class="btn blue"
-                onclick="startCardTerminal()"
-            >
-                💳 Abrir terminal
-            </button>
-
-        </div>
-
-    </div>
-
+<div style="margin-top:8px">
+Subtotal:
+<strong>
+$<span id="summaryTotal">0.00</span>
+</strong>
 </div>
 
 </div>
@@ -751,174 +654,184 @@ button{
 </section>
 
 
-<!-- ================= INVENTARIO ================= -->
+<!-- INVENTARIO -->
 
 <section id="inventario" class="section">
 
 <div class="card">
 
-    <h2>Registrar producto</h2>
+<h2>Inventario</h2>
 
-    <input
-        id="productName"
-        placeholder="Nombre del producto"
-    >
+<div class="grid">
 
-    <div class="barcode-row">
+<div class="field">
 
-        <input
-            id="productBarcode"
-            placeholder="Código de barras"
-            inputmode="numeric"
-        >
+<label>Nombre</label>
 
-        <button
-            class="btn blue"
-            onclick="openScanner('inventario')"
-        >
-            📷 Escanear
-        </button>
+<input
+id="productName"
+placeholder="Ej. Coca-Cola 600ml">
 
-    </div>
+</div>
 
-    <input
-        id="productPrice"
-        type="number"
-        min="0"
-        step="0.01"
-        placeholder="Precio"
-    >
+<div class="field">
 
-    <input
-        id="productStock"
-        type="number"
-        min="0"
-        step="1"
-        placeholder="Cantidad en stock"
-    >
+<label>Código de barras</label>
 
-    <button
-        class="btn green"
-        onclick="addProduct()"
-    >
-        ➕ Registrar producto
-    </button>
+<div style="display:flex;gap:7px">
+
+<input
+id="productBarcode"
+placeholder="Escanea o escribe">
+
+<button
+class="btn btn-primary"
+onclick="openScanner('inventory')">
+📷
+</button>
+
+</div>
+
+</div>
+
+<div class="field">
+
+<label>Precio</label>
+
+<input
+id="productPrice"
+type="number"
+min="0"
+step=".01"
+placeholder="0.00">
+
+</div>
+
+<div class="field">
+
+<label>Stock</label>
+
+<input
+id="productStock"
+type="number"
+min="0"
+step="1"
+placeholder="0">
+
+</div>
+
+</div>
+
+<div class="actions">
+
+<button
+class="btn btn-primary"
+onclick="saveProduct()">
+➕ Guardar producto
+</button>
+
+<button
+class="btn"
+onclick="clearProductForm()">
+Limpiar
+</button>
+
+</div>
 
 </div>
 
 
 <div class="card">
 
-    <h2>Inventario</h2>
+<div class="field">
 
-    <input
-        id="searchInventory"
-        placeholder="Buscar por nombre o código..."
-        oninput="renderInventory()"
-    >
+<label>Buscar</label>
 
-    <div id="inventoryContainer"></div>
+<input
+id="inventorySearch"
+placeholder="Buscar producto..."
+oninput="renderInventory()">
+
+</div>
+
+<div id="inventoryContainer"
+style="margin-top:12px"></div>
 
 </div>
 
 </section>
 
 
-<!-- ================= VENTAS ================= -->
+<!-- VENTAS -->
 
 <section id="ventas" class="section">
 
 <div class="card">
 
-    <h2>Historial de ventas</h2>
+<h2>Historial de ventas</h2>
 
-    <div id="salesContainer"></div>
+<div id="salesHistory"></div>
 
 </div>
 
 </section>
 
 
-<!-- ================= CORTE ================= -->
+<!-- CORTE -->
 
 <section id="corte" class="section">
 
 <div class="card">
 
-    <h2>Corte de caja</h2>
+<h2>Corte de caja</h2>
 
-    <div class="stats">
+<div class="stats">
 
-        <div class="stat">
+<div class="stat">
+<small>Ventas</small>
+<strong id="cutSales">0</strong>
+</div>
 
-            <div class="stat-title">
-                Ventas
-            </div>
+<div class="stat">
+<small>Efectivo</small>
+<strong>
+$<span id="cutCash">0.00</span>
+</strong>
+</div>
 
-            <div
-                class="stat-value"
-                id="cutSales"
-            >
-                0
-            </div>
+<div class="stat">
+<small>Tarjeta</small>
+<strong>
+$<span id="cutCard">0.00</span>
+</strong>
+</div>
 
-        </div>
-
-        <div class="stat">
-
-            <div class="stat-title">
-                Efectivo
-            </div>
-
-            <div class="stat-value">
-                $<span id="cutCash">0.00</span>
-            </div>
-
-        </div>
-
-        <div class="stat">
-
-            <div class="stat-title">
-                Tarjeta
-            </div>
-
-            <div class="stat-value">
-                $<span id="cutCard">0.00</span>
-            </div>
-
-        </div>
-
-        <div class="stat">
-
-            <div class="stat-title">
-                Total
-            </div>
-
-            <div class="stat-value">
-                $<span id="cutTotal">0.00</span>
-            </div>
-
-        </div>
-
-    </div>
-
-    <br>
-
-    <button
-        class="btn green"
-        onclick="makeCut()"
-    >
-        💰 Realizar corte
-    </button>
+<div class="stat">
+<small>Total</small>
+<strong>
+$<span id="cutTotal">0.00</span>
+</strong>
+</div>
 
 </div>
 
+<div class="actions">
+
+<button
+class="btn btn-primary"
+onclick="makeCut()">
+✂️ Realizar corte
+</button>
+
+</div>
+
+</div>
 
 <div class="card">
 
-    <h2>Cortes anteriores</h2>
+<h3>Cortes anteriores</h3>
 
-    <div id="cutsContainer"></div>
+<div id="cutsHistory"></div>
 
 </div>
 
@@ -927,164 +840,122 @@ button{
 </main>
 
 
-<!-- ================= SCANNER ================= -->
+<!-- SCANNER -->
 
 <div
-    id="scannerModal"
-    class="modal"
->
+class="modal"
+id="scannerModal">
 
-<div class="scanner-box">
+<div class="modal-box">
 
-    <div class="scanner-top">
+<div class="modal-header">
 
-        <b>📷 Escáner de código de barras</b>
+<h2>📷 Escáner de código</h2>
 
-        <button
-            class="btn red"
-            onclick="closeScanner()"
-        >
-            ✕
-        </button>
+<button
+class="close"
+onclick="stopScanner()">
+✕
+</button>
 
-    </div>
+</div>
 
-    <div class="scanner-video">
+<div class="scanner-wrap">
 
-        <video
-            id="video"
-            autoplay
-            muted
-            playsinline
-        ></video>
+<video
+id="video"
+autoplay
+muted
+playsinline>
+</video>
 
-        <div class="scan-frame"></div>
+<div class="scan-overlay"></div>
 
-    </div>
+</div>
 
-    <div
-        id="scanStatus"
-        class="scanner-status"
-    >
-        Preparando cámara...
-    </div>
+<div
+id="scannerStatus"
+class="scanner-status">
 
-    <div class="scanner-controls">
+Iniciando cámara...
 
-        <button onclick="switchCamera()">
-            🔄 Cambiar cámara
-        </button>
+</div>
 
-        <button onclick="toggleTorch()">
-            🔦 Linterna
-        </button>
+<div class="actions">
 
-        <button onclick="stopScanner()">
-            ⏹ Detener cámara
-        </button>
+<button
+class="btn btn-primary"
+onclick="switchCamera()">
+🔄 Cambiar cámara
+</button>
 
-    </div>
+<button
+class="btn"
+onclick="toggleTorch()">
+🔦 Linterna
+</button>
+
+<button
+class="btn btn-danger"
+onclick="stopScanner()">
+Cerrar
+</button>
 
 </div>
 
 </div>
 
+</div>
 
-<!-- ================= TERMINAL ================= -->
+
+<!-- TERMINAL -->
 
 <div
-    id="terminalModal"
-    class="modal"
->
+class="modal"
+id="terminalModal">
 
-<div class="terminal">
+<div class="modal-box terminal">
 
-    <div class="terminal-display">
+<div class="modal-header">
 
-        <h2 id="terminalTitle">
-            💳 Terminal
-        </h2>
+<h2>💳 Terminal</h2>
 
-        <p id="terminalText">
-            Inserta o acerca la tarjeta
-        </p>
+<button
+class="close"
+onclick="cancelTerminal()">
+✕
+</button>
 
-        <button
-            id="terminalPress"
-            class="btn blue"
-            onclick="cardDetected()"
-        >
-            💳 PULSA AQUÍ
-        </button>
+</div>
 
-        <div
-            id="pinArea"
-            style="display:none"
-        >
+<div class="terminal-screen">
 
-            <p>
-                Introduce NIP
-            </p>
+<div
+id="terminalIcon"
+class="terminal-icon">
+💳
+</div>
 
-            <div
-                id="pinDisplay"
-                class="pin-display"
-            >
-                ••••
-            </div>
+<div id="terminalMessage">
+Inserta o acerca la tarjeta
+</div>
 
-            <div class="pin-grid">
+<div id="terminalAmount"></div>
 
-                <button onclick="pinKey('1')">1</button>
-                <button onclick="pinKey('2')">2</button>
-                <button onclick="pinKey('3')">3</button>
+</div>
 
-                <button onclick="pinKey('4')">4</button>
-                <button onclick="pinKey('5')">5</button>
-                <button onclick="pinKey('6')">6</button>
+<div
+id="terminalControls"
+style="margin-top:15px">
 
-                <button onclick="pinKey('7')">7</button>
-                <button onclick="pinKey('8')">8</button>
-                <button onclick="pinKey('9')">9</button>
+<button
+class="btn btn-primary"
+style="width:100%"
+onclick="cardDetected()">
+💳 PULSA AQUÍ
+</button>
 
-                <button onclick="pinClear()">⌫</button>
-                <button onclick="pinKey('0')">0</button>
-                <button onclick="processCard()">✓</button>
-
-            </div>
-
-        </div>
-
-        <div
-            id="processingArea"
-            style="display:none"
-        >
-
-            <p>
-                Procesando pago...
-            </p>
-
-            <div class="progress">
-
-                <div
-                    id="progressBar"
-                    class="progress-bar"
-                ></div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <br>
-
-    <button
-        class="btn red"
-        onclick="cancelTerminal()"
-    >
-        Cancelar
-    </button>
+</div>
 
 </div>
 
@@ -1093,2228 +964,3056 @@ button{
 
 <script>
 
-/* =========================================
+/* =========================
    DATOS
-========================================= */
+========================= */
 
 let products =
-    JSON.parse(
-        localStorage.getItem("peluchi_products")
-    ) || [];
+JSON.parse(
+localStorage.getItem("peluchi_products") || "[]"
+);
 
 let cart =
-    JSON.parse(
-        localStorage.getItem("peluchi_cart")
-    ) || [];
+JSON.parse(
+localStorage.getItem("peluchi_cart") || "[]"
+);
 
 let sales =
-    JSON.parse(
-        localStorage.getItem("peluchi_sales")
-    ) || [];
+JSON.parse(
+localStorage.getItem("peluchi_sales") || "[]"
+);
 
 let cuts =
-    JSON.parse(
-        localStorage.getItem("peluchi_cuts")
-    ) || [];
+JSON.parse(
+localStorage.getItem("peluchi_cuts") || "[]"
+);
+
+let paymentMethod = "cash";
+
+let editingProductId = null;
 
 
-function save(){
+/* =========================
+   GUARDAR
+========================= */
 
-    localStorage.setItem(
-        "peluchi_products",
-        JSON.stringify(products)
-    );
+function saveData(){
 
-    localStorage.setItem(
-        "peluchi_cart",
-        JSON.stringify(cart)
-    );
+localStorage.setItem(
+"peluchi_products",
+JSON.stringify(products)
+);
 
-    localStorage.setItem(
-        "peluchi_sales",
-        JSON.stringify(sales)
-    );
+localStorage.setItem(
+"peluchi_cart",
+JSON.stringify(cart)
+);
 
-    localStorage.setItem(
-        "peluchi_cuts",
-        JSON.stringify(cuts)
-    );
+localStorage.setItem(
+"peluchi_sales",
+JSON.stringify(sales)
+);
+
+localStorage.setItem(
+"peluchi_cuts",
+JSON.stringify(cuts)
+);
 
 }
 
 
-/* =========================================
+/* =========================
    SONIDOS
-========================================= */
+========================= */
 
-let audioCtx=null;
+let audioContext = null;
 
-function audio(){
+function getAudio(){
 
-    if(!audioCtx){
+if(!audioContext){
 
-        const C =
-            window.AudioContext ||
-            window.webkitAudioContext;
-
-        if(!C)return;
-
-        audioCtx=new C();
-
-    }
-
-    if(audioCtx.state==="suspended"){
-        audioCtx.resume();
-    }
-
-    return audioCtx;
+audioContext =
+new(
+window.AudioContext ||
+window.webkitAudioContext
+)();
 
 }
 
+if(audioContext.state === "suspended"){
 
-function tone(
-    frequency,
-    duration=.08,
-    type="square",
-    volume=.04
+audioContext.resume();
+
+}
+
+return audioContext;
+
+}
+
+function beep(
+frequency=600,
+duration=.08,
+type="square",
+volume=.05
 ){
 
-    try{
+const ctx = getAudio();
 
-        const ctx=audio();
+const osc =
+ctx.createOscillator();
 
-        if(!ctx)return;
+const gain =
+ctx.createGain();
 
-        const oscillator=
-            ctx.createOscillator();
+osc.type = type;
 
-        const gain=
-            ctx.createGain();
+osc.frequency.value =
+frequency;
 
-        oscillator.type=type;
-        oscillator.frequency.value=frequency;
+gain.gain.setValueAtTime(
+volume,
+ctx.currentTime
+);
 
-        gain.gain.setValueAtTime(
-            volume,
-            ctx.currentTime
-        );
+gain.gain.exponentialRampToValueAtTime(
+.001,
+ctx.currentTime + duration
+);
 
-        gain.gain.exponentialRampToValueAtTime(
-            .001,
-            ctx.currentTime+duration
-        );
+osc.connect(gain);
 
-        oscillator.connect(gain);
-        gain.connect(ctx.destination);
+gain.connect(
+ctx.destination
+);
 
-        oscillator.start();
+osc.start();
 
-        oscillator.stop(
-            ctx.currentTime+duration
-        );
+osc.stop(
+ctx.currentTime + duration
+);
 
-    }catch(e){}
+}
+
+function soundButton(){
+beep(520,.06,"square",.04);
+}
+
+function soundScan(){
+
+beep(
+1000,
+.05,
+"square",
+.06
+);
+
+setTimeout(
+()=>beep(
+1400,
+.08,
+"square",
+.05
+),
+60
+);
+
+}
+
+function soundError(){
+
+beep(
+180,
+.15,
+"sawtooth",
+.07
+);
+
+setTimeout(
+()=>beep(
+120,
+.18,
+"sawtooth",
+.06
+),
+130
+);
+
+}
+
+function soundCash(){
+
+beep(
+500,
+.05,
+"square",
+.05
+);
+
+setTimeout(
+()=>beep(
+750,
+.06,
+"square",
+.05
+),
+70
+);
+
+}
+
+function soundChange(){
+
+beep(
+800,
+.05,
+"square",
+.04
+);
+
+setTimeout(
+()=>beep(
+1000,
+.05,
+"square",
+.04
+),
+70
+);
+
+setTimeout(
+()=>beep(
+1250,
+.08,
+"square",
+.04
+),
+140
+);
+
+}
+
+function soundSale(){
+
+beep(
+700,
+.08,
+"triangle",
+.05
+);
+
+setTimeout(
+()=>beep(
+900,
+.08,
+"triangle",
+.05
+),
+90
+);
+
+setTimeout(
+()=>beep(
+1200,
+.12,
+"triangle",
+.06
+),
+180
+);
+
+}
+
+function soundCard(){
+
+beep(
+400,
+.07,
+"square",
+.05
+);
+
+setTimeout(
+()=>beep(
+650,
+.07,
+"square",
+.05
+),
+80
+);
+
+}
+
+function soundPin(){
+beep(900,.05,"square",.04);
+}
+
+function soundProcessing(){
+
+beep(
+500,
+.08,
+"triangle",
+.035
+);
+
+setTimeout(
+()=>beep(
+600,
+.08,
+"triangle",
+.035
+),
+120
+);
+
+}
+
+function soundApproved(){
+
+beep(
+700,
+.08,
+"square",
+.05
+);
+
+setTimeout(
+()=>beep(
+900,
+.08,
+"square",
+.05
+),
+100
+);
+
+setTimeout(
+()=>beep(
+1300,
+.16,
+"square",
+.06
+),
+200
+);
+
+}
+
+function soundCancel(){
+beep(
+250,
+.15,
+"sawtooth",
+.06
+);
+}
+
+function soundDelete(){
+
+beep(
+300,
+.08,
+"square",
+.05
+);
+
+setTimeout(
+()=>beep(
+160,
+.12,
+"square",
+.05
+),
+100
+);
 
 }
 
 
-function buttonSound(){
-    tone(500,.06);
+/* =========================
+   VIBRACIÓN
+========================= */
+
+function vibrate(pattern=30){
+
+if(
+navigator.vibrate
+){
+navigator.vibrate(pattern);
 }
-
-function scanSound(){
-
-    tone(1200,.07);
-
-    setTimeout(
-        ()=>tone(1700,.08),
-        70
-    );
-
-}
-
-function errorSound(){
-
-    tone(180,.15,"sawtooth");
-
-    setTimeout(
-        ()=>tone(120,.18,"sawtooth"),
-        150
-    );
-
-}
-
-function cashSound(){
-    tone(650,.04);
-}
-
-function cashApproved(){
-
-    tone(600,.08);
-
-    setTimeout(
-        ()=>tone(900,.12),
-        100
-    );
-
-}
-
-function changeSound(){
-
-    tone(1000,.05);
-
-    setTimeout(
-        ()=>tone(1300,.05),
-        80
-    );
-
-}
-
-function saleSound(){
-
-    tone(800,.07);
-
-    setTimeout(
-        ()=>tone(1100,.1),
-        90
-    );
-
-    setTimeout(
-        ()=>tone(1500,.14),
-        200
-    );
-
-}
-
-function cardSound(){
-
-    tone(700,.08);
-
-    setTimeout(
-        ()=>tone(1000,.08),
-        100
-    );
-
-}
-
-function approvedSound(){
-
-    tone(800,.1);
-
-    setTimeout(
-        ()=>tone(1200,.15),
-        120
-    );
-
-}
-
-function cancelSound(){
-    tone(200,.2,"sawtooth");
-}
-
-function cutSound(){
-
-    tone(500,.1);
-
-    setTimeout(
-        ()=>tone(800,.1),
-        120
-    );
-
-}
-
-function vibrate(ms=60){
-
-    if(navigator.vibrate){
-        navigator.vibrate(ms);
-    }
 
 }
 
 
-/* =========================================
-   NAVEGACIÓN
-========================================= */
+/* =========================
+   RELOJ
+========================= */
 
-function showSection(id,button){
+function updateClock(){
 
-    buttonSound();
-
-    document
-    .querySelectorAll(".section")
-    .forEach(section=>{
-        section.classList.remove("active");
-    });
-
-    document
-    .getElementById(id)
-    .classList.add("active");
-
-    document
-    .querySelectorAll("nav button")
-    .forEach(btn=>{
-        btn.classList.remove("active");
-    });
-
-    button.classList.add("active");
-
-    if(id==="venta"){
-        renderSaleProducts();
-        renderCart();
-    }
-
-    if(id==="inventario"){
-        renderInventory();
-    }
-
-    if(id==="ventas"){
-        renderSales();
-    }
-
-    if(id==="corte"){
-        renderCut();
-        renderCuts();
-    }
+document.getElementById(
+"clock"
+).textContent =
+new Date().toLocaleTimeString(
+"es-MX",
+{
+hour:"2-digit",
+minute:"2-digit"
+}
+);
 
 }
 
+setInterval(
+updateClock,
+1000
+);
 
-/* =========================================
+updateClock();
+
+
+/* =========================
+   PESTAÑAS
+========================= */
+
+document
+.querySelectorAll(".tab")
+.forEach(button=>{
+
+button.addEventListener(
+"click",
+()=>{
+
+soundButton();
+
+document
+.querySelectorAll(".tab")
+.forEach(
+x=>x.classList.remove("active")
+);
+
+document
+.querySelectorAll(".section")
+.forEach(
+x=>x.classList.remove("active")
+);
+
+button.classList.add("active");
+
+document
+.getElementById(
+button.dataset.tab
+)
+.classList.add("active");
+
+renderAll();
+
+}
+);
+
+});
+
+
+/* =========================
    INVENTARIO
-========================================= */
+========================= */
 
-function addProduct(){
+function saveProduct(){
 
-    buttonSound();
+soundButton();
 
-    const name=
-        document
-        .getElementById("productName")
-        .value
-        .trim();
+const name =
+document.getElementById(
+"productName"
+).value.trim();
 
-    const barcode=
-        document
-        .getElementById("productBarcode")
-        .value
-        .trim();
+const barcode =
+normalizeBarcode(
+document.getElementById(
+"productBarcode"
+).value
+);
 
-    const price=
-        Number(
-            document
-            .getElementById("productPrice")
-            .value
-        );
+const price =
+Number(
+document.getElementById(
+"productPrice"
+).value
+);
 
-    const stock=
-        Number(
-            document
-            .getElementById("productStock")
-            .value
-        );
+const stock =
+Number(
+document.getElementById(
+"productStock"
+).value
+);
 
-    if(
-        !name ||
-        !barcode ||
-        price<0 ||
-        stock<0
-    ){
 
-        errorSound();
+if(!name){
 
-        alert(
-            "Completa correctamente todos los campos."
-        );
+soundError();
 
-        return;
+alert(
+"Escribe el nombre del producto."
+);
 
-    }
+return;
 
-    if(
-        products.some(
-            p=>String(p.barcode).trim()===barcode
-        )
-    ){
+}
 
-        errorSound();
+if(!barcode){
 
-        alert(
-            "Ese código de barras ya está registrado."
-        );
+soundError();
 
-        return;
+alert(
+"Escribe o escanea el código."
+);
 
-    }
+return;
 
-    products.push({
+}
 
-        id:
-            Date.now().toString(),
+if(
+!Number.isFinite(price) ||
+price < 0
+){
 
-        name,
+soundError();
 
-        barcode,
+alert(
+"Precio inválido."
+);
 
-        price,
+return;
 
-        stock
+}
 
-    });
+if(
+!Number.isFinite(stock) ||
+stock < 0
+){
 
-    save();
+soundError();
 
-    document.getElementById("productName").value="";
-    document.getElementById("productBarcode").value="";
-    document.getElementById("productPrice").value="";
-    document.getElementById("productStock").value="";
+alert(
+"Stock inválido."
+);
 
-    saleSound();
-
-    renderInventory();
-    renderSaleProducts();
+return;
 
 }
 
 
-function renderInventory(){
+const duplicate =
+products.find(
+p =>
+normalizeBarcode(p.barcode) === barcode &&
+p.id !== editingProductId
+);
 
-    const container=
-        document.getElementById(
-            "inventoryContainer"
-        );
+if(duplicate){
 
-    const search=
-        document
-        .getElementById("searchInventory")
-        .value
-        .toLowerCase();
+soundError();
 
-    const list=
-        products.filter(p=>
-            p.name
-            .toLowerCase()
-            .includes(search) ||
+alert(
+"Ese código ya pertenece a:\n" +
+duplicate.name
+);
 
-            String(p.barcode)
-            .includes(search)
-        );
+return;
 
-    if(!list.length){
+}
 
-        container.innerHTML=
-            `<div class="empty">
-                No hay productos registrados.
-            </div>`;
 
-        return;
+if(editingProductId){
 
-    }
+const product =
+products.find(
+p=>p.id === editingProductId
+);
 
-    container.innerHTML=`
+if(product){
 
-    <div style="overflow:auto">
+product.name =
+name;
 
-    <table class="inventory-table">
+product.barcode =
+barcode;
 
-        <thead>
+product.price =
+price;
 
-            <tr>
-                <th>Producto</th>
-                <th>Código</th>
-                <th>Precio</th>
-                <th>Stock</th>
-                <th>Acciones</th>
-            </tr>
+product.stock =
+stock;
 
-        </thead>
+}
 
-        <tbody>
+editingProductId =
+null;
 
-            ${list.map(product=>`
+}else{
 
-                <tr>
+products.push({
 
-                    <td>
-                        ${escapeHTML(product.name)}
-                    </td>
+id:
+Date.now() +
+Math.random(),
 
-                    <td>
-                        ${escapeHTML(product.barcode)}
-                    </td>
+name,
+barcode,
+price,
+stock
 
-                    <td>
-                        $${Number(product.price).toFixed(2)}
-                    </td>
+});
 
-                    <td>
-                        ${product.stock}
-                    </td>
+}
 
-                    <td>
 
-                        <button
-                            class="btn red"
-                            onclick="deleteProduct('${product.id}')"
-                        >
-                            🗑
-                        </button>
+saveData();
 
-                    </td>
+clearProductForm();
 
-                </tr>
+renderAll();
 
-            `).join("")}
+soundApproved();
 
-        </tbody>
+alert(
+"Producto guardado correctamente."
+);
 
-    </table>
+}
 
-    </div>
 
-    `;
+function editProduct(id){
+
+const product =
+products.find(
+p=>String(p.id) === String(id)
+);
+
+if(!product)return;
+
+editingProductId =
+product.id;
+
+document.getElementById(
+"productName"
+).value =
+product.name;
+
+document.getElementById(
+"productBarcode"
+).value =
+product.barcode;
+
+document.getElementById(
+"productPrice"
+).value =
+product.price;
+
+document.getElementById(
+"productStock"
+).value =
+product.stock;
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+soundButton();
 
 }
 
 
 function deleteProduct(id){
 
-    const product=
-        products.find(p=>p.id===id);
+const product =
+products.find(
+p=>String(p.id) === String(id)
+);
 
-    if(!product)return;
+if(!product)return;
 
-    if(
-        !confirm(
-            `¿Eliminar "${product.name}"?`
-        )
-    ){
-        return;
-    }
+const confirmed =
+confirm(
+`¿Eliminar "${product.name}" del inventario?`
+);
 
-    products=
-        products.filter(p=>p.id!==id);
+if(!confirmed){
 
-    cart=
-        cart.filter(item=>item.productId!==id);
+soundCancel();
 
-    save();
+return;
 
-    renderInventory();
-    renderSaleProducts();
-    renderCart();
+}
 
-    errorSound();
+products =
+products.filter(
+p=>String(p.id) !== String(id)
+);
+
+cart =
+cart.filter(
+item =>
+String(item.productId) !==
+String(id)
+);
+
+saveData();
+
+renderAll();
+
+soundDelete();
+
+vibrate(
+[50,50,80]
+);
 
 }
 
 
-/* =========================================
-   PRODUCTOS PARA VENTA
-========================================= */
+function clearProductForm(){
 
-function renderSaleProducts(){
+editingProductId =
+null;
 
-    const container=
-        document.getElementById(
-            "saleProducts"
-        );
+document.getElementById(
+"productName"
+).value = "";
 
-    const search=
-        document
-        .getElementById("searchSale")
-        .value
-        .toLowerCase();
+document.getElementById(
+"productBarcode"
+).value = "";
 
-    const list=
-        products.filter(p=>
-            p.name
-            .toLowerCase()
-            .includes(search) ||
+document.getElementById(
+"productPrice"
+).value = "";
 
-            String(p.barcode)
-            .includes(search)
-        );
-
-    if(!list.length){
-
-        container.innerHTML=
-            `<div class="empty">
-                No hay productos registrados.
-            </div>`;
-
-        return;
-
-    }
-
-    container.innerHTML=
-        list.map(product=>`
-
-        <div class="product">
-
-            <h3>
-                ${escapeHTML(product.name)}
-            </h3>
-
-            <div class="product-code">
-                Código:
-                ${escapeHTML(product.barcode)}
-            </div>
-
-            <div class="product-price">
-                $${Number(product.price).toFixed(2)}
-            </div>
-
-            <div class="product-stock">
-                Stock: ${product.stock}
-            </div>
-
-            <button
-                class="btn"
-                onclick="addToCart('${product.id}')"
-                ${product.stock<=0?"disabled":""}
-            >
-                ➕ Agregar
-            </button>
-
-        </div>
-
-    `).join("");
+document.getElementById(
+"productStock"
+).value = "";
 
 }
 
 
-/* =========================================
-   CARRITO
-========================================= */
+function renderInventory(){
+
+const container =
+document.getElementById(
+"inventoryContainer"
+);
+
+const search =
+document.getElementById(
+"inventorySearch"
+)
+.value
+.toLowerCase()
+.trim();
+
+const filtered =
+products.filter(
+p =>
+p.name
+.toLowerCase()
+.includes(search)
+||
+normalizeBarcode(p.barcode)
+.toLowerCase()
+.includes(search)
+);
+
+
+if(!filtered.length){
+
+container.innerHTML =
+`
+<div class="empty">
+No hay productos registrados.
+</div>
+`;
+
+return;
+
+}
+
+
+container.innerHTML =
+`
+<table class="products-table">
+
+<thead>
+
+<tr>
+<th>Producto</th>
+<th>Código</th>
+<th>Precio</th>
+<th>Stock</th>
+<th>Acciones</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+${
+filtered.map(
+p=>
+`
+
+<tr>
+
+<td>
+${escapeHTML(p.name)}
+</td>
+
+<td>
+${escapeHTML(p.barcode)}
+</td>
+
+<td>
+$${Number(p.price).toFixed(2)}
+</td>
+
+<td>
+${p.stock}
+</td>
+
+<td>
+
+<div class="actions">
+
+<button
+class="btn btn-blue btn-small"
+onclick="editProduct('${p.id}')">
+Editar
+</button>
+
+<button
+class="btn btn-danger btn-small"
+onclick="deleteProduct('${p.id}')">
+Eliminar
+</button>
+
+</div>
+
+</td>
+
+</tr>
+
+`
+).join("")
+}
+
+</tbody>
+
+</table>
+`;
+
+}
+
+
+/* =========================
+   VENTA
+========================= */
+
+function focusSearch(){
+
+soundButton();
+
+document
+.getElementById(
+"saleSearch"
+)
+.focus();
+
+}
+
+
+function renderSaleSearch(){
+
+const query =
+document
+.getElementById(
+"saleSearch"
+)
+.value
+.toLowerCase()
+.trim();
+
+const container =
+document.getElementById(
+"saleResults"
+);
+
+if(!query){
+
+container.innerHTML = "";
+
+return;
+
+}
+
+
+const found =
+products.filter(
+p =>
+p.name
+.toLowerCase()
+.includes(query)
+||
+normalizeBarcode(
+p.barcode
+)
+.toLowerCase()
+.includes(query)
+);
+
+
+if(!found.length){
+
+container.innerHTML =
+`
+<div class="empty">
+No se encontró el producto.
+</div>
+`;
+
+return;
+
+}
+
+
+container.innerHTML =
+found.map(
+p=>
+`
+
+<div class="product-result">
+
+<div class="product-info">
+
+<strong>
+${escapeHTML(p.name)}
+</strong>
+
+<small>
+Código: ${escapeHTML(p.barcode)}
+|
+Stock: ${p.stock}
+|
+$${Number(p.price).toFixed(2)}
+</small>
+
+</div>
+
+<button
+class="btn btn-primary btn-small"
+onclick="addToCart('${p.id}')">
+Agregar
+</button>
+
+</div>
+
+`
+).join("");
+
+}
+
 
 function addToCart(id){
 
-    buttonSound();
+const product =
+products.find(
+p=>String(p.id) === String(id)
+);
 
-    const product=
-        products.find(p=>p.id===id);
+if(!product)return;
 
-    if(!product)return;
+if(product.stock <= 0){
 
-    if(product.stock<=0){
+soundError();
 
-        errorSound();
+alert(
+"Producto sin stock."
+);
 
-        alert("Producto agotado.");
-
-        return;
-
-    }
-
-    const item=
-        cart.find(x=>x.productId===id);
-
-    if(item){
-
-        if(item.quantity>=product.stock){
-
-            errorSound();
-
-            alert("No hay suficiente stock.");
-
-            return;
-
-        }
-
-        item.quantity++;
-
-    }else{
-
-        cart.push({
-
-            productId:id,
-
-            quantity:1
-
-        });
-
-    }
-
-    save();
-
-    renderCart();
+return;
 
 }
 
 
-function changeQuantity(id,amount){
+const item =
+cart.find(
+x =>
+String(x.productId) ===
+String(id)
+);
 
-    const item=
-        cart.find(x=>x.productId===id);
 
-    const product=
-        products.find(x=>x.id===id);
+if(item){
 
-    if(!item || !product)return;
+if(
+item.quantity >=
+product.stock
+){
 
-    item.quantity+=amount;
+soundError();
 
-    if(item.quantity<=0){
+alert(
+"No hay más stock."
+);
 
-        cart=
-            cart.filter(
-                x=>x.productId!==id
-            );
+return;
 
-    }
+}
 
-    if(item.quantity>product.stock){
+item.quantity++;
 
-        item.quantity=product.stock;
+}else{
 
-        errorSound();
+cart.push({
 
-    }
+productId:
+product.id,
 
-    save();
+quantity:1
 
-    renderCart();
+});
+
+}
+
+saveData();
+
+renderAll();
+
+soundScan();
+
+vibrate(25);
+
+}
+
+
+function removeFromCart(id){
+
+cart =
+cart.filter(
+x =>
+String(x.productId) !==
+String(id)
+);
+
+saveData();
+
+renderAll();
+
+soundButton();
+
+}
+
+
+function changeQuantity(
+id,
+amount
+){
+
+const item =
+cart.find(
+x =>
+String(x.productId) ===
+String(id)
+);
+
+const product =
+products.find(
+x =>
+String(x.id) ===
+String(id)
+);
+
+if(!item || !product)return;
+
+item.quantity +=
+amount;
+
+if(item.quantity <= 0){
+
+removeFromCart(id);
+
+return;
+
+}
+
+if(
+item.quantity >
+product.stock
+){
+
+item.quantity =
+product.stock;
+
+soundError();
+
+alert(
+"No puedes superar el stock."
+);
+
+return;
+
+}
+
+saveData();
+
+renderAll();
+
+soundButton();
 
 }
 
 
 function getCartTotal(){
 
-    return cart.reduce(
-        (total,item)=>{
+return cart.reduce(
+(total,item)=>{
 
-            const product=
-                products.find(
-                    p=>p.id===item.productId
-                );
+const product =
+products.find(
+p =>
+String(p.id) ===
+String(item.productId)
+);
 
-            if(!product)return total;
+if(!product)return total;
 
-            return total+
-                Number(product.price)*
-                Number(item.quantity);
+return total +
+Number(product.price) *
+Number(item.quantity);
 
-        },
-        0
-    );
+},
+0
+);
 
 }
 
 
 function renderCart(){
 
-    const container=
-        document.getElementById(
-            "cartContainer"
-        );
-
-    if(!cart.length){
-
-        container.innerHTML=
-            `<div class="cart-empty">
-                🛒 El carrito está vacío
-            </div>`;
-
-    }else{
-
-        container.innerHTML=
-            cart.map(item=>{
-
-                const product=
-                    products.find(
-                        p=>p.id===item.productId
-                    );
-
-                if(!product)return "";
-
-                const subtotal=
-                    Number(product.price)*
-                    Number(item.quantity);
-
-                return `
-
-                <div class="cart-row">
-
-                    <div>
-
-                        <div class="cart-name">
-                            ${escapeHTML(product.name)}
-                        </div>
-
-                        <div class="cart-price">
-                            $${Number(product.price).toFixed(2)}
-                            cada uno
-                        </div>
-
-                    </div>
-
-                    <div class="qty-controls">
-
-                        <button
-                            onclick="changeQuantity('${product.id}',-1)"
-                        >
-                            −
-                        </button>
-
-                        <b>
-                            ${item.quantity}
-                        </b>
-
-                        <button
-                            onclick="changeQuantity('${product.id}',1)"
-                        >
-                            +
-                        </button>
-
-                    </div>
-
-                    <b>
-                        $${subtotal.toFixed(2)}
-                    </b>
-
-                </div>
-
-                `;
-
-            }).join("");
-
-    }
-
-    document
-    .getElementById("cartTotal")
-    .textContent=
-        getCartTotal().toFixed(2);
-
-    calculateChange();
-
-}
-
-
-function clearCart(){
-
-    buttonSound();
-
-    cart=[];
-
-    save();
-
-    renderCart();
-
-    document
-    .getElementById("cashReceived")
-    .value="";
-
-    calculateChange();
-
-}
-
-
-/* =========================================
-   PAGOS
-========================================= */
-
-function changePaymentMethod(){
-
-    buttonSound();
-
-    const method=
-        document
-        .getElementById("paymentMethod")
-        .value;
-
-    document
-    .getElementById("cashPayment")
-    .style.display=
-        method==="efectivo"
-        ? "block"
-        : "none";
-
-    document
-    .getElementById("cardPayment")
-    .style.display=
-        method==="tarjeta"
-        ? "block"
-        : "none";
-
-}
-
-
-function calculateChange(){
-
-    const received=
-        Number(
-            document
-            .getElementById("cashReceived")
-            .value
-        );
-
-    const total=
-        getCartTotal();
-
-    const change=
-        Math.max(
-            0,
-            received-total
-        );
-
-    document
-    .getElementById("change")
-    .textContent=
-        change.toFixed(2);
-
-}
-
-
-document
-.getElementById("cashReceived")
-.addEventListener(
-    "input",
-    ()=>{
-        cashSound();
-        calculateChange();
-    }
+const container =
+document.getElementById(
+"cart"
 );
 
+if(!cart.length){
 
-function payCash(){
+container.innerHTML =
+`
+<div class="empty">
+El carrito está vacío.
+</div>
+`;
 
-    buttonSound();
+}else{
 
-    if(!cart.length){
+container.innerHTML =
+cart.map(
+item=>{
 
-        errorSound();
+const product =
+products.find(
+p =>
+String(p.id) ===
+String(item.productId)
+);
 
-        alert(
-            "El carrito está vacío."
-        );
+if(!product)return "";
 
-        return;
+return `
 
-    }
+<div class="cart-item">
 
-    const total=
-        getCartTotal();
+<div>
 
-    const received=
-        Number(
-            document
-            .getElementById("cashReceived")
-            .value
-        );
+<strong>
+${escapeHTML(product.name)}
+</strong>
 
-    if(received<total){
+<br>
 
-        errorSound();
-        vibrate(200);
+<small>
+$${Number(product.price).toFixed(2)}
+c/u
+</small>
 
-        alert(
-            `Faltan $${(
-                total-received
-            ).toFixed(2)}`
-        );
+</div>
 
-        return;
+<div class="qty">
 
-    }
+<button
+onclick="changeQuantity('${product.id}',-1)">
+−
+</button>
 
-    const change=
-        received-total;
+<strong>
+${item.quantity}
+</strong>
 
-    cashApproved();
+<button
+onclick="changeQuantity('${product.id}',1)">
++
+</button>
 
-    if(change>0){
+</div>
 
-        setTimeout(
-            changeSound,
-            200
-        );
+<strong>
+$${(
+Number(product.price) *
+Number(item.quantity)
+).toFixed(2)}
+</strong>
 
-    }
+<button
+class="btn btn-danger btn-small"
+onclick="removeFromCart('${product.id}')">
+✕
+</button>
 
-    setTimeout(
-        ()=>{
-            completeSale(
-                "Efectivo",
-                received,
-                change
-            );
-        },
-        400
-    );
+</div>
+
+`;
+
+}
+).join("");
 
 }
 
 
-/* =========================================
-   TERMINAL TARJETA
-========================================= */
+const total =
+getCartTotal();
 
-let terminalPin="";
-let processing=false;
+const items =
+cart.reduce(
+(sum,item)=>
+sum +
+Number(item.quantity),
+0
+);
+
+document.getElementById(
+"cartTotal"
+).textContent =
+total.toFixed(2);
+
+document.getElementById(
+"summaryTotal"
+).textContent =
+total.toFixed(2);
+
+document.getElementById(
+"summaryItems"
+).textContent =
+items;
+
+updateChange();
+
+}
 
 
-function startCardTerminal(){
+/* =========================
+   PAGO
+========================= */
 
-    buttonSound();
+function setPayment(method){
 
-    if(!cart.length){
+paymentMethod =
+method;
 
-        errorSound();
+soundButton();
 
-        alert(
-            "El carrito está vacío."
-        );
+document.getElementById(
+"cashMethod"
+)
+.classList.toggle(
+"active",
+method === "cash"
+);
 
-        return;
+document.getElementById(
+"cardMethod"
+)
+.classList.toggle(
+"active",
+method === "card"
+);
 
-    }
+document.getElementById(
+"cashPayment"
+)
+.style.display =
+method === "cash"
+? "block"
+: "none";
 
-    terminalPin="";
-    processing=false;
+}
 
-    document
-    .getElementById("terminalModal")
-    .classList.add("show");
 
-    document
-    .getElementById("terminalTitle")
-    .textContent="💳 Terminal";
+function updateChange(){
 
-    document
-    .getElementById("terminalText")
-    .textContent=
-        `Cobro: $${getCartTotal().toFixed(2)}`;
+const received =
+Number(
+document.getElementById(
+"cashReceived"
+).value
+) || 0;
 
-    document
-    .getElementById("terminalPress")
-    .style.display="inline-block";
+const total =
+getCartTotal();
 
-    document
-    .getElementById("pinArea")
-    .style.display="none";
+const change =
+received - total;
 
-    document
-    .getElementById("processingArea")
-    .style.display="none";
+const text =
+document.getElementById(
+"changeText"
+);
+
+text.textContent =
+"Cambio: $" +
+Math.max(
+change,
+0
+).toFixed(2);
+
+text.style.color =
+change >= 0 &&
+total > 0
+? "#55d889"
+: "#aaa";
+
+}
+
+
+function finishSale(){
+
+soundButton();
+
+if(!cart.length){
+
+soundError();
+
+alert(
+"El carrito está vacío."
+);
+
+return;
+
+}
+
+if(
+paymentMethod === "cash"
+){
+
+finishCash();
+
+}else{
+
+openTerminal();
+
+}
+
+}
+
+
+function finishCash(){
+
+const total =
+getCartTotal();
+
+const received =
+Number(
+document.getElementById(
+"cashReceived"
+).value
+) || 0;
+
+
+if(received < total){
+
+soundError();
+
+alert(
+"El efectivo no alcanza.\n\n" +
+"Total: $" +
+total.toFixed(2) +
+"\nRecibido: $" +
+received.toFixed(2)
+);
+
+return;
+
+}
+
+
+const change =
+received - total;
+
+soundCash();
+
+if(change > 0){
+
+setTimeout(
+soundChange,
+200
+);
+
+}
+
+setTimeout(
+() =>
+completeSale(
+"Efectivo",
+received,
+change
+),
+500
+);
+
+}
+
+
+/* =========================
+   TERMINAL
+========================= */
+
+let terminalPin = "";
+
+function openTerminal(){
+
+const total =
+getCartTotal();
+
+document
+.getElementById(
+"terminalModal"
+)
+.classList.add("show");
+
+document.getElementById(
+"terminalAmount"
+).textContent =
+"Total: $" +
+total.toFixed(2);
+
+document.getElementById(
+"terminalIcon"
+).textContent =
+"💳";
+
+document.getElementById(
+"terminalMessage"
+).textContent =
+"Inserta o acerca la tarjeta";
+
+document.getElementById(
+"terminalControls"
+).innerHTML =
+`
+<button
+class="btn btn-primary"
+style="width:100%"
+onclick="cardDetected()">
+💳 PULSA AQUÍ
+</button>
+`;
+
+soundCard();
 
 }
 
 
 function cardDetected(){
 
-    cardSound();
-    vibrate(100);
+soundCard();
 
-    document
-    .getElementById("terminalPress")
-    .style.display="none";
+document.getElementById(
+"terminalIcon"
+).textContent =
+"🔐";
 
-    document
-    .getElementById("terminalText")
-    .textContent=
-        "Tarjeta detectada. Introduce el NIP.";
+document.getElementById(
+"terminalMessage"
+).textContent =
+"Introduce tu NIP";
 
-    document
-    .getElementById("pinArea")
-    .style.display="block";
-
-    terminalPin="";
-
-    updatePin();
+renderPinPad();
 
 }
 
 
-function pinKey(key){
+function renderPinPad(){
 
-    if(terminalPin.length>=4)return;
+terminalPin = "";
 
-    terminalPin+=key;
+document.getElementById(
+"terminalControls"
+).innerHTML =
+`
 
-    tone(600,.05);
+<div
+class="pin-display"
+id="pinDisplay">
+</div>
 
-    vibrate(30);
+<div class="keypad">
 
-    updatePin();
+<button onclick="pinPress('1')">1</button>
+<button onclick="pinPress('2')">2</button>
+<button onclick="pinPress('3')">3</button>
+
+<button onclick="pinPress('4')">4</button>
+<button onclick="pinPress('5')">5</button>
+<button onclick="pinPress('6')">6</button>
+
+<button onclick="pinPress('7')">7</button>
+<button onclick="pinPress('8')">8</button>
+<button onclick="pinPress('9')">9</button>
+
+<button onclick="pinClear()">⌫</button>
+<button onclick="pinPress('0')">0</button>
+<button onclick="pinConfirm()">✓</button>
+
+</div>
+
+<button
+class="btn btn-danger"
+style="width:100%;margin-top:10px"
+onclick="cancelTerminal()">
+Cancelar
+</button>
+`;
+
+updatePinDisplay();
+
+}
+
+
+function pinPress(number){
+
+if(
+terminalPin.length >= 4
+)return;
+
+terminalPin +=
+number;
+
+soundPin();
+
+vibrate(20);
+
+updatePinDisplay();
 
 }
 
 
 function pinClear(){
 
-    terminalPin=
-        terminalPin.slice(0,-1);
+terminalPin =
+terminalPin.slice(
+0,
+-1
+);
 
-    tone(500,.05);
+soundButton();
 
-    updatePin();
+updatePinDisplay();
 
 }
 
 
-function updatePin(){
+function updatePinDisplay(){
 
-    document
-    .getElementById("pinDisplay")
-    .textContent=
-        terminalPin
-        ? "•".repeat(terminalPin.length)
-        : "••••";
+document.getElementById(
+"pinDisplay"
+).textContent =
+"•".repeat(
+terminalPin.length
+);
+
+}
+
+
+function pinConfirm(){
+
+if(
+terminalPin.length !== 4
+){
+
+soundError();
+
+alert(
+"El NIP debe tener 4 dígitos."
+);
+
+return;
+
+}
+
+processCard();
 
 }
 
 
 function processCard(){
 
-    if(processing)return;
+document.getElementById(
+"terminalIcon"
+).textContent =
+"⏳";
 
-    if(terminalPin.length!==4){
+document.getElementById(
+"terminalMessage"
+).textContent =
+"Procesando pago...";
 
-        errorSound();
+document.getElementById(
+"terminalControls"
+).innerHTML =
+`
+<div class="progress">
 
-        alert(
-            "El NIP debe tener 4 dígitos."
-        );
+<div
+class="progress-bar"
+id="progressBar">
+</div>
 
-        return;
+</div>
+`;
 
-    }
+soundProcessing();
 
-    processing=true;
+let progress = 0;
 
-    document
-    .getElementById("pinArea")
-    .style.display="none";
+const timer =
+setInterval(
+()=>{
 
-    document
-    .getElementById("processingArea")
-    .style.display="block";
+progress += 10;
 
-    let progress=0;
+document.getElementById(
+"progressBar"
+).style.width =
+progress + "%";
 
-    const bar=
-        document
-        .getElementById("progressBar");
+if(progress >= 100){
 
-    const interval=
-        setInterval(()=>{
+clearInterval(timer);
 
-            progress+=10;
+approveCard();
 
-            bar.style.width=
-                progress+"%";
+}
 
-            tone(300,.04,"triangle",.02);
+},
+100
+);
 
-            if(progress>=100){
+}
 
-                clearInterval(interval);
 
-                setTimeout(()=>{
+function approveCard(){
 
-                    approvedSound();
-                    vibrate(150);
+soundApproved();
 
-                    document
-                    .getElementById("terminalTitle")
-                    .textContent=
-                        "✅ PAGO APROBADO";
+document.getElementById(
+"terminalIcon"
+).textContent =
+"✅";
 
-                    document
-                    .getElementById("terminalText")
-                    .textContent=
-                        "Transacción autorizada.";
+document.getElementById(
+"terminalMessage"
+).textContent =
+"Pago aprobado";
 
-                    setTimeout(()=>{
+document.getElementById(
+"terminalControls"
+).innerHTML =
+`
+<button
+class="btn btn-success"
+style="width:100%"
+onclick="finishCardSale()">
+✓ Continuar
+</button>
+`;
 
-                        closeTerminal();
+vibrate(
+[50,80,100]
+);
 
-                        completeSale(
-                            "Tarjeta",
-                            0,
-                            0
-                        );
+}
 
-                    },800);
 
-                },300);
+function finishCardSale(){
 
-            }
-
-        },120);
+completeSale(
+"Tarjeta",
+null,
+0
+);
 
 }
 
 
 function cancelTerminal(){
 
-    cancelSound();
+soundCancel();
 
-    document
-    .getElementById("terminalModal")
-    .classList.remove("show");
+document.getElementById(
+"terminalModal"
+)
+.classList.remove("show");
 
 }
 
 
-/* =========================================
+/* =========================
    COMPLETAR VENTA
-========================================= */
+========================= */
 
 function completeSale(
-    payment,
-    received,
-    change
+payment,
+received,
+change
 ){
 
-    const total=
-        getCartTotal();
+if(!cart.length)return;
 
-    if(!cart.length)return;
+const total =
+getCartTotal();
 
-    const items=
-        cart.map(item=>{
 
-            const product=
-                products.find(
-                    p=>p.id===item.productId
-                );
+const items =
+cart.map(
+item=>{
 
-            return {
+const product =
+products.find(
+p =>
+String(p.id) ===
+String(item.productId)
+);
 
-                productId:product.id,
+return {
 
-                name:product.name,
+productId:
+product.id,
 
-                barcode:product.barcode,
+name:
+product.name,
 
-                price:product.price,
+barcode:
+product.barcode,
 
-                quantity:item.quantity,
+price:
+product.price,
 
-                subtotal:
-                    Number(product.price)*
-                    Number(item.quantity)
+quantity:
+item.quantity
 
-            };
+};
 
-        });
+}
+);
 
-    cart.forEach(item=>{
 
-        const product=
-            products.find(
-                p=>p.id===item.productId
-            );
+cart.forEach(
+item=>{
 
-        if(product){
+const product =
+products.find(
+p =>
+String(p.id) ===
+String(item.productId)
+);
 
-            product.stock-=item.quantity;
+if(product){
 
-            if(product.stock<0){
-                product.stock=0;
-            }
+product.stock =
+Math.max(
+0,
+Number(product.stock) -
+Number(item.quantity)
+);
 
-        }
+}
 
-    });
+}
+);
 
-    const sale={
 
-        id:
-            Date.now().toString(),
+const sale = {
 
-        date:
-            new Date().toLocaleString("es-MX"),
+id:
+Date.now() +
+Math.random(),
 
-        items,
+date:
+new Date().toISOString(),
 
-        total,
+items,
 
-        payment,
+total,
 
-        received,
+payment,
 
-        change
+received,
 
-    };
+change
 
-    sales.unshift(sale);
+};
 
-    cart=[];
 
-    save();
+sales.unshift(
+sale
+);
 
-    saleSound();
-    vibrate(200);
+cart = [];
 
-    renderCart();
-    renderSaleProducts();
-    renderInventory();
-    renderSales();
-    renderCut();
+document.getElementById(
+"cashReceived"
+).value = "";
 
-    document
-    .getElementById("cashReceived")
-    .value="";
+saveData();
 
-    alert(
-        `Venta completada\n\n`+
-        `Total: $${total.toFixed(2)}\n`+
-        `Pago: ${payment}`+
-        (
-            payment==="Efectivo"
-            ? `\nCambio: $${change.toFixed(2)}`
-            : ""
-        )
-    );
+document.getElementById(
+"terminalModal"
+)
+.classList.remove("show");
 
-    printTicket(sale);
+renderAll();
+
+soundSale();
+
+vibrate(
+[50,80,50,80,150]
+);
+
+printTicket(sale);
 
 }
 
 
-/* =========================================
+/* =========================
    TICKET
-========================================= */
+========================= */
 
 function printTicket(sale){
 
-    const ticket=`
+const itemsHTML =
+sale.items.map(
+item =>
+`
+<div>
+${escapeHTML(item.name)}
+ x${item.quantity}
+ =
+$${(
+Number(item.price) *
+Number(item.quantity)
+).toFixed(2)}
+</div>
+`
+).join("");
 
-    <html>
 
-    <head>
+const cashInfo =
+sale.payment === "Efectivo"
+?
+`
+<div>
+Recibido:
+$${Number(sale.received).toFixed(2)}
+</div>
 
-        <title>
-            Ticket PeluchiAbarrotes
-        </title>
+<div>
+Cambio:
+$${Number(sale.change).toFixed(2)}
+</div>
+`
+:
+"";
 
-        <style>
 
-            body{
-                font-family:monospace;
-                width:280px;
-                margin:auto;
-            }
+const ticket =
+`
+<html>
 
-            h2{
-                text-align:center;
-            }
+<head>
 
-            hr{
-                border:0;
-                border-top:1px dashed #000;
-            }
+<title>Ticket</title>
 
-        </style>
+<style>
 
-    </head>
+body{
+font-family:monospace;
+width:280px;
+margin:auto;
+}
 
-    <body>
+.center{
+text-align:center;
+}
 
-        <h2>
-            PeluchiAbarrotes
-        </h2>
+.line{
+border-top:1px dashed #000;
+margin:10px 0;
+}
 
-        <p>
-            ${sale.date}
-        </p>
+</style>
 
-        <hr>
+</head>
 
-        ${sale.items.map(item=>`
+<body>
 
-            <div>
-                ${escapeHTML(item.name)}
-            </div>
+<div class="center">
 
-            <div>
-                ${item.quantity} x
-                $${Number(item.price).toFixed(2)}
-                =
-                $${Number(item.subtotal).toFixed(2)}
-            </div>
+<h2>PeluchiAbarrotes</h2>
 
-        `).join("")}
+<div>Ticket de venta</div>
 
-        <hr>
+</div>
 
-        <h3>
-            TOTAL:
-            $${Number(sale.total).toFixed(2)}
-        </h3>
+<div class="line"></div>
 
-        <p>
-            Pago: ${sale.payment}
-        </p>
+${itemsHTML}
 
-        ${
-            sale.payment==="Efectivo"
-            ? `
-                <p>
-                    Recibido:
-                    $${Number(sale.received).toFixed(2)}
-                </p>
+<div class="line"></div>
 
-                <p>
-                    Cambio:
-                    $${Number(sale.change).toFixed(2)}
-                </p>
-            `
-            : ""
-        }
+<strong>
+TOTAL:
+$${Number(sale.total).toFixed(2)}
+</strong>
 
-        <hr>
+<div>
+Pago:
+${sale.payment}
+</div>
 
-        <center>
-            Gracias por su compra
-        </center>
+${cashInfo}
 
-    </body>
+<div class="line"></div>
 
-    </html>
+<div class="center">
+Gracias por su compra
+</div>
 
-    `;
+<script>
+window.onload=function(){
+window.print();
+};
+<\/script>
 
-    const win=
-        window.open(
-            "",
-            "_blank",
-            "width=400,height=600"
-        );
+</body>
 
-    if(!win)return;
+</html>
+`;
 
-    win.document.write(ticket);
-    win.document.close();
 
-    setTimeout(
-        ()=>win.print(),
-        400
-    );
+const win =
+window.open(
+"",
+"_blank",
+"width=400,height=600"
+);
+
+if(!win){
+
+alert(
+"El navegador bloqueó la ventana del ticket."
+);
+
+return;
+
+}
+
+win.document.write(
+ticket
+);
+
+win.document.close();
 
 }
 
 
-/* =========================================
+/* =========================
    HISTORIAL
-========================================= */
+========================= */
 
 function renderSales(){
 
-    const container=
-        document.getElementById(
-            "salesContainer"
-        );
+const container =
+document.getElementById(
+"salesHistory"
+);
 
-    if(!sales.length){
+if(!sales.length){
 
-        container.innerHTML=
-            `<div class="empty">
-                Todavía no hay ventas.
-            </div>`;
+container.innerHTML =
+`
+<div class="empty">
+Todavía no hay ventas.
+</div>
+`;
 
-        return;
-
-    }
-
-    container.innerHTML=
-        sales.map(sale=>`
-
-        <div class="sale-history">
-
-            <div class="sale-history-head">
-
-                <div>
-
-                    <b>
-                        Venta #${sale.id.slice(-6)}
-                    </b>
-
-                    <div>
-                        ${sale.date}
-                    </div>
-
-                </div>
-
-                <div class="sale-total">
-                    $${Number(sale.total).toFixed(2)}
-                </div>
-
-            </div>
-
-            <p>
-                Método:
-                <b>${sale.payment}</b>
-            </p>
-
-            <details>
-
-                <summary>
-                    Ver productos
-                </summary>
-
-                <ul>
-
-                    ${sale.items.map(item=>`
-
-                        <li>
-                            ${escapeHTML(item.name)}
-                            × ${item.quantity}
-                            =
-                            $${Number(item.subtotal).toFixed(2)}
-                        </li>
-
-                    `).join("")}
-
-                </ul>
-
-            </details>
-
-        </div>
-
-    `).join("");
+return;
 
 }
 
 
-/* =========================================
+container.innerHTML =
+sales.map(
+sale=>
+`
+
+<div class="history-item">
+
+<strong>
+Venta #${String(sale.id).slice(-6)}
+</strong>
+
+<div style="color:#999">
+${new Date(
+sale.date
+).toLocaleString("es-MX")}
+</div>
+
+<div style="margin-top:8px">
+
+${
+sale.items.map(
+item =>
+`${escapeHTML(item.name)}
+x${item.quantity}`
+).join("<br>")
+}
+
+</div>
+
+<div style="margin-top:8px">
+Pago: ${sale.payment}
+</div>
+
+<strong
+style="display:block;margin-top:8px">
+Total:
+$${Number(sale.total).toFixed(2)}
+</strong>
+
+<button
+class="btn btn-small"
+style="margin-top:8px"
+onclick='printExistingSale(${JSON.stringify(sale)})'>
+🖨️ Imprimir
+</button>
+
+</div>
+
+`
+).join("");
+
+}
+
+
+function printExistingSale(sale){
+
+printTicket(sale);
+
+}
+
+
+/* =========================
    CORTE
-========================================= */
+========================= */
+
+function calculateCut(){
+
+let cash = 0;
+let card = 0;
+
+sales.forEach(
+sale=>{
+
+if(
+sale.payment === "Efectivo"
+){
+cash +=
+Number(sale.total);
+}
+
+if(
+sale.payment === "Tarjeta"
+){
+card +=
+Number(sale.total);
+}
+
+}
+);
+
+return {
+
+sales:
+sales.length,
+
+cash,
+
+card,
+
+total:
+cash + card
+
+};
+
+}
+
 
 function renderCut(){
 
-    const cash=
-        sales
-        .filter(
-            sale=>sale.payment==="Efectivo"
-        )
-        .reduce(
-            (sum,sale)=>
-                sum+Number(sale.total),
-            0
-        );
+const data =
+calculateCut();
 
-    const card=
-        sales
-        .filter(
-            sale=>sale.payment==="Tarjeta"
-        )
-        .reduce(
-            (sum,sale)=>
-                sum+Number(sale.total),
-            0
-        );
+document.getElementById(
+"cutSales"
+).textContent =
+data.sales;
 
-    const total=
-        cash+card;
+document.getElementById(
+"cutCash"
+).textContent =
+data.cash.toFixed(2);
 
-    document
-    .getElementById("cutSales")
-    .textContent=
-        sales.length;
+document.getElementById(
+"cutCard"
+).textContent =
+data.card.toFixed(2);
 
-    document
-    .getElementById("cutCash")
-    .textContent=
-        cash.toFixed(2);
+document.getElementById(
+"cutTotal"
+).textContent =
+data.total.toFixed(2);
 
-    document
-    .getElementById("cutCard")
-    .textContent=
-        card.toFixed(2);
 
-    document
-    .getElementById("cutTotal")
-    .textContent=
-        total.toFixed(2);
+const history =
+document.getElementById(
+"cutsHistory"
+);
+
+if(!cuts.length){
+
+history.innerHTML =
+`
+<div class="empty">
+No hay cortes anteriores.
+</div>
+`;
+
+return;
+
+}
+
+
+history.innerHTML =
+cuts.map(
+cut =>
+`
+
+<div class="history-item">
+
+<strong>
+Corte
+</strong>
+
+<div>
+${new Date(
+cut.date
+).toLocaleString("es-MX")}
+</div>
+
+<div>
+Ventas:
+${cut.sales}
+</div>
+
+<div>
+Efectivo:
+$${Number(cut.cash).toFixed(2)}
+</div>
+
+<div>
+Tarjeta:
+$${Number(cut.card).toFixed(2)}
+</div>
+
+<strong>
+Total:
+$${Number(cut.total).toFixed(2)}
+</strong>
+
+</div>
+`
+).join("");
 
 }
 
 
 function makeCut(){
 
-    buttonSound();
+const data =
+calculateCut();
 
-    if(!sales.length){
+if(!data.sales){
 
-        errorSound();
+soundError();
 
-        alert(
-            "No hay ventas para realizar un corte."
-        );
+alert(
+"No hay ventas para realizar un corte."
+);
 
-        return;
-
-    }
-
-    const cash=
-        sales
-        .filter(
-            sale=>sale.payment==="Efectivo"
-        )
-        .reduce(
-            (sum,sale)=>
-                sum+Number(sale.total),
-            0
-        );
-
-    const card=
-        sales
-        .filter(
-            sale=>sale.payment==="Tarjeta"
-        )
-        .reduce(
-            (sum,sale)=>
-                sum+Number(sale.total),
-            0
-        );
-
-    const total=
-        cash+card;
-
-    cuts.unshift({
-
-        id:
-            Date.now().toString(),
-
-        date:
-            new Date().toLocaleString("es-MX"),
-
-        sales:
-            sales.length,
-
-        cash,
-
-        card,
-
-        total
-
-    });
-
-    sales=[];
-
-    save();
-
-    cutSound();
-    vibrate(150);
-
-    renderSales();
-    renderCut();
-    renderCuts();
-
-    alert(
-        "Corte realizado correctamente."
-    );
+return;
 
 }
 
 
-function renderCuts(){
+const confirmed =
+confirm(
+"¿Realizar corte?\n\n" +
+"Ventas: " +
+data.sales +
+"\nEfectivo: $" +
+data.cash.toFixed(2) +
+"\nTarjeta: $" +
+data.card.toFixed(2) +
+"\nTotal: $" +
+data.total.toFixed(2)
+);
 
-    const container=
-        document.getElementById(
-            "cutsContainer"
-        );
+if(!confirmed){
 
-    if(!cuts.length){
+soundCancel();
 
-        container.innerHTML=
-            `<div class="empty">
-                No hay cortes anteriores.
-            </div>`;
-
-        return;
-
-    }
-
-    container.innerHTML=
-        cuts.map(cut=>`
-
-        <div class="sale-history">
-
-            <b>
-                Corte #${cut.id.slice(-6)}
-            </b>
-
-            <p>
-                ${cut.date}
-            </p>
-
-            <p>
-                Ventas: ${cut.sales}
-            </p>
-
-            <p>
-                Efectivo:
-                $${Number(cut.cash).toFixed(2)}
-            </p>
-
-            <p>
-                Tarjeta:
-                $${Number(cut.card).toFixed(2)}
-            </p>
-
-            <p class="sale-total">
-                Total:
-                $${Number(cut.total).toFixed(2)}
-            </p>
-
-        </div>
-
-    `).join("");
+return;
 
 }
 
 
-/* =========================================
-   ESCÁNER
-========================================= */
+cuts.unshift({
 
-let codeReader=null;
-let scannerMode=null;
-let scannerDevices=[];
-let scannerIndex=0;
-let scannerDeviceId=null;
-let scannerStream=null;
+id:
+Date.now(),
 
-let lastScanned="";
-let lastScanTime=0;
+date:
+new Date().toISOString(),
 
-let torchOn=false;
+sales:
+data.sales,
 
+cash:
+data.cash,
+
+card:
+data.card,
+
+total:
+data.total
+
+});
+
+saveData();
+
+soundApproved();
+
+renderAll();
+
+alert(
+"Corte realizado correctamente."
+);
+
+}
+
+
+/* =========================================================
+   ESCÁNER NUEVO
+   ZXING CONTROLA DIRECTAMENTE LA CÁMARA
+========================================================= */
+
+let codeReader = null;
+
+let scannerControls = null;
+
+let scannerMode = null;
+
+let scannerDevices = [];
+
+let scannerIndex = 0;
+
+let scannerDeviceId = null;
+
+let lastScanned = "";
+
+let lastScanTime = 0;
+
+let torchOn = false;
+
+
+/*
+   Abrir escáner.
+
+   IMPORTANTE:
+   Ya NO usamos getUserMedia aquí.
+   ZXing abre y controla la cámara.
+*/
 
 async function openScanner(mode){
 
-    scannerMode=mode;
+scannerMode =
+mode;
 
-    buttonSound();
-    vibrate(50);
+document
+.getElementById(
+"scannerModal"
+)
+.classList.add("show");
 
-    document
-    .getElementById("scannerModal")
-    .classList.add("show");
+document.getElementById(
+"scannerStatus"
+).textContent =
+"Preparando cámara...";
 
-    const status=
-        document.getElementById(
-            "scanStatus"
-        );
 
-    status.textContent=
-        "Solicitando acceso a la cámara...";
+if(
+!window.isSecureContext
+){
 
-    try{
+soundError();
 
-        /*
-        Para que esto funcione desde un celular,
-        el sitio debe estar en HTTPS o en un
-        contexto considerado seguro por el navegador.
-        */
+document.getElementById(
+"scannerStatus"
+).textContent =
+"Esta página necesita HTTPS. GitHub Pages funciona con HTTPS.";
 
-        scannerStream=
-            await navigator.mediaDevices
-            .getUserMedia({
-
-                video:{
-                    facingMode:{
-                        ideal:"environment"
-                    },
-
-                    width:{
-                        ideal:1920
-                    },
-
-                    height:{
-                        ideal:1080
-                    }
-
-                },
-
-                audio:false
-
-            });
-
-        const video=
-            document.getElementById("video");
-
-        video.srcObject=
-            scannerStream;
-
-        await video.play();
-
-        scannerDevices=
-            await ZXingBrowser
-            .BrowserCodeReader
-            .listVideoInputDevices();
-
-        if(!scannerDevices.length){
-
-            throw new Error(
-                "No hay cámaras disponibles."
-            );
-
-        }
-
-        scannerIndex=
-            findRearCamera(
-                scannerDevices
-            );
-
-        scannerDeviceId=
-            scannerDevices[
-                scannerIndex
-            ].deviceId;
-
-        status.textContent=
-            "Apunta al código de barras...";
-
-        await startScanner();
-
-        setupTorch();
-
-    }catch(error){
-
-        console.error(error);
-
-        errorSound();
-
-        status.innerHTML=`
-
-            ❌ <b>No se pudo acceder a la cámara.</b>
-
-            <br><br>
-
-            Si estás usando un celular y abriste
-            una dirección como:
-
-            <br><br>
-
-            <code>
-            http://192.168.x.x:8000
-            </code>
-
-            <br><br>
-
-            el navegador puede bloquear la cámara
-            porque la página no utiliza HTTPS.
-
-        `;
-
-    }
+return;
 
 }
 
 
-function findRearCamera(devices){
+if(
+!window.ZXingBrowser
+){
 
-    const index=
-        devices.findIndex(
-            device=>
-                /back|rear|environment|trasera|posterior/i
-                .test(device.label)
-        );
+soundError();
 
-    return index>=0
-        ? index
-        : 0;
+document.getElementById(
+"scannerStatus"
+).textContent =
+"No se pudo cargar ZXing.";
 
-}
-
-
-async function startScanner(){
-
-    if(codeReader){
-
-        try{
-            codeReader.reset();
-        }catch(e){}
-
-    }
-
-    if(
-        ZXingBrowser
-        .BrowserMultiFormatOneDReader
-    ){
-
-        codeReader=
-            new ZXingBrowser
-            .BrowserMultiFormatOneDReader();
-
-    }else{
-
-        codeReader=
-            new ZXingBrowser
-            .BrowserMultiFormatReader();
-
-    }
-
-    codeReader.decodeFromVideoDevice(
-
-        scannerDeviceId,
-
-        document.getElementById("video"),
-
-        (result,error)=>{
-
-            if(!result)return;
-
-            const code=
-                result
-                .getText()
-                .trim();
-
-            if(!code)return;
-
-            handleScannedCode(code);
-
-        }
-
-    );
+return;
 
 }
 
 
-function handleScannedCode(code){
+try{
 
-    const now=
-        Date.now();
+/*
+   Pedimos permiso solamente para que
+   el navegador revele las cámaras.
+*/
 
-    if(
-        code===lastScanned &&
-        now-lastScanTime<1800
-    ){
-        return;
-    }
+const tempStream =
+await navigator.mediaDevices
+.getUserMedia({
+video:true,
+audio:false
+});
 
-    lastScanned=code;
-    lastScanTime=now;
+tempStream
+.getTracks()
+.forEach(
+track =>
+track.stop()
+);
 
-    scanSound();
-    vibrate(80);
 
-    if(scannerMode==="inventario"){
+scannerDevices =
+await ZXingBrowser
+.BrowserCodeReader
+.listVideoInputDevices();
 
-        document
-        .getElementById("productBarcode")
-        .value=code;
 
-        document
-        .getElementById("scanStatus")
-        .textContent=
-            "Código detectado: "+code;
+if(!scannerDevices.length){
 
-        setTimeout(
-            closeScanner,
-            500
-        );
-
-        return;
-
-    }
-
-    if(scannerMode==="venta"){
-
-        const product=
-            products.find(
-                product=>
-                    String(product.barcode)
-                    .trim()===code
-            );
-
-        if(!product){
-
-            errorSound();
-            vibrate(180);
-
-            document
-            .getElementById("scanStatus")
-            .textContent=
-                "❌ Producto no registrado";
-
-            return;
-
-        }
-
-        if(product.stock<=0){
-
-            errorSound();
-
-            document
-            .getElementById("scanStatus")
-            .textContent=
-                "❌ Producto agotado";
-
-            return;
-
-        }
-
-        addToCart(product.id);
-
-        document
-        .getElementById("scanStatus")
-        .textContent=
-            "✅ "+product.name+
-            " agregado al carrito";
-
-    }
+throw new Error(
+"No hay cámaras disponibles."
+);
 
 }
 
 
-/* =========================================
-   CAMBIAR CÁMARA
-========================================= */
+/*
+   Buscar cámara trasera.
+*/
+
+const rear =
+scannerDevices.find(
+device =>
+/back|rear|environment/i
+.test(device.label)
+);
+
+
+if(rear){
+
+scannerDeviceId =
+rear.deviceId;
+
+scannerIndex =
+scannerDevices.indexOf(
+rear
+);
+
+}else{
+
+scannerDeviceId =
+scannerDevices[0].deviceId;
+
+scannerIndex = 0;
+
+}
+
+
+await startBarcodeReader();
+
+
+}catch(error){
+
+console.error(
+"Scanner:",
+error
+);
+
+soundError();
+
+document.getElementById(
+"scannerStatus"
+).textContent =
+"No se pudo iniciar el escáner: " +
+(error.message || error);
+
+}
+
+}
+
+
+/*
+   Lector dedicado para códigos 1D.
+*/
+
+async function startBarcodeReader(){
+
+try{
+
+if(scannerControls){
+
+try{
+scannerControls.stop();
+}catch(e){}
+
+scannerControls =
+null;
+
+}
+
+
+if(codeReader){
+
+try{
+codeReader.reset();
+}catch(e){}
+
+codeReader =
+null;
+
+}
+
+
+/*
+   Reader especializado en códigos
+   de barras 1D.
+*/
+
+if(
+ZXingBrowser
+.BrowserMultiFormatOneDReader
+){
+
+codeReader =
+new ZXingBrowser
+.BrowserMultiFormatOneDReader(
+150
+);
+
+}else{
+
+/*
+   Fallback por si el CDN entrega
+   una variante diferente.
+*/
+
+codeReader =
+new ZXingBrowser
+.BrowserMultiFormatReader(
+150
+);
+
+}
+
+
+const video =
+document.getElementById(
+"video"
+);
+
+
+document.getElementById(
+"scannerStatus"
+).textContent =
+"Apunta al código de barras...";
+
+
+/*
+   Escaneo continuo.
+*/
+
+scannerControls =
+await codeReader
+.decodeFromVideoDevice(
+scannerDeviceId,
+video,
+(result,error,controls)=>{
+
+/*
+   Si encontró código.
+*/
+
+if(result){
+
+const text =
+result.getText();
+
+handleScannedCode(
+text
+);
+
+}
+
+
+/*
+   Los NotFoundException son normales
+   mientras la cámara está buscando.
+*/
+
+if(
+error &&
+!(
+error instanceof
+ZXingBrowser
+.NotFoundException
+)
+){
+
+console.debug(
+"ZXing:",
+error
+);
+
+}
+
+}
+);
+
+
+}catch(error){
+
+console.error(
+error
+);
+
+soundError();
+
+document.getElementById(
+"scannerStatus"
+).textContent =
+"Error iniciando lector: " +
+(error.message || error);
+
+}
+
+}
+
+
+/*
+   Procesar código detectado.
+*/
+
+function handleScannedCode(rawCode){
+
+const code =
+normalizeBarcode(
+rawCode
+);
+
+if(!code){
+
+return;
+
+}
+
+
+const now =
+Date.now();
+
+
+/*
+   Evitar lecturas duplicadas.
+*/
+
+if(
+code === lastScanned &&
+now - lastScanTime <
+1800
+){
+
+return;
+
+}
+
+
+lastScanned =
+code;
+
+lastScanTime =
+now;
+
+
+soundScan();
+
+vibrate(50);
+
+
+/*
+   Mostrar lo que REALMENTE
+   detectó la cámara.
+*/
+
+document.getElementById(
+"scannerStatus"
+).innerHTML =
+`
+<span class="detected">
+✓ Detectado: ${escapeHTML(code)}
+</span>
+`;
+
+
+/* =========================
+   INVENTARIO
+========================= */
+
+if(
+scannerMode ===
+"inventory"
+){
+
+document.getElementById(
+"productBarcode"
+).value =
+code;
+
+setTimeout(
+()=>{
+stopScanner();
+},
+500
+);
+
+return;
+
+}
+
+
+/* =========================
+   VENTA
+========================= */
+
+if(
+scannerMode ===
+"sale"
+){
+
+const product =
+products.find(
+p =>
+normalizeBarcode(
+p.barcode
+) === code
+);
+
+
+if(!product){
+
+soundError();
+
+document.getElementById(
+"scannerStatus"
+).innerHTML =
+`
+<span style="color:#ff6b6b">
+✕ Código detectado, pero no está registrado:
+${escapeHTML(code)}
+</span>
+`;
+
+return;
+
+}
+
+
+if(
+Number(product.stock) <= 0
+){
+
+soundError();
+
+document.getElementById(
+"scannerStatus"
+).innerHTML =
+`
+<span style="color:#ff6b6b">
+✕ ${escapeHTML(product.name)}
+está agotado.
+</span>
+`;
+
+return;
+
+}
+
+
+const item =
+cart.find(
+x =>
+String(x.productId) ===
+String(product.id)
+);
+
+
+if(item){
+
+if(
+item.quantity >=
+Number(product.stock)
+){
+
+soundError();
+
+document.getElementById(
+"scannerStatus"
+).innerHTML =
+`
+<span style="color:#ff6b6b">
+✕ No queda más stock de
+${escapeHTML(product.name)}
+</span>
+`;
+
+return;
+
+}
+
+item.quantity++;
+
+}else{
+
+cart.push({
+
+productId:
+product.id,
+
+quantity:1
+
+});
+
+}
+
+
+saveData();
+
+renderAll();
+
+document.getElementById(
+"scannerStatus"
+).innerHTML =
+`
+<span class="detected">
+✓ ${escapeHTML(product.name)}
+agregado al carrito
+</span>
+`;
+
+
+/*
+   NO cerramos el escáner.
+   Puede seguir escaneando.
+*/
+
+}
+
+}
+
+
+/*
+   Cambiar cámara.
+*/
 
 async function switchCamera(){
 
-    buttonSound();
+soundButton();
 
-    if(scannerDevices.length<2){
+if(
+scannerDevices.length < 2
+){
 
-        alert(
-            "No hay otra cámara disponible."
-        );
+alert(
+"Solo se encontró una cámara."
+);
 
-        return;
-
-    }
-
-    scannerIndex++;
-
-    if(
-        scannerIndex>=scannerDevices.length
-    ){
-        scannerIndex=0;
-    }
-
-    scannerDeviceId=
-        scannerDevices[
-            scannerIndex
-        ].deviceId;
-
-    stopCurrentStream();
-
-    try{
-
-        scannerStream=
-            await navigator.mediaDevices
-            .getUserMedia({
-
-                video:{
-                    deviceId:{
-                        exact:scannerDeviceId
-                    },
-
-                    width:{
-                        ideal:1920
-                    },
-
-                    height:{
-                        ideal:1080
-                    }
-
-                },
-
-                audio:false
-
-            });
-
-        const video=
-            document.getElementById("video");
-
-        video.srcObject=
-            scannerStream;
-
-        await video.play();
-
-        await startScanner();
-
-        setupTorch();
-
-    }catch(error){
-
-        console.error(error);
-
-        errorSound();
-
-    }
+return;
 
 }
 
 
-/* =========================================
-   LINTERNA
-========================================= */
+scannerIndex =
+(scannerIndex + 1) %
+scannerDevices.length;
 
-function setupTorch(){
+scannerDeviceId =
+scannerDevices[
+scannerIndex
+].deviceId;
 
-    const video=
-        document.getElementById("video");
 
-    if(
-        !video.srcObject ||
-        !video.srcObject.getVideoTracks().length
-    ){
-        return;
-    }
-
-    const track=
-        video.srcObject
-        .getVideoTracks()[0];
-
-    if(
-        !track.getCapabilities ||
-        !track.getCapabilities().torch
-    ){
-        return;
-    }
+await startBarcodeReader();
 
 }
 
+
+/*
+   Linterna.
+*/
 
 async function toggleTorch(){
 
-    const video=
-        document.getElementById("video");
+soundButton();
 
-    if(
-        !video.srcObject ||
-        !video.srcObject.getVideoTracks().length
-    ){
-        return;
-    }
+try{
 
-    const track=
-        video.srcObject
-        .getVideoTracks()[0];
+if(
+!scannerControls ||
+!scannerControls.switchTorch
+){
 
-    try{
+alert(
+"Esta cámara/navegador no permite controlar la linterna desde aquí."
+);
 
-        const capabilities=
-            track.getCapabilities();
+return;
 
-        if(!capabilities.torch){
+}
 
-            alert(
-                "Este celular no permite controlar la linterna desde el navegador."
-            );
+torchOn =
+!torchOn;
 
-            return;
+await scannerControls
+.switchTorch(
+torchOn
+);
 
-        }
+}catch(error){
 
-        torchOn=!torchOn;
+console.error(
+error
+);
 
-        await track.applyConstraints({
+soundError();
 
-            advanced:[
-                {
-                    torch:torchOn
-                }
-            ]
-
-        });
-
-        buttonSound();
-
-    }catch(error){
-
-        console.error(error);
-
-        errorSound();
-
-    }
+}
 
 }
 
 
-/* =========================================
-   DETENER ESCÁNER
-========================================= */
-
-function stopCurrentStream(){
-
-    if(scannerStream){
-
-        scannerStream
-        .getTracks()
-        .forEach(
-            track=>track.stop()
-        );
-
-        scannerStream=null;
-
-    }
-
-    const video=
-        document.getElementById("video");
-
-    if(video){
-        video.srcObject=null;
-    }
-
-}
-
+/*
+   Cerrar completamente.
+*/
 
 function stopScanner(){
 
-    buttonSound();
+try{
 
-    if(codeReader){
+if(scannerControls){
 
-        try{
-            codeReader.reset();
-        }catch(e){}
+scannerControls.stop();
 
-    }
+scannerControls =
+null;
 
-    stopCurrentStream();
+}
 
-    torchOn=false;
+}catch(e){}
+
+
+try{
+
+if(codeReader){
+
+codeReader.reset();
+
+codeReader =
+null;
+
+}
+
+}catch(e){}
+
+
+const video =
+document.getElementById(
+"video"
+);
+
+if(video){
+
+video.pause();
+
+video.srcObject =
+null;
 
 }
 
 
-function closeScanner(){
+document
+.getElementById(
+"scannerModal"
+)
+.classList.remove("show");
 
-    stopScanner();
 
-    document
-    .getElementById("scannerModal")
-    .classList.remove("show");
+scannerMode =
+null;
 
-    scannerMode=null;
+scannerDevices =
+[];
+
+scannerIndex =
+0;
+
+scannerDeviceId =
+null;
+
+lastScanned =
+"";
+
+lastScanTime =
+0;
+
+torchOn =
+false;
 
 }
 
 
-/* =========================================
-   UTILIDAD
-========================================= */
+/* =========================
+   UTILIDADES
+========================= */
 
-function escapeHTML(text){
+function normalizeBarcode(
+code
+){
 
-    return String(text)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
+return String(
+code || ""
+)
+.replace(
+/[^\x20-\x7E]/g,
+""
+)
+.trim();
 
 }
 
 
-/* =========================================
-   INICIO
-========================================= */
+function escapeHTML(
+value
+){
 
-renderSaleProducts();
-renderCart();
+return String(value)
+.replace(
+/&/g,
+"&amp;"
+)
+.replace(
+/</g,
+"&lt;"
+)
+.replace(
+/>/g,
+"&gt;"
+)
+.replace(
+/"/g,
+"&quot;"
+)
+.replace(
+/'/g,
+"&#039;"
+);
+
+}
+
+
+/* =========================
+   RENDER
+========================= */
+
+function renderAll(){
+
 renderInventory();
+
+renderSaleSearch();
+
+renderCart();
+
 renderSales();
+
 renderCut();
-renderCuts();
+
+}
+
+
+/* =========================
+   INICIO
+========================= */
+
+renderAll();
 
 </script>
 
